@@ -7,7 +7,7 @@
 deg.def(geo2r, columnStatistics, columnlogFC, pvalue, logfc)
 }
 \arguments{
-\item{geo2r}{data.frame with DE results where lines are genes}
+\item{geo2r}{data.frame/data.table with DE results where lines are genes}
 
 \item{columnStatistics}{column name of the pvalue variable <strings>}
 
