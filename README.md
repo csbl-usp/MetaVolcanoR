@@ -27,10 +27,11 @@ library(plotly)
 inputfolder <- "/<path to input DE files>/"
 outputfolder <- "/<path where outputs should be written>/"
 jobname <- "my job"
-metathr <- 0.8 # percentage of DE to be considered as cDEG
 pcriteria <- "pval column name"
 genenamecol <- "gene name column name"
 geneidcol <- "gene ID/probe/oligo/transcript column name"
+foldchangecol <- "fold change column name"
+metathr <- 0.8 # percentage of DE to be considered as cDEG
 pvalue <- 0.05 # pval threshold
 logfc <- 0.0 # Fold change threshold
 ncores <- 1 # number of processor user wants to use
@@ -38,7 +39,6 @@ collaps <- TRUE # c(TRUE, FALSE)
 metap <- "Fisher"
 metafc <- "Mean" # c("Mean", "Median")
 cvar <- TRUE # c(TRUE, FALSE)
-foldchangecol <- "Log2FC"
 ```
 
 ### data input
@@ -66,7 +66,7 @@ meta_degs <- draw.metavolcano(meta_geo2r, genenamecol, metathr, nstud, jobname, 
 ```
 meta_degs_metap <- draw.metavolcano.metap(meta_geo2r, pcriteria, genenamecol, foldchangecol, metathr, nstud,
                                           jobname, collaps, metap, metafc, outputfolder)
-write.table(meta_degs_metap, paste0(outputfolder, "meta_degs_", jobname, "_combining.tsv"), 
+write.table(meta_degs_metap, paste0(outputfolder, "meta_degs_", jobname, "_combining.tsv"),
             sep = "\t", row.names = FALSE, quote = FALSE)
 ```
 
