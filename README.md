@@ -1,66 +1,78 @@
 # MetaVolcanoR
 Gene expression meta-analysis visualization tool
 
+## Installation
+### Clone repository
 ```
-devtools::install("csbl/MetaVolcanoR")
-library(MetaVolcanoR)
+git clone csbl-usp/MetaVolcanoR
+```
+### In R
+```
+setwd('</parent folder where MetaVolcanoR was cloned/>')
+devtools::install('MetaVolcanoR')
+```
 
-# Input parameters
-inputfolder <- "/<whole path>/"
-outputfolder <- "/<whlole path>"
-jobname <- "myjob"
+## Running MetaVolcanoR
+
+### Required libraries
+```
+library(MetaVolcanoR)
+library(data.table)
+library(dplyr)
+library(plotly)
+```
+
+### Setting MetaVolcanoR parameters
+```
+inputfolder <- "/<path to input DE files>/"
+outputfolder <- "/<path where outputs should be written>/"
+jobname <- "my job"
 metathr <- 0.8 # percentage of DE to be considered as cDEG
-pcriteria <-"P.Value" #c("adj.P.Val", "P.Value")
-pvalue <- 0.05
-logfc <- 0.1
-ncores <- 4 # number of processor one wants to use
+pcriteria <- "pval column name"
+genenamecol <- "gene name column name"
+geneidcol <- "gene ID/probe/oligo/transcript column name"
+pvalue <- 0.05 # pval threshold
+logfc <- 0.0 # Fold change threshold
+ncores <- 1 # number of processor user wants to use
 collaps <- TRUE # c(TRUE, FALSE)
 metap <- "Fisher"
 metafc <- "Mean" # c("Mean", "Median")
 cvar <- TRUE # c(TRUE, FALSE)
+foldchangecol <- "Log2FC"
+```
 
-# --- data input
+### data input
+```
 geo2r_res_files <- list.files(path = inputfolder)
-print(inputfolder)
 geo2r_res_files <- setNames(geo2r_res_files, gsub("\\..+", "", geo2r_res_files))
-message(head(geo2r_res_files))
-geo2r_res_files <- geo2r_res_files[which(sapply(geo2r_res_files,
-						function(...) if.geo2rformat(..., inputfolder)))] # checking files' format before read them into the R environment (Linux specific)
-# reading input files      
 geo2r_res <- mclapply(geo2r_res_files, function(...) fread(paste0(inputfolder, ...)),
-		      mc.cores = ncores)
-
+                      mc.cores = ncores)
 nstud <- length(geo2r_res)
+```
 
-# --- Running
-# --- draw meta-volcano (stage 1) DEGs by study and cummulative DEG distribution
+### Draw DEGs by study and negative cumulative DEG distribution
+```
+meta_geo2r <- draw.degbar.cum(geo2r_res, pcriteria, foldchangecol, genenamecol, pvalue, logfc, collaps, jobname, outputfolder, ncores)
+write.table(meta_geo2r, paste0(outputfolder, "deg_by_study_", jobname, ".tsv"),
+            sep = "\t", row.names = FALSE, quote = FALSE)
+```
 
-meta_geo2r <- draw.degbar.cum(geo2r_res, pcriteria, pvalue, logfc, collaps, jobname, outputfolder, ncores)
-	# showing DEGs table
-	print(head(meta_geo2r, 3))
-	# writing table
-	write.table(meta_geo2r, paste0(outputfolder, '/', "deg_by_study_", jobname, ".tsv"),
-		    sep = "\t", row.names = FALSE, quote = FALSE)
+### Draw meta-volcano "Vote-counting approach"
+```
+meta_degs <- draw.metavolcano(meta_geo2r, genenamecol, metathr, nstud, jobname, collaps, outputfolder)
+```
 
-# --- draw meta-volcano (stage 2) "Vote-counting aproach"
-meta_degs <- draw.metavolcano(meta_geo2r, metathr, nstud, jobname, collaps, outputfolder)
-	# showing meta-DEGs
-	print(head(meta_degs, 3))
+### Draw meta-volcano "Combining approach" FC Mean or Median & Fisher combining p-values
+```
+meta_degs_metap <- draw.metavolcano.metap(meta_geo2r, pcriteria, genenamecol, foldchangecol, metathr, nstud,
+                                          jobname, collaps, metap, metafc, outputfolder)
+write.table(meta_degs_metap, paste0(outputfolder, "meta_degs_", jobname, "_combining.tsv"), 
+            sep = "\t", row.names = FALSE, quote = FALSE)
+```
 
-# --- draw meta-volcano (stage 2) "Combining aproach" FC Mean or Median & Fisher combining p-values
-# --- [[[ here would be perfect to have a different slider for the metathr ]]]
-meta_degs_metap <- draw.metavolcano.metap(meta_geo2r, pcriteria, metathr, nstud,
-					  jobname, collaps, metap, metafc, outputfolder)
-	# showing meta-DEGs
-	print(head(meta_degs_metap, 3))
-	# writing table
-	write.table(meta_degs_metap, paste0(outputfolder, '/', "meta_degs_", jobname, "_combining.tsv"),
-		    sep = "\t", row.names = FALSE, quote = FALSE)
-
-# --- draw meta-volcano (stage 3) "Random effect model approach" calculating proper meta-Fold change
-meta_degs_metafor <- do.metafor(geo2r_res, pcriteria, pvalue, logfc, collaps, jobname, outputfolder, ncores)
-	print(head(meta_degs_metafor, 3))
-	# writing table
-	write.table(meta_degs_metafor, paste0(outputfolder, '/', "metafor_degs_", jobname, "_summarizing.tsv"),
-		    sep = "\t", row.names = FALSE, quote = FALSE)
+### Draw meta-volcano "Random effect model approach" calculating proper meta-Fold change
+```
+meta_degs_metafor <- do.metafor(geo2r_res, pcriteria, genenamecol, geneidcol, foldchangecol, pvalue, logfc, collaps, jobname, outputfolder, ncores, cvar)
+write.table(meta_degs_metafor, paste0(outputfolder, "metafor_degs_", jobname, "_summarizing.tsv"),
+            sep = "\t", row.names = FALSE, quote = FALSE)
 ```
