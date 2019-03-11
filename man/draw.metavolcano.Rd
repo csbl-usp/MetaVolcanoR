@@ -4,11 +4,13 @@
 \alias{draw.metavolcano}
 \title{A function to draw the 'Vote-counting meta-analysis' MetaVolcano}
 \usage{
-draw.metavolcano(meta_geo2r, metathr, nstud, jobname, collaps,
+draw.metavolcano(meta_geo2r, genenamecol, metathr, nstud, jobname, collaps,
   outputfolder)
 }
 \arguments{
 \item{meta_geo2r}{data.frame/data.table containing all the inputed GEO2R outputs}
+
+\item{genenamecol}{the column name of the gene name variable <string>}
 
 \item{metathr}{the proportion of studies where a gene has to be consistently DE to be highlighted 'vote-counting meta-analysis'}
 

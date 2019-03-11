@@ -4,13 +4,17 @@
 \alias{draw.degbar.cum}
 \title{A function for the initial MetaVolcano overview}
 \usage{
-draw.degbar.cum(geo2r_res, pcriteria, pvalue, logfc, collaps, jobname,
-  outputfolder, ncores)
+draw.degbar.cum(geo2r_res, pcriteria, foldchangecol, genenamecol, pvalue,
+  logfc, collaps, jobname, outputfolder, ncores)
 }
 \arguments{
 \item{geo2r_res}{list of data.frame/data.table (s) with DE results where lines are genes}
 
-\item{pcriteria}{the column name of the Pval criteria to consider c("adj.P.Val", "P.Value") <string>}
+\item{pcriteria}{the column name of the Pval criteria to consider <string>}
+
+\item{foldchangecol}{the column name of the foldchange variable <string>}
+
+\item{genenamecol}{the column name of the gene name variable <string>}
 
 \item{pvalue}{the Pval to use as threshold c(0:1) <double>}
 

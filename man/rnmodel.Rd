@@ -4,10 +4,12 @@
 \alias{rnmodel}
 \title{A function to model foldchange variance along several studies}
 \usage{
-rnmodel(gene)
+rnmodel(gene, foldchangecol)
 }
 \arguments{
 \item{gene}{named vector with foldchanges and variances (lines of the meta_geo2r: data.frame/data.table containing all the inputed GEO2R outputs)}
+
+\item{foldchangecol}{the column name of the foldchange variable <string>}
 }
 \description{
 This function calculate a Random Effect Model summary

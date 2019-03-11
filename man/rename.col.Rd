@@ -4,7 +4,7 @@
 \alias{rename.col}
 \title{A column renaming function for GEO2R outputs}
 \usage{
-rename.col(geo2r_list, collaps, ncores)
+\method{rename}{col}(geo2r_list, collaps, ncores)
 }
 \arguments{
 \item{geo2r_list}{list of data.frame/data.table (s) with DE results where lines are genes}

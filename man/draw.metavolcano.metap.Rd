@@ -4,13 +4,17 @@
 \alias{draw.metavolcano.metap}
 \title{A function to draw the 'Combining meta-analysis' MetaVolcano}
 \usage{
-draw.metavolcano.metap(meta_geo2r, pcriteria, metathr, nstud, jobname,
-  collaps, metap, metafc, outputfolder)
+draw.metavolcano.metap(meta_geo2r, pcriteria, genenamecol, foldchangecol,
+  metathr, nstud, jobname, collaps, metap, metafc, outputfolder)
 }
 \arguments{
 \item{meta_geo2r}{data.frame/data.table containing all the inputed GEO2R outputs}
 
 \item{pcriteria}{the column name of the Pval criteria to consider c("adj.P.Val", "P.Value") <string>}
+
+\item{genenamecol}{the column name of the gene name variable <string>}
+
+\item{foldchangecol}{the column name of the foldchange variable <string>}
 
 \item{metathr}{the proportion of top meta-DEGs to be highlighted 'combining meta-analysis'<double>}
 
