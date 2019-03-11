@@ -3,6 +3,8 @@
 #' This function draws the 'Combining meta-analysis' MetaVolcano
 #' @param meta_geo2r data.frame/data.table containing all the inputed GEO2R outputs
 #' @param pcriteria the column name of the Pval criteria to consider c("adj.P.Val", "P.Value") <string>
+#' @param genenamecol the column name of the gene name variable <string>
+#' @param foldchangecol the column name of the foldchange variable <string>
 #' @param metathr the proportion of top meta-DEGs to be highlighted 'combining meta-analysis'<double>
 #' @param nstud the number of inputed GEO2R outputs  <integer>
 #' @param jobname name of the running job <string>
@@ -14,7 +16,7 @@
 #' @export
 #' @examples
 #' draw.metavolcano.metap()
-draw.metavolcano.metap <- function(meta_geo2r, pcriteria, metathr, nstud, jobname, collaps, metap, metafc, outputfolder) {
+draw.metavolcano.metap <- function(meta_geo2r, pcriteria, genenamecol, foldchangecol, metathr, nstud, jobname, collaps, metap, metafc, outputfolder) {
   if(metap == "Fisher") {
     meta_geo2r <- mutate(meta_geo2r, 
                          metap = apply(select(meta_geo2r, matches(pcriteria)), 1, 
@@ -29,11 +31,11 @@ draw.metavolcano.metap <- function(meta_geo2r, pcriteria, metathr, nstud, jobnam
   }
   if(metafc == "Mean") {
     meta_geo2r <- mutate(meta_geo2r,
-                         metafc = apply(select(meta_geo2r, matches("logFC")), 1, 
+                         metafc = apply(select(meta_geo2r, matches(foldchangecol)), 1, 
                                         function(...) mean(as.numeric(...), na.rm = TRUE)))
   } else if (metafc == "Median") {
     meta_geo2r <- mutate(meta_geo2r, 
-                         metafc = apply(select(meta_geo2r, matches("logFC")), 1, 
+                         metafc = apply(select(meta_geo2r, matches(foldchangecol)), 1, 
                                         function(...) median(as.numeric(...), na.rm = TRUE)))
   }
   
@@ -44,13 +46,13 @@ draw.metavolcano.metap <- function(meta_geo2r, pcriteria, metathr, nstud, jobnam
                                                      metafc <= quantile(as.numeric(metafc), 1-metathr, na.rm = TRUE), "Down-regulated", 
                                                    "Unperturbed")))
   
-  meta_geo2r[['Gene.symbol']] <- apply(select(meta_geo2r, matches('symbol')), 1, function(g) {
+  meta_geo2r[['Gene.symbol']] <- apply(select(meta_geo2r, matches(genenamecol)), 1, function(g) {
     paste(unique(g[!is.na(g)]), collapse = '///')
   })
-  
+  print(head(meta_geo2r))
   # --- Drawing volcano ggplotly 
   gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, TRUE)
   # --- Writing html device for offline visualization
-  htmlwidgets::saveWidget(as_widget(gg), paste0(outputfolder, jobname, "_metap.html"))
+  htmlwidgets::saveWidget(as_widget(gg), paste0(outputfolder, 'combining_method_MetaVolcano_', jobname, ".html"))
   meta_geo2r
 }

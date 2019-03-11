@@ -2,12 +2,13 @@
 #'
 #' This function calculate a Random Effect Model summary
 #' @param gene named vector with foldchanges and variances (lines of the meta_geo2r: data.frame/data.table containing all the inputed GEO2R outputs)
+#' @param foldchangecol the column name of the foldchange variable <string>
 #' @keywords REM summary
 #' @export
 #' @examples
 #' rnmodel()
-rnmodel <- function(gene) {
-  fc <- gene[grep("logFC", names(gene))]
+rnmodel <- function(gene, foldchangecol) {
+  fc <- gene[grep(foldchangecol, names(gene))]
   fc <- as.numeric(fc[which(!is.na(fc))])
   v <- gene[grep("vi", names(gene))]
   v <- as.numeric(v[which(!is.na(v))])

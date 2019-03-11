@@ -10,7 +10,7 @@
 #' draw.metavolcano.metap()
 draw.metav <- function(meta_res, jobname, outputfolder) {
   gg <- ggplotly(
-    ggplot(filter(arrange(meta_res, abs(randomSummary)), abs(randomSummary) >= 0.1 & abs(dircon) >= 4),
+    ggplot(arrange(meta_res, abs(randomSummary)),
            aes(x = randomSummary, y = -log10(randomP), color = dircon, text = Gene.symbol)) +
       geom_point() +
       scale_color_gradient2(midpoint=0, low="blue", mid="white", high="red") +
@@ -21,5 +21,5 @@ draw.metav <- function(meta_res, jobname, outputfolder) {
       theme(axis.line.x = element_line(color = "black", size = 0.6, lineend = "square"),
             axis.line.y = element_line(color = "black", size = 0.6, lineend = "square"))
   )
-  htmlwidgets::saveWidget(as_widget(gg), paste0(outputfolder, "randomSummary_", jobname, ".html"))
+  htmlwidgets::saveWidget(as_widget(gg), paste0(outputfolder, "RandomEffectModel_MetaVolcano_", jobname, ".html"))
 }
