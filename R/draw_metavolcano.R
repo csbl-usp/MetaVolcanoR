@@ -24,6 +24,6 @@ draw.metavolcano <- function(meta_geo2r, genenamecol, metathr, nstud, jobname, c
   # --- Drawing volcano ggplotly 
   gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, FALSE)
   # --- Writing html device for offline visualization
-  htmlwidgets::saveWidget(as_widget(gg), paste0(outputfolder, 'votecounting_metavolcano_', jobname, ".html"))
+  htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), 'votecounting_metavolcano_', jobname, ".html"))
   meta_geo2r
 }

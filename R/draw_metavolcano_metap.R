@@ -53,6 +53,6 @@ draw.metavolcano.metap <- function(meta_geo2r, pcriteria, genenamecol, foldchang
   # --- Drawing volcano ggplotly 
   gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, TRUE)
   # --- Writing html device for offline visualization
-  htmlwidgets::saveWidget(as_widget(gg), paste0(outputfolder, 'combining_method_MetaVolcano_', jobname, ".html"))
+  htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), 'combining_method_MetaVolcano_', jobname, ".html"))
   meta_geo2r
 }
