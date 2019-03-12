@@ -12,8 +12,6 @@
 #' @examples
 #' deg.def()
 deg.def <- function(geo2r, columnStatistics, columnlogFC, pvalue, logfc) {
-
 	mutate(geo2r, deg = ifelse(as.numeric(!!as.name(columnStatistics)) < pvalue & as.numeric(!!as.name(columnlogFC)) < (-1*logfc), -1,
 				   ifelse(as.numeric(!!as.name(columnStatistics)) < pvalue & as.numeric(!!as.name(columnlogFC)) > logfc, 1, 0)))
-
 }

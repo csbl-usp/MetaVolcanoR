@@ -34,7 +34,7 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, ge
       }, mc.cores = ncores)
     
     # --- Collapsing redundant geneIDs. Rataining the geneID with the smallest pcriteria
-    geo2r_res <- mcapply(geo2r_res, function(g) {
+    geo2r_res <- mclapply(geo2r_res, function(g) {
       collapse.deg(g, genenamecol, pcriteria)
     }, mc.cores = ncores)
     
@@ -46,7 +46,8 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, ge
       htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "deg_by_study_", jobname, ".html"))
     }
     
-    # --- merging DEG results	
+    # --- merging DEG results
+    geo2r_res <- rename.col(geo2r_res, genenamecol, geneidcol, collaps, ncores)
     meta_geo2r <- Reduce(function(...) merge(..., by = genenamecol, all = TRUE), geo2r_res)
     
     # --- Defining new vars for visualization
@@ -74,6 +75,7 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, ge
       }
       
       # --- merging DEG results	
+      geo2r_res <- rename.col(geo2r_res, genenamecol, geneidcol, collaps, ncores)
       meta_geo2r <- Reduce(function(...) merge(..., by = geneidcol, all = TRUE), geo2r_res)
       
       # --- Defining new vars for visualization
