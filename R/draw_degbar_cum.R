@@ -22,6 +22,8 @@
 #' draw.degbar.cum()
 draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidcol, pvalue, logfc, collaps, jobname, outputfolder, draw, ncores) {
   nstud <- length(geo2r_res)
+  # --- Subsetting DE inputs
+  geo2r_res <- lapply(geo2r_res, function(...) select(..., matches(paste(c(pcriteria, foldchangecol, genenamecol, geneidcol), collapse = '|'))))
   # --- Defining DEGs
   geo2r_res <- lapply(geo2r_res, function(...) deg.def(..., pcriteria, foldchangecol, pvalue, logfc))
   
