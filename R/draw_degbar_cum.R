@@ -88,7 +88,7 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, ge
       }
       return(filter(meta_geo2r, ndeg != 0))
     } else {
-      stop("the geneidcol contains duplicated values, consider to set collaps==TRUE")
+      stop("the geneidcol contains duplicated values, consider to set collaps=TRUE")
     }
   }
 }
