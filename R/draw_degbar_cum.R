@@ -37,7 +37,7 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, pv
     # --- Drawing DEGs by dataset
     gg <- draw.degbar(set.degbar.data(geo2r_res_col))
     # --- Writing html device for offline visualization
-    htmlwidgets::saveWidget(as_widget(gg), paste0(outputfolder, "degbar_", jobname, ".html"))
+    htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "degbar_", jobname, ".html"))
     
     # --- merging DEG results	
     meta_geo2r <- Reduce(function(...) merge(..., by = genenamecol, all = TRUE), geo2r_res_col)
@@ -50,7 +50,7 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, pv
     gg <- draw.cum.freq(meta_geo2r, nstud)
     print(nstud)
     # --- Writing html device for offline visualization
-    htmlwidgets::saveWidget(as_widget(gg), paste0(outputfolder, "cumdeg_", jobname, ".html"))
+    htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "cumdeg_", jobname, ".html"))
     
     #return(filter(meta_geo2r, ndeg != 0))
     return(meta_geo2r)
@@ -60,7 +60,7 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, pv
     # --- Drawing DEGs by dataset
     gg <- draw.degbar(set.degbar.data(geo2r_res))
     # --- Writing html device for offline visualization
-    htmlwidgets::saveWidget(as_widget(gg), paste0(outputfolder, "degbar_", jobname, ".html"))
+    htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "degbar_", jobname, ".html"))
     
     # --- merging DEG results	
     meta_geo2r <- Reduce(function(x, y) merge(x, y, by = 'Probe', all = TRUE), rename.col(geo2r_res, collaps, ncores))
@@ -72,7 +72,7 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, pv
     # --- Drawing cDEGs by dataset
     gg <- draw.cum.freq(meta_geo2r, nstud)
     # --- Writing html device for offline visualization
-    htmlwidgets::saveWidget(as_widget(gg), paste0(outputfolder, "cumdeg_", jobname, ".html"))
+    htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "cumdeg_", jobname, ".html"))
     
     #		return(filter(meta_geo2r, ndeg != 0))
     return(meta_geo2r)
