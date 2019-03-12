@@ -39,9 +39,10 @@ collaps <- TRUE # c(TRUE, FALSE)
 metap <- "Fisher"
 metafc <- "Mean" # c("Mean", "Median")
 cvar <- TRUE # c(TRUE, FALSE)
+draw <- TRUE
 ```
 
-### data input
+### Data input
 ```
 geo2r_res_files <- list.files(path = inputfolder)
 geo2r_res_files <- setNames(geo2r_res_files, gsub("\\..+", "", geo2r_res_files))
@@ -52,8 +53,8 @@ nstud <- length(geo2r_res)
 
 ### Draw DEGs by study and negative cumulative DEG distribution
 ```
-meta_geo2r <- draw.degbar.cum(geo2r_res, pcriteria, foldchangecol, genenamecol, pvalue, logfc, collaps, jobname, outputfolder, ncores)
-write.table(meta_geo2r, paste0(outputfolder, "deg_by_study_", jobname, ".tsv"),
+ndegs <- draw.degbar.cum(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidcol, pvalue, logfc, collaps, jobname, outputfolder, draw, ncores)
+write.table(ndegs, paste0(outputfolder, "ndeg_by_study_", jobname, ".tsv"),
             sep = "\t", row.names = FALSE, quote = FALSE)
 ```
 
