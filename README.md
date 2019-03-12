@@ -4,7 +4,7 @@ Gene expression meta-analysis visualization tool
 ## Installation
 ### Clone repository
 ```
-git clone csbl-usp/MetaVolcanoR
+git clone https://github.com/csbl-usp/MetaVolcanoR
 ```
 ### In R
 ```
