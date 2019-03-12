@@ -18,6 +18,7 @@ draw.degbar <- function(degbar_data) {
       guides(colour = guide_colorbar()) +
       labs(x = "Datasets",
            y = "Number of genes") +
-      scale_fill_manual(values=c("#E41A1C", "grey", "#377EB8" ))
+      scale_fill_manual(values=c("#E41A1C", "grey", "#377EB8" )) +
+      scale_x_discrete(labels=substr(unique(degbar_data[['dataset']]), 0, 30))
   )
 }

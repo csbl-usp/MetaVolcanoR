@@ -40,10 +40,10 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, ge
     
     # --- Drawing DEGs by dataset
     if(draw) {
-      bardat <- set.degbar.data(geo2r_res_col)
+      bardat <- set.degbar.data(geo2r_res)
       gg <- draw.degbar(bardat)
       # --- Writing html device for offline visualization
-      htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "deg_by_study_", jobname, ".html"))
+      htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "/deg_by_study_", jobname, ".html"))
     }
     
     # --- merging DEG results
@@ -58,7 +58,7 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, ge
     if(draw) {
       gg <- draw.cum.freq(meta_geo2r, nstud)
       # --- Writing html device for offline visualization
-      htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "deg_InvCumDist_", jobname, ".html"))
+      htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "/deg_InvCumDist_", jobname, ".html"))
     }
     
     # Return genes that were DE in at least one study
@@ -71,7 +71,7 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, ge
         bardat <- set.degbar.data(geo2r_res)
         gg <- draw.degbar(bardat)
         # --- Writing html device for offline visualization
-        htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "deg_by_study_", jobname, ".html"))
+        htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "/deg_by_study_", jobname, ".html"))
       }
       
       # --- merging DEG results	
@@ -86,7 +86,7 @@ draw.degbar.cum <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, ge
       if(draw) {
         gg <- draw.cum.freq(meta_geo2r, nstud)
         # --- Writing html device for offline visualization
-        htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "deg_InvCumDist_", jobname, ".html"))
+        htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "/deg_InvCumDist_", jobname, ".html"))
       }
       return(filter(meta_geo2r, ndeg != 0))
     } else {
