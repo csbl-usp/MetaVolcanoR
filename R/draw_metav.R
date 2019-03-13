@@ -22,5 +22,5 @@ draw.metav <- function(meta_res, jobname, outputfolder) {
             axis.line.y = element_line(color = "black", size = 0.6, lineend = "square"))
   )
   htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), 
-                                                "RandomEffectModel_MetaVolcano_", jobname, ".html"))
+                                                "/RandomEffectModel_MetaVolcano_", jobname, ".html"))
 }

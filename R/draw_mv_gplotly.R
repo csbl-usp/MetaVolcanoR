@@ -10,10 +10,10 @@
 #' @export
 #' @examples
 #' draw.mv.gplotly()
-draw.mv.gplotly <- function(meta_geo2r, nstud, metathr, collaps, metap) {
+draw.mv.gplotly <- function(meta_geo2r, nstud, metathr, collaps, metap, genenamecol) {
   if(metap) {
     if(collaps) {
-      g <- ggplot(meta_geo2r, aes(x = metafc, y = -log10(metap), text = Gene.symbol)) +
+      g <- ggplot(meta_geo2r, aes(x = metafc, y = -log10(metap), text = genenamecol)) + # Gene.symbol
         geom_point(aes(color = dcol_combin) , alpha = 0.9) +
         labs(x = "Meta-Fold Change",
              y = "-log10(Meta-p value)") +
@@ -27,7 +27,7 @@ draw.mv.gplotly <- function(meta_geo2r, nstud, metathr, collaps, metap) {
                    linetype = "longdash", colour = "grey", alpha = 0.4)
       
     } else {
-      g <- ggplot(meta_geo2r, aes(x = metafc, y = -log10(metap), text = Gene.symbol)) +
+      g <- ggplot(meta_geo2r, aes(x = metafc, y = -log10(metap), text = genenamecol)) + # Gene.symbol
         geom_point(aes(color = dcol_combin) , alpha = 0.9) +
         labs(x = "Meta-Fold Change",
              y = "-log10(Meta-p value)") +
@@ -42,7 +42,7 @@ draw.mv.gplotly <- function(meta_geo2r, nstud, metathr, collaps, metap) {
     }
   } else {
     if(collaps) {
-      g <- ggplot(meta_geo2r, aes(x = ddeg, y = ndeg, text = Gene.symbol)) +
+      g <- ggplot(meta_geo2r, aes(x = ddeg, y = ndeg, text = genenamecol)) +# Gene.symbol
         geom_jitter(aes(color = dcol_vote) , alpha = 0.9, width = 0.4) +
         labs(x = "Direction consistency of the differential expression",
              y = "Number of studies being differentially expressed") +
@@ -52,7 +52,7 @@ draw.mv.gplotly <- function(meta_geo2r, nstud, metathr, collaps, metap) {
                    linetype = "longdash", colour = "grey", alpha = 0.4) 
       
     } else {
-      g <- ggplot(meta_geo2r, aes(x = ddeg, y = ndeg, text = Gene.symbol)) +
+      g <- ggplot(meta_geo2r, aes(x = ddeg, y = ndeg, text = genenamecol)) + # Gene.symbol
         geom_jitter(aes(color = dcol_vote) , alpha = 0.9, width = 0.4) +
         labs(x = "Direction consistency of the differential expression",
              y = "Number of studies being differentially expressed") +
