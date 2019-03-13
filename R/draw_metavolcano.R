@@ -60,7 +60,7 @@ draw.metavolcano <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, g
     # --- Drawing cDEGs by dataset
     if(draw) {
       # --- Drawing volcano ggplotly 
-      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, FALSE)
+      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, FALSE, genenamecol)
       # --- Writing html device for offline visualization
       htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), '/votecounting_metavolcano_', jobname, ".html"))
     }
@@ -106,7 +106,7 @@ draw.metavolcano <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, g
       if(draw) {
         
         # --- Drawing volcano ggplotly 
-        gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, FALSE)
+        gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, FALSE,genenamecol)
         # --- Writing html device for offline visualization
         htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), '/votecounting_metavolcano_', jobname, ".html"))
         
