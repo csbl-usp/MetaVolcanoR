@@ -14,13 +14,6 @@ devtools::install('MetaVolcanoR')
 
 ## Running MetaVolcanoR
 
-### Required libraries
-```
-library(MetaVolcanoR)
-library(data.table)
-library(dplyr)
-library(plotly)
-```
 
 ### Setting MetaVolcanoR parameters
 ```
