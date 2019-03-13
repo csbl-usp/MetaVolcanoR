@@ -37,6 +37,7 @@ draw <- TRUE
 
 ### Data input
 ```
+
 geo2r_res_files <- list.files(path = inputfolder)
 geo2r_res_files <- setNames(geo2r_res_files, gsub("\\..+", "", geo2r_res_files))
 geo2r_res <- mclapply(geo2r_res_files, function(...) fread(paste0(inputfolder, ...)),
