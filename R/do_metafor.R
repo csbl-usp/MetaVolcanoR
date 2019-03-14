@@ -54,8 +54,16 @@ do.metafor <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidc
     meta_geo2r[['ndeg']] <- apply(select(meta_geo2r, matches("deg_")), 1, function(r) sum((r^2), na.rm = T))
     meta_geo2r[['ddeg']] <- apply(select(meta_geo2r, matches("deg_")), 1, function(r) sum(r, na.rm = TRUE))
 
-    meta_geo2r <- cbind(meta_geo2r, Reduce(rbind, apply(meta_geo2r, 1, function(...) rnmodel(..., foldchangecol))))
-
+    # Calculating the REM summary (metafor)
+    meta_geo2r <- cbind(meta_geo2r,
+                        do.call(rbind,
+                               mclapply(split(meta_geo2r, meta_geo2r[[genenamecol]]),
+                                        function(g) {
+                                          rnmodel(g, foldchangecol)
+                                        }, mc.cores = ncores)
+                        )
+    )
+   
     # --- Drawing metavolcano
     if(draw) {
       draw.metav(meta_geo2r, jobname, outputfolder, genenamecol)
@@ -83,7 +91,15 @@ do.metafor <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidc
       meta_geo2r[['ndeg']] <- apply(select(meta_geo2r, matches("deg_")), 1, function(r) sum((r^2), na.rm = T))
       meta_geo2r[['ddeg']] <- apply(select(meta_geo2r, matches("deg_")), 1, function(r) sum(r, na.rm = TRUE))
 
-      meta_geo2r <- cbind(meta_geo2r, Reduce(rbind, apply(meta_geo2r, 1, function(...) rnmodel(..., foldchangecol))))
+      # Calculating the REM summary (metafor)
+      meta_geo2r <- cbind(meta_geo2r,
+                          do.call(rbind,
+                                 mclapply(split(meta_geo2r, meta_geo2r[[geneidcol]]),
+                                          function(g) {
+                                            rnmodel(g, foldchangecol)
+                                            }, mc.cores = ncores)
+                                 )
+                          )
 
       # --- Drawing metavolcano
       if(draw) {
