@@ -14,7 +14,7 @@
 #' @param collaps if probes should be collapsed based on the DE direction <logical>
 #' @param jobname name of the running job <string>
 #' @param outputfolder /path where to write the results/
-#' @param draw wheather or not to draw the .html visualization
+#' @param draw wheather or not to draw the .html visualization <logical>
 #' @param ncores the number of processors the user wants to use <integer>
 #' @keywords write 'combining meta-analysis' metavolcano
 #' @export
