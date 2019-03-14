@@ -63,7 +63,7 @@ do.metafor <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidc
                                         }, mc.cores = ncores)
                         )
     )
-
+   
     # --- Drawing metavolcano
     if(draw) {
       draw.metav(meta_geo2r, jobname, outputfolder, genenamecol)
