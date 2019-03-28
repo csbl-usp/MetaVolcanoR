@@ -2,14 +2,10 @@
 Gene expression meta-analysis visualization tool
 
 ## Installation
-### Clone repository
-```
-git clone https://github.com/csbl-usp/MetaVolcanoR
-```
+
 ### In R
 ```
-setwd('</parent folder where MetaVolcanoR was cloned/>')
-devtools::install('MetaVolcanoR')
+devtools::install_github('MetaVolcanoR', ref = "dev")
 library(MetaVolcanoR)
 ```
 
