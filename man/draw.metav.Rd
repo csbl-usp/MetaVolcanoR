@@ -4,7 +4,7 @@
 \alias{draw.metav}
 \title{A function to draw the 'Random Effect Model' MetaVolcano}
 \usage{
-draw.metav(meta_res, jobname, outputfolder)
+draw.metav(meta_res, jobname, outputfolder, genecol)
 }
 \arguments{
 \item{meta_res}{data.frame/data.table containing all the inputed GEO2R outputs, and after REM calculation}
@@ -12,6 +12,8 @@ draw.metav(meta_res, jobname, outputfolder)
 \item{jobname}{name of the running job <string>}
 
 \item{outputfolder}{/path where to write the results/ <string>}
+
+\item{genecol}{column name of the variable to label genes in the .html file <string>}
 }
 \description{
 This function draws the 'Random Effect Model' MetaVolcano

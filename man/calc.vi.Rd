@@ -4,10 +4,14 @@
 \alias{calc.vi}
 \title{A function to calculate variance from confidence interval limits}
 \usage{
-calc.vi(geo2r)
+calc.vi(geo2r, llcol, rlcol)
 }
 \arguments{
 \item{geo2r}{data.frame/data.table containing all the inputed GEO2R outputs}
+
+\item{llcol}{left limit of the fold change coinfidence interval variable name <string>}
+
+\item{rlcol}{right limit of the fold change coinfidence interval variable name <string>}
 }
 \description{
 This function takes the limits of a confidence interval a calculate a variance
