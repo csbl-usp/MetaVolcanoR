@@ -5,12 +5,14 @@
 \title{A function to filter out probes standing for the same gene which have
 contradictory DE direction}
 \usage{
-\method{collapse}{deg}(geo2r, genenamecol)
+collapse.deg(geo2r, genenamecol, pcriteria)
 }
 \arguments{
 \item{geo2r}{data.frame/data.table output of the deg.def() function}
 
 \item{genenamecol}{the column name of the gene name variable <string>}
+
+\item{pcriteria}{the column name of the Pval criteria to consider <string>}
 }
 \description{
 This function check if the probes standing for the same gene has a unique 
