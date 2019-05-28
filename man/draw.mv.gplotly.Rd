@@ -11,7 +11,7 @@ draw.mv.gplotly(meta_geo2r, nstud, metathr, genecol, metap)
 
 \item{nstud}{the number of inputed GEO2R outputs  <integer>}
 
-\item{metathr}{the proportion of studies where a gene has to be consistently DE to be highlighted 'vote-counting meta-analysis' or the proportion of top meta-DEGs to be highlighted 'combining meta-analysis'<double>}
+\item{metathr}{top percentage of perturbed genes to be highlighted <double>}
 
 \item{genecol}{column name of the variable to label genes in the .html file <string>}
 
