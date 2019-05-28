@@ -25,8 +25,8 @@ draw.metav <- function(meta_res, jobname, outputfolder, genecol, metathr, draw) 
   gg <- ggplot(arrange(meta_res, abs(randomSummary)),
 	       aes(x = randomSummary, y = -log10(randomP), color = dircon2, text = !!rlang::sym(genecol))) +
 	      geom_point() +
-	      scale_color_gradient2(midpoint=0, low="blue", mid="white", high="red", na.value = "grey20") +
-	      geom_errorbarh(aes(xmax = randomCi.ub, xmin = randomCi.lb, color = dircon2)) +
+	      scale_color_gradient2(midpoint=0, low="blue", mid="white", high="red", na.value = "grey80") +
+	      geom_errorbarh(aes(xmax = randomCi.ub, xmin = randomCi.lb, color = dircon2), alpha = 0.6) +
 	      theme_classic() +
 	      theme(panel.border= element_blank()) +
 	      theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
