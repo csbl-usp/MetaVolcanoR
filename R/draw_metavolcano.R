@@ -92,16 +92,6 @@ draw.metavolcano <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, g
 
     if(all(gid)) {
 
-      # --- Drawing DEGs by dataset
-      if(draw) {
-
-        bardat <- set.degbar.data(geo2r_res)
-        gg <- draw.degbar(bardat)
-        # --- Writing html device for offline visualization
-        htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "/deg_by_study_", jobname, ".html"))
-
-      }
-
       # --- merging DEG results
       geo2r_res <- rename.col(geo2r_res, genenamecol, geneidcol, collaps, ncores)
       meta_geo2r <- Reduce(function(...) merge(..., by = geneidcol, all = TRUE), geo2r_res)
