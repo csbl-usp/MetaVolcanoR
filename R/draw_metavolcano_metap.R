@@ -81,7 +81,7 @@ draw.metavolcano.metap <- function(geo2r_res, pcriteria, foldchangecol, genename
     if(!is.null(draw)) {
 
       # --- Drawing volcano ggplotly
-      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, genenamecol)
+      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, genenamecol, metap=TRUE)
     
 	if(draw == "HTML") {
 
@@ -152,7 +152,7 @@ draw.metavolcano.metap <- function(geo2r_res, pcriteria, foldchangecol, genename
       if(!is.null(draw)) {
 	      
 	      # --- Drawing volcano ggplotly
-	      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, geneidcol)
+	      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, geneidcol, metap=TRUE)
 	         
 	if(draw == "HTML") {
 
