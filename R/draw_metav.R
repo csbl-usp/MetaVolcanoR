@@ -20,7 +20,7 @@ draw.metav <- function(meta_res, jobname, outputfolder, genecol, metathr, draw) 
   
   meta_res %>%
 	  mutate(dircon2 = ifelse(rank <= quantile(meta_res[['rank']], metathr), dircon, NA)) %>%
-	  filter(rank >  quantile(meta_res[['rank']], 0.6)) -> meta_res
+	  filter(rank <  quantile(meta_res[['rank']], 0.6)) -> meta_res
 
   gg <- ggplot(arrange(meta_res, abs(randomSummary)),
 	       aes(x = randomSummary, y = -log10(randomP), color = dircon2, text = !!rlang::sym(genecol))) +
