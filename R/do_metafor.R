@@ -13,6 +13,7 @@
 #' @param rlcol right limit of the fold change coinfidence interval variable name <string>
 #' @param vcol name of the fold change variance variable <string>
 #' @param cvar weather or not to calculate gene variance from confidence interval limits <logical>
+#' @param metathr top percentage of perturbed genes to be highlighted <double>
 #' @param jobname name of the running job <string>
 #' @param outputfolder /path where to write the results/
 #' @param draw wheather or not to draw the .html visualization <logical>
@@ -21,7 +22,7 @@
 #' @export
 #' @examples
 #' do.metafor()
-do.metafor <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidcol, pvalue, logfc, collaps, llcol, rlcol, vcol, cvar, jobname, outputfolder, draw, ncores) {
+do.metafor <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidcol, pvalue, logfc, collaps, llcol, rlcol, vcol, cvar, metathr, jobname, outputfolder, draw, ncores) {
   nstud <- length(geo2r_res)
   # --- Subsetting DE inputs
   geo2r_res <- lapply(geo2r_res, function(...) select(..., matches(paste(c(pcriteria, foldchangecol, genenamecol, geneidcol, llcol, rlcol, vcol), collapse = '|'))))
@@ -101,9 +102,23 @@ do.metafor <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidc
                                  )
                           )
 
+      # --- Topconfects ranking
+      meta_geo2r <- meta_geo2r %>%
+	mutate(se = (randomCi.ub - randomCi.lb)/3.92) %>% #  95% confidence interval 
+	mutate(index = seq(nrow(meta_geo2r)))
+
+	#out[['index']] <- 1:nrow(out)
+      confects <- normal_confects(meta_geo2r$randomSummary, 
+				  se=meta_geo2r$se, 
+				  fdr=0.05, 
+				  full=TRUE)
+
+      meta_geo2r <- merge(meta_geo2r, confects$table, by = 'index', all = TRUE)
+
+      
       # --- Drawing metavolcano
-      if(draw) {
-        draw.metav(meta_geo2r, jobname, outputfolder, geneidcol)
+      if(!is.null(draw)) {
+        draw.metav(meta_geo2r, jobname, outputfolder, geneidcol, metathr, draw)
       }
 
       # Return REM results for all genes

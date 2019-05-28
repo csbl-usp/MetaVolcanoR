@@ -5,8 +5,13 @@
 \title{A function to run the 'Random Effect Model' MetaVolcano}
 \usage{
 do.metafor(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidcol,
+<<<<<<< HEAD
+  pvalue, logfc, collaps, llcol, rlcol, vcol, cvar, metathr, jobname,
+  outputfolder, draw, ncores)
+=======
   pvalue, logfc, collaps, llcol, rlcol, vcol, cvar, jobname, outputfolder,
   draw, ncores)
+>>>>>>> dev
 }
 \arguments{
 \item{geo2r_res}{list of data.frame/data.table (s) with DE results where lines are genes}
@@ -33,6 +38,11 @@ do.metafor(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidcol,
 
 \item{cvar}{weather or not to calculate gene variance from confidence interval limits <logical>}
 
+<<<<<<< HEAD
+\item{metathr}{top percentage of perturbed genes to be highlighted <double>}
+
+=======
+>>>>>>> dev
 \item{jobname}{name of the running job <string>}
 
 \item{outputfolder}{/path where to write the results/}
