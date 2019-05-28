@@ -43,5 +43,4 @@ draw.mv.gplotly <- function(meta_geo2r, nstud, metathr, genecol, metap) {
 		      axis.line.y = element_line(color = "black", size = 0.6, lineend = "square")) +
 		theme(legend.position = "none") +
 		scale_color_manual(values=c("#377EB8", "grey", "#E41A1C"))
-	return(g)
 }
