@@ -4,7 +4,7 @@
 \alias{draw.mv.gplotly}
 \title{A MetaVolcano drawing function}
 \usage{
-draw.mv.gplotly(meta_geo2r, nstud, metathr, genecol)
+draw.mv.gplotly(meta_geo2r, nstud, metathr, genecol, metap)
 }
 \arguments{
 \item{meta_geo2r}{data.frame/data.table containing all the inputed GEO2R outputs}
