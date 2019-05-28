@@ -14,10 +14,7 @@ Imports:
     plotly,
     parallel,
     metafor,
-<<<<<<< HEAD
     metap,
     rlang,
     topconfects	
-=======
     rlang
->>>>>>> dev
