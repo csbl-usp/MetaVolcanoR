@@ -83,23 +83,24 @@ draw.metavolcano.metap <- function(geo2r_res, pcriteria, foldchangecol, genename
       # --- Drawing volcano ggplotly
       gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, genenamecol)
     
-    } else if(draw == "HTML") {
+	if(draw == "HTML") {
 
 	    # --- Writing html device for offline visualization
 	    htmlwidgets::saveWidget(as_widget(ggplotly(gg)), paste0(normalizePath(outputfolder),
                                                     '/combining_method_MetaVolcano_', jobname, ".html"))
 
-    } else if(draw == "PDF") {
+	} else if(draw == "PDF") {
 
 	    # --- Writing PDF visualization
 	    pdf(paste0(normalizePath(outputfolder), '/combining_method_MetaVolcano_', jobname, ".pdf"), width = 7, height = 10)
 		    plot(gg)
 	    dev.off()
 
-    } else {
-
+	} else {
+		
 	    stop("Seems like you did not provide a right 'draw' parameter. Try NULL, 'PDF' or 'HTML'")
 
+    	}
     }
 
     # Return genes that were highlighted as cDEG
@@ -153,22 +154,23 @@ draw.metavolcano.metap <- function(geo2r_res, pcriteria, foldchangecol, genename
 	      # --- Drawing volcano ggplotly
 	      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, geneidcol)
 	         
-      } else if(draw == "HTML") {
+	if(draw == "HTML") {
 
 	      # --- Writing html device for offline visualization
 	      htmlwidgets::saveWidget(as_widget(ggplotly(gg)), paste0(normalizePath(outputfolder),
                                                     '/combining_method_MetaVolcano_', jobname, ".html"))
-      } else if(draw == "PDF") {
+	} else if(draw == "PDF") {
 
 	      # --- Writing PDF visualization
 	      pdf(paste0(normalizePath(outputfolder), '/combining_method_MetaVolcano_', jobname, ".pdf"), width = 7, height = 10)
 	      	  plot(gg)
 	      dev.off()
        
-      } else {
+	} else {
 
 	      stop("Seems like you did not provide a right 'draw' parameter. Try NULL, 'PDF' or 'HTML'")
 
+	}
       }
 
       # Return genes that were highlighted as cDEG
