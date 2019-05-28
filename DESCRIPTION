@@ -16,5 +16,4 @@ Imports:
     metafor,
     metap,
     rlang,
-    topconfects	
-    rlang
+    topconfects
