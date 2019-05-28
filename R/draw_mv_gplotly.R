@@ -5,6 +5,7 @@
 #' @param nstud the number of inputed GEO2R outputs  <integer>
 #' @param metathr the proportion of studies where a gene has to be consistently DE to be highlighted 'vote-counting meta-analysis' or the proportion of top meta-DEGs to be highlighted 'combining meta-analysis'<double>
 #' @param genecol column name of the variable to label genes in the .html file <string>
+#' @param metap wheather or not the drawing is for the combining-metavolcano  <logical>
 #' @keywords draw metavolcano
 #' @export
 #' @examples
