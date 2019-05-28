@@ -4,7 +4,7 @@
 \alias{draw.mv.gplotly}
 \title{A MetaVolcano drawing function}
 \usage{
-draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, metap, genecol)
+draw.mv.gplotly(meta_geo2r, nstud, metathr, genecol, metap)
 }
 \arguments{
 \item{meta_geo2r}{data.frame/data.table containing all the inputed GEO2R outputs}
@@ -13,11 +13,9 @@ draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, metap, genecol)
 
 \item{metathr}{the proportion of studies where a gene has to be consistently DE to be highlighted 'vote-counting meta-analysis' or the proportion of top meta-DEGs to be highlighted 'combining meta-analysis'<double>}
 
-\item{collaps}{if probes should be collapsed based on the DE direction <logical>}
-
-\item{metap}{if the 'combining meta-analysis' strategy should be used <logical>}
-
 \item{genecol}{column name of the variable to label genes in the .html file <string>}
+
+\item{metap}{wheather or not the drawing is for the combining-metavolcano  <logical>}
 }
 \description{
 This function creates a ggplotly object with the MetaVolcano

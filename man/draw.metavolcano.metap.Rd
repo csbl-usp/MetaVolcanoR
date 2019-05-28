@@ -35,11 +35,7 @@ draw.metavolcano.metap(geo2r_res, pcriteria, foldchangecol, genenamecol,
 
 \item{outputfolder}{/path where to write the results/}
 
-<<<<<<< HEAD
-\item{draw}{wheather or not to draw the .html visualization}
-=======
-\item{draw}{wheather or not to draw the .html visualization <logical>}
->>>>>>> dev
+\item{draw}{wheather or not to draw the .pdf or .html visualization <c(NULL, "PDF", "HTML")>}
 
 \item{ncores}{the number of processors the user wants to use <integer>}
 }

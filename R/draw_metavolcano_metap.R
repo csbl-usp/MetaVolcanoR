@@ -14,7 +14,7 @@
 #' @param collaps if probes should be collapsed based on the DE direction <logical>
 #' @param jobname name of the running job <string>
 #' @param outputfolder /path where to write the results/
-#' @param draw wheather or not to draw the .html visualization <logical>
+#' @param draw wheather or not to draw the .pdf or .html visualization <c(NULL, "PDF", "HTML")>
 #' @param ncores the number of processors the user wants to use <integer>
 #' @keywords write 'combining meta-analysis' metavolcano
 #' @export
@@ -78,14 +78,29 @@ draw.metavolcano.metap <- function(geo2r_res, pcriteria, foldchangecol, genename
 
 
     # --- Drawing cDEGs by dataset
-    if(draw) {
+    if(!is.null(draw)) {
 
       # --- Drawing volcano ggplotly
-      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, TRUE, genenamecol)
-      # --- Writing html device for offline visualization
-      htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder),
+      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, genenamecol, metap=TRUE)
+    
+	if(draw == "HTML") {
+
+	    # --- Writing html device for offline visualization
+	    htmlwidgets::saveWidget(as_widget(ggplotly(gg)), paste0(normalizePath(outputfolder),
                                                     '/combining_method_MetaVolcano_', jobname, ".html"))
 
+	} else if(draw == "PDF") {
+
+	    # --- Writing PDF visualization
+	    pdf(paste0(normalizePath(outputfolder), '/combining_method_MetaVolcano_', jobname, ".pdf"), width = 7, height = 10)
+		    plot(gg)
+	    dev.off()
+
+	} else {
+		
+	    stop("Seems like you did not provide a right 'draw' parameter. Try NULL, 'PDF' or 'HTML'")
+
+    	}
     }
 
     # Return genes that were highlighted as cDEG
@@ -134,14 +149,28 @@ draw.metavolcano.metap <- function(geo2r_res, pcriteria, foldchangecol, genename
                                                        "Unperturbed")))
 
       # --- Drawing cDEGs by dataset
-      if(draw) {
+      if(!is.null(draw)) {
+	      
+	      # --- Drawing volcano ggplotly
+	      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, geneidcol, metap=TRUE)
+	         
+	if(draw == "HTML") {
 
-        # --- Drawing volcano ggplotly
-        gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, TRUE, geneidcol)
-        # --- Writing html device for offline visualization
-        htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder),
-                                                      '/combining_method_MetaVolcano_', jobname, ".html"))
+	      # --- Writing html device for offline visualization
+	      htmlwidgets::saveWidget(as_widget(ggplotly(gg)), paste0(normalizePath(outputfolder),
+                                                    '/combining_method_MetaVolcano_', jobname, ".html"))
+	} else if(draw == "PDF") {
 
+	      # --- Writing PDF visualization
+	      pdf(paste0(normalizePath(outputfolder), '/combining_method_MetaVolcano_', jobname, ".pdf"), width = 7, height = 10)
+	      	  plot(gg)
+	      dev.off()
+       
+	} else {
+
+	      stop("Seems like you did not provide a right 'draw' parameter. Try NULL, 'PDF' or 'HTML'")
+
+	}
       }
 
       # Return genes that were highlighted as cDEG

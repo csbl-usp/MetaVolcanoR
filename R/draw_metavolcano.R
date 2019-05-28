@@ -12,7 +12,7 @@
 #' @param collaps if probes should be collapsed based on the DE direction <logical>
 #' @param jobname name of the running job <string>
 #' @param outputfolder /path where to write the results/
-#' @param draw wheather or not to draw the .html visualization
+#' @param draw wheather or not to draw a .pdf or .html visualization <c(NULL, 'PDF', 'HTML')>
 #' @param ncores the number of processors the user wants to use <integer>
 #' @keywords write 'vote-counting meta-analysis' metavolcano
 #' @export
@@ -58,13 +58,31 @@ draw.metavolcano <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, g
     })
 
     # --- Drawing cDEGs by dataset
-    if(draw) {
-      # --- Drawing volcano ggplotly
-      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, FALSE, genenamecol)
-      # --- Writing html device for offline visualization
-      htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), '/votecounting_metavolcano_', jobname, ".html"))
-    }
+    if(!is.null(draw)) {
 
+      # --- Drawing volcano ggplotly
+      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, genenamecol, metap=FALSE)
+    
+	if(draw == "HTML") {
+
+	    # --- Writing html device for offline visualization
+	    htmlwidgets::saveWidget(as_widget(ggplotly(gg)), paste0(normalizePath(outputfolder),
+                                                     '/votecounting_metavolcano_', jobname, ".html"))
+
+	} else if(draw == "PDF") {
+
+	    # --- Writing PDF visualization
+	    pdf(paste0(normalizePath(outputfolder), '/votecounting_metavolcano_', jobname, ".pdf"), width = 7, height = 10)
+		    plot(gg)
+	    dev.off()
+
+	} else {
+		
+	    stop("Seems like you did not provide a right 'draw' parameter. Try NULL, 'PDF' or 'HTML'")
+
+    	}
+    }
+    
     # Return genes that were highlighted as cDEG
     return(filter(meta_geo2r, dcol_vote != "Unperturbed"))
 
@@ -73,16 +91,6 @@ draw.metavolcano <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, g
     gid <- sapply(geo2r_res, function(g) length(unique(g[[geneidcol]])) == nrow(g))
 
     if(all(gid)) {
-
-      # --- Drawing DEGs by dataset
-      if(draw) {
-
-        bardat <- set.degbar.data(geo2r_res)
-        gg <- draw.degbar(bardat)
-        # --- Writing html device for offline visualization
-        htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), "/deg_by_study_", jobname, ".html"))
-
-      }
 
       # --- merging DEG results
       geo2r_res <- rename.col(geo2r_res, genenamecol, geneidcol, collaps, ncores)
@@ -103,19 +111,35 @@ draw.metavolcano <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, g
       })
 
       # --- Drawing cDEGs by dataset
-      if(draw) {
+      if(!is.null(draw)) {
 
-        # --- Drawing volcano ggplotly
-        gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, collaps, FALSE, geneidcol)
-        # --- Writing html device for offline visualization
-        htmlwidgets::saveWidget(as_widget(gg), paste0(normalizePath(outputfolder), '/votecounting_metavolcano_', jobname, ".html"))
+      # --- Drawing volcano ggplotly
+      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr,  geneidcol, metap=FALSE)
+    
+	if(draw == "HTML") {
 
-      }
+	    # --- Writing html device for offline visualization
+	    htmlwidgets::saveWidget(as_widget(ggplotly(gg)), paste0(normalizePath(outputfolder),
+                                                     '/votecounting_metavolcano_', jobname, ".html"))
 
+	} else if(draw == "PDF") {
+
+	    # --- Writing PDF visualization
+	    pdf(paste0(normalizePath(outputfolder), '/votecounting_metavolcano_', jobname, ".pdf"), width = 7, height = 10)
+		    plot(gg)
+	    dev.off()
+
+	} else {
+		
+	    stop("Seems like you did not provide a right 'draw' parameter. Try NULL, 'PDF' or 'HTML'")
+
+    	}
+     }
+ 
       # Return genes that were highlighted as cDEG
       return(filter(meta_geo2r, dcol_vote != "Unperturbed"))
 
-    } else {
+     } else {
 
       stop("the geneidcol contains duplicated values, consider to set collaps=TRUE")
 
