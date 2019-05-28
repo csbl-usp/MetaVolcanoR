@@ -19,7 +19,7 @@ draw.metav <- function(meta_res, jobname, outputfolder, genecol, metathr, draw) 
   #                         collapse = '\n'))
   
   meta_res %>%
-	  mutate(dircon2 = ifelse(rank <= quantile(meta_res[['rank']], metathr), dircon, NA)) %>%
+	  mutate(dircon2 = ifelse(rank >= quantile(meta_res[['rank']], metathr), dircon, NA)) %>%
 	  filter(rank <  quantile(meta_res[['rank']], 0.6)) -> meta_res
 
   gg <- ggplot(arrange(meta_res, abs(randomSummary)),
