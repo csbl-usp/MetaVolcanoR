@@ -4,31 +4,40 @@
 \alias{draw.metavolcano.metap}
 \title{A function to draw the 'Combining meta-analysis' MetaVolcano}
 \usage{
-draw.metavolcano.metap(meta_geo2r, pcriteria, genenamecol, foldchangecol,
-  metathr, nstud, jobname, collaps, metap, metafc, outputfolder)
+draw.metavolcano.metap(geo2r_res, pcriteria, foldchangecol, genenamecol,
+  geneidcol, pvalue, logfc, metap, metafc, metathr, collaps, jobname,
+  outputfolder, draw, ncores)
 }
 \arguments{
-\item{meta_geo2r}{data.frame/data.table containing all the inputed GEO2R outputs}
+\item{geo2r_res}{list of data.frame/data.table (s) with DE results where lines are genes}
 
 \item{pcriteria}{the column name of the Pval criteria to consider c("adj.P.Val", "P.Value") <string>}
 
-\item{genenamecol}{the column name of the gene name variable <string>}
-
 \item{foldchangecol}{the column name of the foldchange variable <string>}
 
-\item{metathr}{the proportion of top meta-DEGs to be highlighted 'combining meta-analysis'<double>}
+\item{genenamecol}{the column name of the gene name variable <string>}
 
-\item{nstud}{the number of inputed GEO2R outputs  <integer>}
+\item{geneidcol}{the column name of the gene ID/probe/oligo/transcript variable <string>}
 
-\item{jobname}{name of the running job <string>}
+\item{pvalue}{the Pval to use as threshold c(0:1) <double>}
 
-\item{collaps}{if probes should be collapsed based on the DE direction <logical>}
+\item{logfc}{the foldchange to use as DE threshold c(-Inf: Inf) <double>}
 
 \item{metap}{method for Pval combination/merge. c("Fisher")  <string>}
 
 \item{metafc}{method for summarizing gene fold-changes across studies c("Mean", "Median") <string>}
 
-\item{outputfolder}{/path where to write the results/ <string>}
+\item{metathr}{the proportion of top meta-DEGs to be highlighted 'combining meta-analysis'<double>}
+
+\item{collaps}{if probes should be collapsed based on the DE direction <logical>}
+
+\item{jobname}{name of the running job <string>}
+
+\item{outputfolder}{/path where to write the results/}
+
+\item{draw}{wheather or not to draw the .html visualization}
+
+\item{ncores}{the number of processors the user wants to use <integer>}
 }
 \description{
 This function draws the 'Combining meta-analysis' MetaVolcano

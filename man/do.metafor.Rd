@@ -4,20 +4,20 @@
 \alias{do.metafor}
 \title{A function to run the 'Random Effect Model' MetaVolcano}
 \usage{
-\method{do}{metafor}(geo2r_res, pcriteria, genenamecol, geneidcol,
-  foldchangecol, pvalue, logfc, collaps, jobname, outputfolder, ncores,
-  cvar)
+do.metafor(geo2r_res, pcriteria, foldchangecol, genenamecol, geneidcol,
+  pvalue, logfc, collaps, llcol, rlcol, vcol, cvar, metathr, jobname,
+  outputfolder, draw, ncores)
 }
 \arguments{
 \item{geo2r_res}{list of data.frame/data.table (s) with DE results where lines are genes}
 
 \item{pcriteria}{the column name of the Pval criteria to consider c("adj.P.Val", "P.Value") <string>}
 
+\item{foldchangecol}{the column name of the foldchange variable <string>}
+
 \item{genenamecol}{the column name of the gene name variable <string>}
 
 \item{geneidcol}{the column name of the gene ID/probe/oligo/transcript variable <string>}
-
-\item{foldchangecol}{the column name of the foldchange variable <string>}
 
 \item{pvalue}{the Pval to use as threshold c(0:1) <double>}
 
@@ -25,13 +25,23 @@
 
 \item{collaps}{if probes should be collapsed based on the DE direction <logical>}
 
+\item{llcol}{left limit of the fold change coinfidence interval variable name <string>}
+
+\item{rlcol}{right limit of the fold change coinfidence interval variable name <string>}
+
+\item{vcol}{name of the fold change variance variable <string>}
+
+\item{cvar}{weather or not to calculate gene variance from confidence interval limits <logical>}
+
+\item{metathr}{top percentage of perturbed genes to be highlighted <double>}
+
 \item{jobname}{name of the running job <string>}
 
 \item{outputfolder}{/path where to write the results/}
 
-\item{ncores}{the number of processors the user wants to use <integer>}
+\item{draw}{wheather or not to draw the .html visualization <logical>}
 
-\item{cvar}{weather or not to calculate gene variance from confidence interval limits <logical>}
+\item{ncores}{the number of processors the user wants to use <integer>}
 }
 \description{
 This function runs the 'Random Effect Model' MetaVolcano section

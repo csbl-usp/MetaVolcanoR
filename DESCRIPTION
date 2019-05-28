@@ -8,9 +8,12 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1.9000
-Depends:
+Imports:
     data.table,
     dplyr,
     plotly,
     parallel,
-    metafor
+    metafor,
+    metap,
+    rlang,
+    topconfects	

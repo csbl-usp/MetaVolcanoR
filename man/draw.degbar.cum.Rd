@@ -4,8 +4,8 @@
 \alias{draw.degbar.cum}
 \title{A function for the initial MetaVolcano overview}
 \usage{
-draw.degbar.cum(geo2r_res, pcriteria, foldchangecol, genenamecol, pvalue,
-  logfc, collaps, jobname, outputfolder, ncores)
+draw.degbar.cum(geo2r_res, pcriteria, foldchangecol, genenamecol,
+  geneidcol, pvalue, logfc, collaps, jobname, outputfolder, draw, ncores)
 }
 \arguments{
 \item{geo2r_res}{list of data.frame/data.table (s) with DE results where lines are genes}
@@ -16,6 +16,8 @@ draw.degbar.cum(geo2r_res, pcriteria, foldchangecol, genenamecol, pvalue,
 
 \item{genenamecol}{the column name of the gene name variable <string>}
 
+\item{geneidcol}{the column name of the gene ID/probe/oligo/transcript variable <string>}
+
 \item{pvalue}{the Pval to use as threshold c(0:1) <double>}
 
 \item{logfc}{the foldchange to use as DE threshold c(-Inf: Inf) <double>}
@@ -25,6 +27,8 @@ draw.degbar.cum(geo2r_res, pcriteria, foldchangecol, genenamecol, pvalue,
 \item{jobname}{name of the running job <string>}
 
 \item{outputfolder}{/path where to write the results/}
+
+\item{draw}{wheather or not to draw the .html visualization}
 
 \item{ncores}{the number of processors the user wants to use <integer>}
 }
