@@ -17,7 +17,7 @@ draw.metav(meta_res, jobname, outputfolder, genecol, metathr, draw)
 
 \item{metathr}{top percentage of perturbed genes to be highlighted <double>}
 
-\item{either}{'PDF' or 'HTML' to save metaolcano as .pdf or .html respectively <string>}
+\item{draw}{either 'PDF' or 'HTML' to save metaolcano as .pdf or .html respectively <string>}
 }
 \description{
 This function draws the 'Random Effect Model' MetaVolcano
