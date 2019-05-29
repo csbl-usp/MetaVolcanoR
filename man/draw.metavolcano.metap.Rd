@@ -27,7 +27,7 @@ draw.metavolcano.metap(geo2r_res, pcriteria, foldchangecol, genenamecol,
 
 \item{metafc}{method for summarizing gene fold-changes across studies c("Mean", "Median") <string>}
 
-\item{metathr}{the proportion of top meta-DEGs to be highlighted 'combining meta-analysis'<double>}
+\item{metathr}{top percentage of perturbed genes to be highlighted <double>}
 
 \item{collaps}{if probes should be collapsed based on the DE direction <logical>}
 

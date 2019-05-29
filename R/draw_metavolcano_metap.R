@@ -10,7 +10,7 @@
 #' @param logfc the foldchange to use as DE threshold c(-Inf: Inf) <double>
 #' @param metap method for Pval combination/merge. c("Fisher")  <string>
 #' @param metafc method for summarizing gene fold-changes across studies c("Mean", "Median") <string>
-#' @param metathr the proportion of top meta-DEGs to be highlighted 'combining meta-analysis'<double>
+#' @param metathr top percentage of perturbed genes to be highlighted <double>
 #' @param collaps if probes should be collapsed based on the DE direction <logical>
 #' @param jobname name of the running job <string>
 #' @param outputfolder /path where to write the results/
