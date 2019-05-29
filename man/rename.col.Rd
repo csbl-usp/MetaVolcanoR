@@ -4,10 +4,14 @@
 \alias{rename.col}
 \title{A column renaming function for GEO2R outputs}
 \usage{
-\method{rename}{col}(geo2r_list, collaps, ncores)
+rename.col(geo2r_list, genenamecol, geneidcol, collaps, ncores)
 }
 \arguments{
 \item{geo2r_list}{list of data.frame/data.table (s) with DE results where lines are genes}
+
+\item{genenamecol}{the column name of the gene name variable <string>}
+
+\item{geneidcol}{the column name of the gene ID/probe/oligo/transcript variable <string>}
 
 \item{collaps}{if probes should be collapsed based on the DE direction <logical>}
 

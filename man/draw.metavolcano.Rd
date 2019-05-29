@@ -4,23 +4,36 @@
 \alias{draw.metavolcano}
 \title{A function to draw the 'Vote-counting meta-analysis' MetaVolcano}
 \usage{
-draw.metavolcano(meta_geo2r, genenamecol, metathr, nstud, jobname, collaps,
-  outputfolder)
+draw.metavolcano(geo2r_res, pcriteria, foldchangecol, genenamecol,
+  geneidcol, pvalue, logfc, metathr, collaps, jobname, outputfolder, draw,
+  ncores)
 }
 \arguments{
-\item{meta_geo2r}{data.frame/data.table containing all the inputed GEO2R outputs}
+\item{geo2r_res}{list of data.frame/data.table (s) with DE results where lines are genes}
+
+\item{pcriteria}{the column name of the Pval criteria to consider <string>}
+
+\item{foldchangecol}{the column name of the foldchange variable <string>}
 
 \item{genenamecol}{the column name of the gene name variable <string>}
 
-\item{metathr}{the proportion of studies where a gene has to be consistently DE to be highlighted 'vote-counting meta-analysis'}
+\item{geneidcol}{the column name of the gene ID/probe/oligo/transcript variable <string>}
 
-\item{nstud}{the number of inputed GEO2R outputs  <integer>}
+\item{pvalue}{the Pval to use as threshold c(0:1) <double>}
 
-\item{jobname}{name of the running job <string>}
+\item{logfc}{the foldchange to use as DE threshold c(-Inf: Inf) <double>}
+
+\item{metathr}{the proportion of studies a gene has to be DEG to be considered cDEG <double>}
 
 \item{collaps}{if probes should be collapsed based on the DE direction <logical>}
 
-\item{outputfolder}{/path where to write the results/ <string>}
+\item{jobname}{name of the running job <string>}
+
+\item{outputfolder}{/path where to write the results/}
+
+\item{draw}{wheather or not to draw a .pdf or .html visualization <c(NULL, 'PDF', 'HTML')>}
+
+\item{ncores}{the number of processors the user wants to use <integer>}
 }
 \description{
 This function draws the 'Vote-counting meta-analysis' MetaVolcano

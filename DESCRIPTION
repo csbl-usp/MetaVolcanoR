@@ -12,4 +12,8 @@ Imports:
     data.table,
     dplyr,
     plotly,
-    parallel
+    parallel,
+    metafor,
+    metap,
+    rlang,
+    topconfects
