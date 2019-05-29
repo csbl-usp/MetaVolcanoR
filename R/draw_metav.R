@@ -6,7 +6,7 @@
 #' @param outputfolder /path where to write the results/ <string>
 #' @param genecol column name of the variable to label genes in the .html file <string>
 #' @param metathr top percentage of perturbed genes to be highlighted <double>
-#' @param either 'PDF' or 'HTML' to save metaolcano as .pdf or .html respectively <string>
+#' @param draw either 'PDF' or 'HTML' to save metaolcano as .pdf or .html respectively <string>
 #' @keywords write 'combining meta-analysis' metavolcano
 #' @export
 #' @examples
