@@ -10,13 +10,8 @@
 #' @keywords write 'combining meta-analysis' metavolcano
 #' @export
 #' @examples
-#' draw.metavolcano.metap()
+#' draw.metav()
 draw.metav <- function(meta_res, jobname, outputfolder, genecol, metathr, draw) {
-  #meta_res <- meta_res %>%
-  #  mutate(geninfo = paste(c(!!as.name(genecol),
-  #                           paste0('#deg: ', ndeg),
-  #                           paste0('#ddeg: ', ddeg)),
-  #                         collapse = '\n'))
   
   meta_res %>%
 	  mutate(dircon2 = ifelse(`rank` <= quantile(meta_res[['rank']], metathr), dircon, NA)) %>%
@@ -26,6 +21,9 @@ draw.metav <- function(meta_res, jobname, outputfolder, genecol, metathr, draw) 
 	       aes(x = randomSummary, y = -log10(randomP), color = dircon2, text = !!rlang::sym(genecol))) +
 	      geom_point() +
 	      scale_color_gradient2(midpoint=0, low="blue", mid="white", high="red", na.value = "grey80") +
+	      labs(x = "Summary Fold Change",
+	      	   y = "-log10(Summary p-value)",
+		   color = "Sign consistency") +
 	      geom_errorbarh(aes(xmax = randomCi.ub, xmin = randomCi.lb, color = dircon2), alpha = 0.6) +
 	      theme_classic() +
 	      theme(panel.border= element_blank()) +
