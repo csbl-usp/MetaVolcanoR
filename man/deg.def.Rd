@@ -4,18 +4,18 @@
 \alias{deg.def}
 \title{A DEG definition function}
 \usage{
-deg.def(geo2r, columnStatistics, columnlogFC, pvalue, logfc)
+deg.def(diffexp, pcriteria, foldchangecol, pv, fc)
 }
 \arguments{
-\item{geo2r}{data.frame/data.table with DE results where lines are genes}
+\item{diffexp}{data.frame/data.table with DE results where lines are genes}
 
-\item{columnStatistics}{column name of the pvalue variable <strings>}
+\item{pcriteria}{column name of the pvalue variable <strings>}
 
-\item{columnlogFC}{column name of the foldchange variable <string>}
+\item{foldchangecol}{column name of the foldchange variable <string>}
 
-\item{pvalue}{thresholds <ex: 0.05>}
+\item{pv}{thresholds <ex: 0.05>}
 
-\item{logfc}{foldchange threshold <ex: 0.4>}
+\item{fc}{foldchange threshold <ex: 0.4>}
 }
 \description{
 This function creates a new variable indicating DEGs as -1, 0, 1 based on the

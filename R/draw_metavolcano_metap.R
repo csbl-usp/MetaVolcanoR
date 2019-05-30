@@ -67,6 +67,8 @@ draw.metavolcano.metap <- function(geo2r_res, pcriteria, foldchangecol, genename
       meta_geo2r <- mutate(meta_geo2r,
                            metafc = apply(select(meta_geo2r, matches(foldchangecol)), 1,
                                           function(...) median(as.numeric(...), na.rm = TRUE)))
+    } else {
+	    stop("Oops! Please check the provided metafc parameter. Try either Mean or Median")    
     }
 
     meta_geo2r <- mutate(meta_geo2r,
@@ -81,7 +83,7 @@ draw.metavolcano.metap <- function(geo2r_res, pcriteria, foldchangecol, genename
     if(!is.null(draw)) {
 
       # --- Drawing volcano ggplotly
-      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, genenamecol, metap=TRUE)
+      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, genenamecol, metap=TRUE, metafc)
     
 	if(draw == "HTML") {
 
@@ -152,7 +154,7 @@ draw.metavolcano.metap <- function(geo2r_res, pcriteria, foldchangecol, genename
       if(!is.null(draw)) {
 	      
 	      # --- Drawing volcano ggplotly
-	      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, geneidcol, metap=TRUE)
+	      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, geneidcol, metap=TRUE, metafc)
 	         
 	if(draw == "HTML") {
 

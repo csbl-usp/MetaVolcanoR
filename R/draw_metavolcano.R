@@ -60,8 +60,8 @@ draw.metavolcano <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, g
     # --- Drawing cDEGs by dataset
     if(!is.null(draw)) {
 
-      # --- Drawing volcano ggplotly
-      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, genenamecol, metap=FALSE)
+      # --- Drawing volcano
+      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr, genenamecol, metap=FALSE, NULL)
     
 	if(draw == "HTML") {
 
@@ -113,8 +113,8 @@ draw.metavolcano <- function(geo2r_res, pcriteria, foldchangecol, genenamecol, g
       # --- Drawing cDEGs by dataset
       if(!is.null(draw)) {
 
-      # --- Drawing volcano ggplotly
-      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr,  geneidcol, metap=FALSE)
+      # --- Drawing volcano
+      gg <- draw.mv.gplotly(meta_geo2r, nstud, metathr,  geneidcol, metap=FALSE, NULL)
     
 	if(draw == "HTML") {
 

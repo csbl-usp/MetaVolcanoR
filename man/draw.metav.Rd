@@ -23,7 +23,7 @@ draw.metav(meta_res, jobname, outputfolder, genecol, metathr, draw)
 This function draws the 'Random Effect Model' MetaVolcano
 }
 \examples{
-draw.metavolcano.metap()
+draw.metav()
 }
 \keyword{'combining}
 \keyword{meta-analysis'}
