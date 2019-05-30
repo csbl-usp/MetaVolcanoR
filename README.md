@@ -13,10 +13,10 @@ Volcano plot reasoning to visualize the gene expression meta-analysis results.
 ## Installation
 ```
 devtools::install_github('csbl-usp/MetaVolcanoR')
-library(MetaVolcanoR)
 ```
 
 ## Usage
+Load required libraries.
 ```
 library(MetaVolcanoR,
 	data.table,
@@ -29,10 +29,11 @@ library(MetaVolcanoR,
 ```
 
 ### Input Data
+
 Users should provide a named list of data.table/data.frame objects containing 
-differential gene expression results. Each object of the list must contain the *gene name*,
-*fold change*, and *p-value*. It is highly recomended to also include the *variance* or the
-confidence intervals of the *fold change*. 
+differential gene expression results. Each object of the list must contain *gene name*,
+*fold change*, and *p-value* variables. It is highly recomended to also include *variance* or the
+confidence intervals of the *fold change* variables. 
 
 Take a look at the demo data. It includes differential gene expression results from five studies. 
 
@@ -43,6 +44,7 @@ head(diffexplist[[1]])
 ```
 
 ### Vote-counting approach
+
 MetaVolcano identifies differential expressed genes (DEG) for each study based on the 
 user-defined *p-value* and *fold change* thresholds. It displays the number of differentially
 expressed and unperturbed genes per study. In addition, it plots the inverse cumulative distribution 
@@ -63,11 +65,11 @@ ndegs <- draw.degbar.cum(geo2r_res=diffexplist,
 			 draw="HTML", 
 			 ncores=1)
 ```
-![DEG by study and cummulative inverse distribution](https://.../.png)
+![DEG by study and cummulative inverse distribution](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/votecounting_pre_MV.png)
 
 MetaVolcano visualizes genes based on the number of studies where genes were identified as differentially
 expressed and the their fold change *sign consistency*. It means that a gene that was differentially expressed 
-in five studies and in three of them it was downregulated will get a *sign consistency* score of 2+(-3)=-1.
+in five studies, from which three of them it was downregulated, will get a *sign consistency* score of *2 + (-3) = -1*.
 Based on the user selection, MetaVolcano can highligths the top *metathr* percentage of consistently perturbed genes.
 
 ```
@@ -85,7 +87,7 @@ meta_degs_vote <- draw.metavolcano(geo2r_res=diffexplist,
 				   draw='HTML',
 				   ncores=ncores)
 ```
-![Vote-counting MetaVolcano](https://.../.png)
+![Vote-counting MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/votecounting_MV.png)
 
 ### Combining-approach 
 
@@ -111,15 +113,15 @@ meta_degs_comb <- draw.metavolcano.metap(geo2r_res=diffexplist,
 					 draw='HTML',
 					 ncores=1)
 ```
-![Combining MetaVolcano](https://.../.png)
+![Combining MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/combining_MV.png)
 
 
 ### Random Effect Model MetaVolcano
 
 The *REM* MetaVolcano summarizes the gene fold change variance of several studies by a random effect model. 
-Consequently, the summary p-value comes from the meta-analysis model and estimate the probability of the summary fold change
+Consequently, the *summary p-value* comes from the meta-analysis model and estimates the probability of the *summary fold-change*
 is equal zero. The *REM* MetaVolcano can highligths the top *metathr* percentage of consistently perturbed genes. This
-perturbed ranking is done by the *topconfects* method. 
+perturbed ranking is done by the *topconfects* (https://doi.org/10.1186/s13059-019-1674-7) method. 
 
 
 ```
@@ -142,9 +144,10 @@ meta_degs_rem <- do.metafor(geo2r_res=diffexplist,
 			    ncores=1)
 ```
 
-![REM MetaVolcano](https://.../.png)
-The *REM* MetaVolcano can also display the forest plot of a given gene based on the REM results.
+![REM MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/REM_MV.png)
 
+&nbsp;
+The *REM* MetaVolcano can also display the forest plot of a given gene based on the REM results.
 
 ```
 draw.forest(gene="MXRA5", 
@@ -158,5 +161,5 @@ draw.forest(gene="MXRA5",
 	    outputfolder=outputfolder,
 	    draw="HTML")
 ```
-![Forest plot](https://.../.png)
+![Forest plot](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/forestplot.png)
 
