@@ -2,10 +2,10 @@
 #'
 #' This function draws a forest plot for a given gene based on the REM 
 #' MetaVolcano result
-#' @param gene query gene to plot
-#' @param genecol name of the variable with genes <string>
 #' @param remres data.table/data.frame output of the do.metafor function
 #'        <data.table/data.frame>
+#' @param gene query gene to plot
+#' @param genecol name of the variable with genes <string>
 #' @param foldchangecol the column name of the foldchange variable <string>
 #' @param llcol left limit of the fold change coinfidence interval variable
 #'        name <string>
@@ -26,11 +26,26 @@ draw_forest <- function(remres, gene="A2M", genecol="Symbol",
 			outputfolder=".", draw="PDF") {
 	remres %>%
 		filter(!!rlang::sym(genecol) == gene) -> sremres
+
+	if(nrow(sremres) == 0) {
+		stop(paste("Oops! Seems that", gene, "is not in the",
+			   "provided remres"))
+	}
 	
 	stds <- unique(unlist(regmatches(colnames(sremres),
 			regexec('_\\d+$', colnames(sremres)))))
 
-	stds <- setNames(stds, studynames)
+	if(is.null(studynames)) {
+		
+	    message("We recomend providing a character vector with the names
+		    of the input studies")
+		    
+	    stds <- setNames(stds, paste('study_', seq_along(stds)))
+
+	} else {
+		
+	    stds <- setNames(stds, studynames)
+	}
 	
 	edat <- Reduce(rbind, lapply(names(stds), function(sn) {
 			std <- dplyr::select(sremres, 

@@ -151,13 +151,13 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 
 	    pdf(paste0(normalizePath(outputfolder),
 		       "/deg_InvCumDist_", jobname,
-		       ".pdf"), width = 7, height = 4)
+		       ".pdf"), width = 4, height = 5)
 	        plot(ff)
 	    dev.off()
 
 	    pdf(paste0(normalizePath(outputfolder),
 		       "/votecounting_metavolcano_", jobname,
-		       ".pdf"), width = 7, height = 4)
+		       ".pdf"), width = 4, height = 5)
 	        plot(mv)
 	    dev.off()
 

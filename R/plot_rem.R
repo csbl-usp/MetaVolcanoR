@@ -21,11 +21,10 @@ plot_rem <- function(meta_diffexp, jobname, outputfolder, genecol, metathr) {
 	dplyr::mutate(Ci.lb = ifelse(`rank` <= irank, randomCi.lb, NA)) %>%
 	dplyr::filter(`rank` <  quantile(meta_diffexp[['rank']], 0.6)) -> meta_res 
 
-
     ggplot(dplyr::arrange(meta_res, abs(randomSummary)),
         aes(x = randomSummary, y = -log10(randomP), color = signcon2, 
 	    text = !!rlang::sym(genecol))) +
-        geom_point() +
+        geom_point(alpha = 0.7, size = 0.6) +
 	scale_color_gradient2(midpoint=0, low="blue", mid="white", 
 			      high="red", na.value = "grey80") +
 	labs(x = "Summary Fold-change",
@@ -35,7 +34,7 @@ plot_rem <- function(meta_diffexp, jobname, outputfolder, genecol, metathr) {
 			   color = signcon2), alpha = 0.6) +
         theme_classic() +
 	theme(panel.border= element_blank()) +
-	theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
+	theme(axis.text.x = element_text(angle = 0, vjust = 0.5)) +
 	theme(axis.line.x = element_line(color = "black", size = 0.6, 
 					 lineend = "square"),
 	      axis.line.y = element_line(color = "black", size = 0.6, 

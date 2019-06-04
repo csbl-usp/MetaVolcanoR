@@ -148,7 +148,7 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 	    # --- Writing PDF visualization
 	    pdf(paste0(normalizePath(outputfolder),
 		       "/RandomEffectModel_MetaVolcano_", jobname,
-		       ".pdf"), width = 7, height = 4)
+		       ".pdf"), width = 7, height = 6)
 	        plot(gg)
 	    dev.off()
 

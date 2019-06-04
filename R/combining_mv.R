@@ -148,7 +148,7 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
 	    # --- Writing PDF visualization
 	    pdf(paste0(normalizePath(outputfolder), 
 	        '/combining_method_MetaVolcano_', jobname, ".pdf"), 
-		width = 7, height = 10)
+		width = 4, height = 5)
 		    plot(gg)
 	    dev.off()
 
