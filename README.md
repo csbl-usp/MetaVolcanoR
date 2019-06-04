@@ -74,7 +74,7 @@ meta_degs_rem <- rem_mv(diffexp=diffexplist,
 			draw='HTML',
 			ncores=ncores)
 ```
-![REM MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/REM_MV.png)
+![REM MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/REM_MV.png)
 
 &nbsp;
 The *REM* MetaVolcano can also display the forest plot of a given gene based 
@@ -93,7 +93,7 @@ draw_forest(remres=meta_degs_rem,
 	    draw="HTML")
 
 ```
-![Forest plot](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/forestplot.png)
+![Forest plot](https://github.com/csbl-usp/MetaVolcanoR/blob/master/forestplot.png)
 
 ### Vote-counting approach
 
@@ -129,7 +129,7 @@ studies, from which three of them it was downregulated, will get a *sign
 consistency* score of *2 + (-3) = -1*. Based on the user selection, MetaVolcano
 can highligths the top *metathr* percentage of consistently perturbed genes.
 
-![Vote-counting MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/votecounting_MV.png)
+![Vote-counting MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/votecounting_MV.png)
 
 ### Combining-approach 
 
@@ -155,5 +155,5 @@ meta_degs_comb <- combining_mv(diffexp=diffexplist,
 			       ncores=ncores)
 
 ```
-![Combining MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/combining_MV.png)
+![Combining MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/combining_MV.png)
 
