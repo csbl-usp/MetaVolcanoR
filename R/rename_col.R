@@ -1,27 +1,22 @@
-#' A column renaming function for GEO2R outputs
+#' A column renaming function merged inputs
 #'
-#' This function rename the probe and gene name columns from the GEO2R outputs
-#' @param geo2r_list list of data.frame/data.table (s) with DE results where lines are genes
-#' @param genenamecol the column name of the gene name variable <string>
-#' @param geneidcol the column name of the gene ID/probe/oligo/transcript variable <string>
-#' @param collaps if probes should be collapsed based on the DE direction <logical>
+#' This function rename the columns of the merged inputs
+#' @param diffexp list of data.frame/data.table (s) with DE results where lines
+#'        are genes
+#' @param genecol the column name of the geneID or gene name variable <string>
 #' @param ncores the number of processors the user wants to use  <integer>
 #' @keywords rename column
 #' @export
 #' @examples
-#' rename.col()
-rename.col <- function(geo2r_list, genenamecol, geneidcol, collaps, ncores) {
-  ns <- names(geo2r_list)
-  geo2rs <- mclapply(seq(geo2r_list), function(nstudy) {
-    geo2r <- geo2r_list[[nstudy]]
-    colnames(geo2r) <- paste(colnames(geo2r), nstudy, sep = "_")
-    if(collaps) {
-      colnames(geo2r)[grep(genenamecol, colnames(geo2r))] <- genenamecol
-    } else {
-      colnames(geo2r)[grep(geneidcol, colnames(geo2r))] <- geneidcol
-    }
-    return(geo2r)
-  }, mc.cores = ncores)
-  names(geo2rs) <- ns
-  return(geo2rs)
+#' rename_col()
+rename_col <- function(diffexp, genecol, ncores) {
+    ns <- names(diffexp)
+    des <- mclapply(seq(diffexp), function(nstudy) {
+        dex <- diffexp[[nstudy]]
+        colnames(dex) <- paste(colnames(dex), nstudy, sep = "_")
+        colnames(dex)[grep(genecol, colnames(dex))] <- genecol
+        return(dex)
+    }, mc.cores = ncores)
+    names(des) <- ns
+    return(des)
 }
