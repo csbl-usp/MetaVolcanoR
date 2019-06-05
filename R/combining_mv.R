@@ -110,7 +110,7 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
 							     na.rm = TRUE)))
     } else if (metafc == "Median") {
         meta_diffexp <- dplyr::mutate(meta_diffexp,
-            metafc = apply(dplyr::select(meta_geo2r,
+            metafc = apply(dplyr::select(meta_diffexp,
 					 dplyr::matches(foldchangecol)), 1,
                                           function(...) median(as.numeric(...),
 							       na.rm = TRUE)))
