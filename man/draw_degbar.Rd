@@ -7,10 +7,12 @@
 draw_degbar(degbar_data)
 }
 \arguments{
-\item{degbar_data}{output of the set.degbar.data() function <data.fram/data.table>}
+\item{degbar_data}{output of the \code{set_degbar_data()} function 
+<data.fram/data.table>}
 }
 \description{
-This function visualize as barplots the number of DEGs across the input studies
+This function visualize as barplots the number of DEGs across the input 
+studies
 }
 \examples{
 draw_degbar()

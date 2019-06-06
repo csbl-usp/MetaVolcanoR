@@ -110,7 +110,7 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
 							     na.rm = TRUE)))
     } else if (metafc == "Median") {
         meta_diffexp <- dplyr::mutate(meta_diffexp,
-            metafc = apply(dplyr::select(meta_geo2r,
+            metafc = apply(dplyr::select(meta_diffexp,
 					 dplyr::matches(foldchangecol)), 1,
                                           function(...) median(as.numeric(...),
 							       na.rm = TRUE)))
@@ -129,37 +129,46 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
 				       '0.Down-regulated',
 				ifelse(idx > quantile(meta_diffexp[['idx']], 
 						      1-(metathr/2)), 
-				       '2.Up-regulated', '1.Unperturbed')))
-    # --- Drawing cDEGs by dataset
-    if(!is.null(draw)) {
+				       '2.Up-regulated', '1.Unperturbed'))) %>%
+    dplyr::arrange(-abs(idx))
 
-        # --- Drawing volcano ggplotly
-        gg <- plot_mv(meta_diffexp, NULL, genecol, TRUE, metafc)
+    # --- Drawing combining MetaVolcano
+    gg <- plot_mv(meta_diffexp, NULL, genecol, TRUE, metafc)
     
-	if(draw == "HTML") {
+    if(draw == "HTML") {
 
-	    # --- Writing html device for offline visualization
-	    htmlwidgets::saveWidget(as_widget(ggplotly(gg)), 
-	        paste0(normalizePath(outputfolder), 
-		'/combining_method_MetaVolcano_', jobname, ".html"))
+        # --- Writing html device for offline visualization
+        htmlwidgets::saveWidget(as_widget(ggplotly(gg)), 
+            paste0(normalizePath(outputfolder), 
+	        '/combining_method_MetaVolcano_', jobname, ".html"))
 
-	} else if(draw == "PDF") {
+    } else if(draw == "PDF") {
 
-	    # --- Writing PDF visualization
-	    pdf(paste0(normalizePath(outputfolder), 
-	        '/combining_method_MetaVolcano_', jobname, ".pdf"), 
-		width = 4, height = 5)
-		    plot(gg)
-	    dev.off()
+        # --- Writing PDF visualization
+        pdf(paste0(normalizePath(outputfolder), 
+            '/combining_method_MetaVolcano_', jobname, ".pdf"), 
+	     width = 4, height = 5)
+	        plot(gg)
+        dev.off()
 
-	} else {
+    } else {
 		
-	    stop("Seems like you did not provide a right 'draw' parameter. 
-		 Try NULL, 'PDF' or 'HTML'")
+        stop("Seems like you did not provide a right 'draw' parameter. 
+              Try NULL, 'PDF' or 'HTML'")
 
-    	}
     }
-
-    # Return genes that were highlighted as cDEG
-    return(filter(meta_diffexp, degcomb != "1.Unperturbed"))
+    
+    # Set combining result
+    icols <- paste(c(genecol, pcriteria, foldchangecol), collapse="|")
+    rcols <- paste(c(genecol, "metafc", "metap", "idx"), collapse="|")
+    result <- new('MetaVolcano', 
+		  input=dplyr::select(meta_diffexp, 
+				      dplyr::matches(icols)),
+		  inputnames=names(diffexp),
+		  metaresult=dplyr::select(meta_diffexp,
+				       dplyr::matches(rcols)),
+		  MetaVolcano=gg,
+		  degfreq=ggplot()
+		  )
+    return(result)	
 }

@@ -6,12 +6,11 @@
 \usage{
 draw_forest(remres, gene = "A2M", genecol = "Symbol",
   foldchangecol = "Log2FC", llcol = "CI.L", rlcol = "CI.R",
-  studynames = NULL, jobname = "MetaVolcano", outputfolder = ".",
-  draw = "PDF")
+  jobname = "MetaVolcano", outputfolder = ".", draw = "PDF")
 }
 \arguments{
-\item{remres}{data.table/data.frame output of the do.metafor function
-<data.table/data.frame>}
+\item{remres}{MetaVolcano object. Output of the rem_mv() function
+<MetaVolcano>}
 
 \item{gene}{query gene to plot}
 
@@ -24,8 +23,6 @@ name <string>}
 
 \item{rlcol}{right limit of the fold change coinfidence interval variable
 name <string>}
-
-\item{studynames}{names of the input studies <character vector>}
 
 \item{jobname}{name of the running job <string>}
 

@@ -1,3 +1,27 @@
+#' @importFrom parallel mclapply
+#' @importFrom topconfects normal_confects
+#' @importFrom methods new 'slot<-' show
+#' @import dplyr
+#' @import plotly  
+
+setOldClass('gg')
+setOldClass('ggplot')
+
+#' An S4 class to represent MetaVolcanoR results
+#' 
+#' @slot input merged diiferential expression inputs \code{data.frame} 
+#' @slot inputnames names of the differential expression inputs \code{character}
+#' @slot metaresult meta-analysis results \code{data.frame}
+#' @slot MetaVolcano plot with meta-analysis results
+#' @slot degfreq supplementary figure of the vote-counting MetaVolcano
+
+setClass('MetaVolcano', slots = list(input='data.frame',
+				     inputnames='character',
+				     metaresult='data.frame',
+				     MetaVolcano='gg',
+				     degfreq='gg'
+				     ))
+
 #' A function to perform the Random Effect Model (REM) MetaVolcano
 #'
 #' This function runs the 'Random Effect Model' MetaVolcano section
@@ -30,7 +54,7 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 		   genenamecol="Symbol", geneidcol=NULL, collaps=FALSE, 
 		   llcol="CI.L", rlcol="CI.R", vcol=NULL, cvar=TRUE, 
 		   metathr=0.01, jobname="MetaVolcano", outputfolder=".", 
-		   draw="HTML", ncores=1) {
+		   draw=NULL, ncores=1) {
 
     # ---- Calculating variance from coifidence interval
     if(cvar == TRUE) {
@@ -118,47 +142,59 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 
     # --- Topconfects ranking
     meta_diffexp <- meta_diffexp %>%
-        mutate(se = (randomCi.ub - randomCi.lb)/3.92) %>% # 95% conf. int.
-        mutate(index = seq(nrow(meta_diffexp)))
+        dplyr::mutate(se = (randomCi.ub - randomCi.lb)/3.92) %>% # 95% conf.int
+        dplyr::mutate(index = seq(nrow(meta_diffexp)))
 
     confects <- normal_confects(meta_diffexp$randomSummary, 
-				  se=meta_diffexp$se, 
-				  fdr=0.05, 
-				  full=TRUE)
+				se=meta_diffexp$se, 
+				fdr=0.05, 
+				full=TRUE)
 
     meta_diffexp <- merge(meta_diffexp, 
 			  dplyr::select(confects$table, c(index, `rank`)), 
 			  by = 'index', all = TRUE)
+    
+    meta_diffexp <- dplyr::arrange(meta_diffexp, `rank`)
    
     # --- Draw REM MetaVolcano
-    if(!is.null(draw)) {
+    gg <- plot_rem(meta_diffexp, jobname, outputfolder, genecol, metathr)
 
-        gg <- plot_rem(meta_diffexp, jobname, outputfolder, genecol, metathr)
-
-	if(draw == "HTML") {
+    if(draw == "HTML") {
         
-	    # --- Writing html device for offline visualization
-	    htmlwidgets::saveWidget(as_widget(ggplotly(gg)), 
-		paste0(normalizePath(outputfolder), 
-		       "/RandomEffectModel_MetaVolcano_", 
-		       jobname, ".html"))
+        # --- Writing html device for offline visualization
+        htmlwidgets::saveWidget(as_widget(ggplotly(gg)), 
+            paste0(normalizePath(outputfolder), 
+	           "/RandomEffectModel_MetaVolcano_", 
+	           jobname, ".html"))
 
-	} else if(draw == "PDF") {
+    } else if(draw == "PDF") {
 
-	    # --- Writing PDF visualization
-	    pdf(paste0(normalizePath(outputfolder),
-		       "/RandomEffectModel_MetaVolcano_", jobname,
-		       ".pdf"), width = 7, height = 6)
-	        plot(gg)
-	    dev.off()
+        # --- Writing PDF visualization
+	pdf(paste0(normalizePath(outputfolder),
+	           "/RandomEffectModel_MetaVolcano_", jobname,
+	           ".pdf"), width = 7, height = 6)
+	     plot(gg)
+	dev.off()
 
-	} else {
+    } else {
 		
-	    stop("Seems like you did not provide a right 'draw' parameter. 
-		 Try NULL, 'PDF' or 'HTML'")
+	stop("Seems like you did not provide a right 'draw' parameter. 
+	      Try NULL, 'PDF' or 'HTML'")
 
-    	}
     }
-    # Return REM results for all genes
-    return(meta_diffexp)
-} 
+    
+    # Set REM result
+    icols <- paste(c(genecol, pcriteria, foldchangecol, llcol, rlcol, vcol), 
+		   collapse="|^")
+    rcols <- paste(c(genecol, "^random", "^het_", "^error$", "^rank$"), collapse="|")
+    result <- new('MetaVolcano', 
+		  input=dplyr::select(meta_diffexp, 
+				      dplyr::matches(icols)),
+		  inputnames=names(diffexp),
+		  metaresult=dplyr::select(meta_diffexp,
+				       dplyr::matches(rcols)),
+		  MetaVolcano=gg,
+		  degfreq=ggplot()
+		  )
+    return(result)
+}

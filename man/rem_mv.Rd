@@ -8,7 +8,7 @@ rem_mv(diffexp = list(), pcriteria = "pvalue",
   foldchangecol = "Log2FC", genenamecol = "Symbol", geneidcol = NULL,
   collaps = FALSE, llcol = "CI.L", rlcol = "CI.R", vcol = NULL,
   cvar = TRUE, metathr = 0.01, jobname = "MetaVolcano",
-  outputfolder = ".", draw = "HTML", ncores = 1)
+  outputfolder = ".", draw = NULL, ncores = 1)
 }
 \arguments{
 \item{diffexp}{list of data.frame/data.table (s) with DE results where lines
