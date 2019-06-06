@@ -148,7 +148,7 @@ head(meta_degs_vote@metaresult, 3)
 meta_degs_vote@degfreq
 
 ```
-![DEG by study and cummulative inverse distribution](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/deg_bt_study.png)
+![DEG by study and cummulative inverse distribution](https://github.com/csbl-usp/MetaVolcanoR/blob/master/deg_bt_study.png)
 
 MetaVolcano visualizes genes based on the number of studies where genes were
 identified as differentially expressed and the their fold change *sign 
