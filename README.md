@@ -23,7 +23,10 @@ Load required libraries.
 library(MetaVolcanoR,
 	data.table,
 	dplyr,
+	rlang,
 	parallel,
+	ggplot2,
+	cowplot,
 	plotly,
 	metap,
 	metafor,
@@ -69,10 +72,14 @@ meta_degs_rem <- rem_mv(diffexp=diffexplist,
 			vcol=NULL, 
 			cvar=TRUE,
 			metathr=0.01,
-			jobname=jobname,
-			outputfolder=outputfolder, 
+			jobname="MetaVolcano",
+			outputfolder=".", 
 			draw='HTML',
-			ncores=ncores)
+			ncores=5)
+
+head(meta_degs_rem@metaresult, 3)
+
+meta_degs_rem@MetaVolcano
 ```
 ![REM MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/REM_MV.png)
 
@@ -93,7 +100,24 @@ draw_forest(remres=meta_degs_rem,
 	    draw="HTML")
 
 ```
-![Forest plot](https://github.com/csbl-usp/MetaVolcanoR/blob/master/forestplot.png)
+![Forest plot](https://github.com/csbl-usp/MetaVolcanoR/blob/master/MMP9_forestplot.png)
+
+
+```
+draw_forest(remres=meta_degs_rem,
+	    gene="COL6A6",
+	    genecol="Symbol", 
+	    foldchangecol="Log2FC",
+	    llcol="CI.L", 
+	    rlcol="CI.R",
+	    studynames=names(diffexplist),
+	    jobname=jobname,
+	    outputfolder=outputfolder,
+	    draw="HTML")
+
+```
+![Forest plot](https://github.com/csbl-usp/MetaVolcanoR/blob/master/COL6A6_forestplot.png)
+
 
 ### Vote-counting approach
 
@@ -109,18 +133,22 @@ meta_degs_vote <- votecount_mv(diffexp=diffexplist,
 			       pcriteria='pvalue',
 			       foldchangecol='Log2FC',
 			       genenamecol='Symbol',
-			       geneidcol='Symbol',
+			       geneidcol=NULL,
 			       pvalue=0.05,
 			       foldchange=0, 
 			       metathr=0.01,
 			       collaps=FALSE,
-			       jobname=jobname, 
-			       outputfolder=outputfolder,
+			       jobname="MetaVolcano", 
+			       outputfolder=".",
 			       draw='HTML',
-			       ncores=ncores)
+			       ncores=4)
+
+head(meta_degs_vote@metaresult, 3)
+
+meta_degs_vote@degfreq
 
 ```
-![DEG by study and cummulative inverse distribution](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/votecounting_pre_MV.png)
+![DEG by study and cummulative inverse distribution](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/deg_bt_study.png)
 
 MetaVolcano visualizes genes based on the number of studies where genes were
 identified as differentially expressed and the their fold change *sign 
@@ -128,6 +156,10 @@ consistency*. It means that a gene that was differentially expressed in five
 studies, from which three of them it was downregulated, will get a *sign 
 consistency* score of *2 + (-3) = -1*. Based on the user selection, MetaVolcano
 can highligths the top *metathr* percentage of consistently perturbed genes.
+
+```
+meta_degs_vote@MetaVolcano
+```
 
 ![Vote-counting MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/votecounting_MV.png)
 
@@ -145,14 +177,18 @@ meta_degs_comb <- combining_mv(diffexp=diffexplist,
 			       pcriteria='pvalue', 
 			       foldchangecol='Log2FC',
 			       genenamecol='Symbol',
-			       geneidcol='Symbol',
+			       geneidcol=NULL,
 			       metafc='Mean',
 			       metathr=0.01, 
 			       collaps=TRUE,
-			       jobname=jobname,
-			       outputfolder=outputfolder,
+			       jobname="MetaVolcano",
+			       outputfolder=".",
 			       draw='HTML',
-			       ncores=ncores)
+			       ncores=4)
+
+head(meta_degs_comb@metaresult, 3)
+
+meta_degs_comb@MetaVolcano
 
 ```
 ![Combining MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/combining_MV.png)

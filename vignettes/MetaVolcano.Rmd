@@ -64,8 +64,8 @@ reasoning to visualize the gene expression meta-analysis results.
 ```{r}
 devtools::install(path="~/MetaVolcanoR", subdir = NULL,
 		  quite = FALSE, force = TRUE)
-```
 
+```
 
 ## Load library
 
@@ -121,6 +121,7 @@ meta_degs_rem <- rem_mv(diffexp=diffexplist,
 			ncores=5)
 
 head(meta_degs_rem@metaresult, 3)
+
 meta_degs_rem@MetaVolcano
 
 draw_forest(remres=meta_degs_rem,
@@ -132,6 +133,17 @@ draw_forest(remres=meta_degs_rem,
 	    jobname="MetaVolcano",
 	    outputfolder=".",
 	    draw="HTML")
+
+draw_forest(remres=meta_degs_rem,
+	    gene="COL6A6",
+	    genecol="Symbol", 
+	    foldchangecol="Log2FC",
+	    llcol="CI.L", 
+	    rlcol="CI.R",
+	    jobname="MetaVolcano",
+	    outputfolder=".",
+	    draw="HTML")
+
 ```
 
 &nbsp;
