@@ -20,7 +20,7 @@ plot_mv <- function(meta_diffexp, nstud, genecol, comb, metafc) {
 		# Drawing combining MetaVolcano
 		g <- ggplot(meta_diffexp, aes(x = metafc, y = -log10(metap), 
 					      text = !!rlang::sym(genecol))) +
-        		geom_point(aes(color = degcomb) , alpha = 0.7, 
+        		geom_point(aes(color = degcomb), 
 				   size = 0.5) +
         		labs(x = paste(metafc, "Fold Change"),
         		     y = "-log10(Fisher's(p values))")
@@ -31,7 +31,7 @@ plot_mv <- function(meta_diffexp, nstud, genecol, comb, metafc) {
 		g <- ggplot(meta_diffexp, aes(x = ddeg, y = ndeg, 
 					      text = !!rlang::sym(genecol))) +
 			geom_jitter(aes(color = degvcount), cex = 0.5, 
-				   alpha = 0.7, width = 0.45, height = 0.45) +
+				    width = 0.45, height = 0.45) +
 			scale_x_discrete(limits = -nstud:nstud) +
 			labs(x = "Sign consistency",
 			     y = "Number of times as differentially expressed")
@@ -47,5 +47,3 @@ plot_mv <- function(meta_diffexp, nstud, genecol, comb, metafc) {
 		theme(legend.position = "none") +
 		scale_color_manual(values=c("#377EB8", "grey", "#E41A1C"))
 }
-
-

@@ -1,5 +1,7 @@
 ---
 title: 'MetaVolcanoR: Differential expression meta-analysis tool'
+author: Cesar Prada
+date: June 5, 2019
 output:
   html_document:
     toc: yes
@@ -7,7 +9,7 @@ output:
     toc: yes
   prettydoc::html_pretty:
     highlight: github
-    theme: cayman
+    theme: lumen
     toc: yes
 vignette: > 
   %\VignetteIndexEntry{MetaVolcanoR: Differential expression meta-analysis tool}
@@ -60,21 +62,15 @@ reasoning to visualize the gene expression meta-analysis results.
 ## Installation
 
 ```{r}
-devtools::install_github('csbl-usp/MetaVolcanoR')
+devtools::install(path="~/MetaVolcanoR", subdir = NULL,
+		  quite = FALSE, force = TRUE)
 ```
 
 
-## Required libraries.
+## Load library
 
 ```{r}
 library(MetaVolcanoR)
-library(data.table)
-library(dplyr)
-library(parallel)
-library(plotly)
-library(metap)
-library(metafor)
-library(topconfects)
 ```
 
 ## Input Data
@@ -108,7 +104,6 @@ is done by the *topconfects* (https://doi.org/10.1186/s13059-019-1674-7) method.
 
 
 ```{r}
-library(parallel)
 meta_degs_rem <- rem_mv(diffexp=diffexplist,
 			pcriteria="pvalue",
 			foldchangecol='Log2FC', 
@@ -125,29 +120,24 @@ meta_degs_rem <- rem_mv(diffexp=diffexplist,
 			draw='HTML',
 			ncores=5)
 
-head(meta_degs_rem, 3)
-```
-![REM MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/REM_MV.png)
+head(meta_degs_rem@metaresult, 3)
+meta_degs_rem@MetaVolcano
 
-
-&nbsp;
-The *REM* MetaVolcano can also display the forest plot of a given gene based 
-on the REM results.
-
-```{r}
 draw_forest(remres=meta_degs_rem,
 	    gene="MMP9",
 	    genecol="Symbol", 
 	    foldchangecol="Log2FC",
 	    llcol="CI.L", 
 	    rlcol="CI.R",
-	    studynames=names(diffexplist),
 	    jobname="MetaVolcano",
 	    outputfolder=".",
 	    draw="HTML")
-
 ```
-![Forest plot](https://github.com/csbl-usp/MetaVolcanoR/blob/master/forestplot.png)
+
+&nbsp;
+The *REM* MetaVolcano can also display the forest plot of a given gene based 
+on the REM results.
+
 
 ## Vote-counting approach
 
@@ -163,7 +153,7 @@ meta_degs_vote <- votecount_mv(diffexp=diffexplist,
 			       pcriteria='pvalue',
 			       foldchangecol='Log2FC',
 			       genenamecol='Symbol',
-			       geneidcol='Symbol',
+			       geneidcol=NULL,
 			       pvalue=0.05,
 			       foldchange=0, 
 			       metathr=0.01,
@@ -171,11 +161,11 @@ meta_degs_vote <- votecount_mv(diffexp=diffexplist,
 			       jobname="MetaVolcano", 
 			       outputfolder=".",
 			       draw='HTML',
-			       ncores=5)
+			       ncores=4)
 
-head(meta_degs_vote, 3)
+head(meta_degs_vote@metaresult, 3)
+meta_degs_vote@degfreq
 ```
-![DEG by study and cummulative inverse distribution](https://github.com/csbl-usp/MetaVolcanoR/blob/dev/votecounting_pre_MV.png)
 
 MetaVolcano visualizes genes based on the number of studies where genes were
 identified as differentially expressed and the their fold change *sign 
@@ -184,7 +174,9 @@ studies, from which three of them it was downregulated, will get a *sign
 consistency* score of *2 + (-3) = -1*. Based on the user selection, MetaVolcano
 can highligths the top *metathr* percentage of consistently perturbed genes.
 
-![Vote-counting MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/votecounting_MV.png)
+```{r}
+meta_degs_vote@MetaVolcano
+```
 
 ## Combining-approach 
 
@@ -200,15 +192,15 @@ meta_degs_comb <- combining_mv(diffexp=diffexplist,
 			       pcriteria='pvalue', 
 			       foldchangecol='Log2FC',
 			       genenamecol='Symbol',
-			       geneidcol='Symbol',
+			       geneidcol=NULL,
 			       metafc='Mean',
 			       metathr=0.01, 
 			       collaps=TRUE,
 			       jobname="MetaVolcano",
 			       outputfolder=".",
 			       draw='HTML',
-			       ncores=5)
-head(meta_degs_comb, 3)
+			       ncores=4)
+head(meta_degs_comb@metaresult, 3)
+meta_degs_comb@MetaVolcano
 ```
-![Combining MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/combining_MV.png)
 

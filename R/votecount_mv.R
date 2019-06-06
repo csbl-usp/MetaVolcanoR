@@ -1,3 +1,11 @@
+#' @importFrom parallel mclapply
+#' @importFrom cowplot plot_grid
+#' @importFrom plotly ggplotly
+#' @importFrom plotly as_widget
+#' @import dplyr
+#' @import ggplot2
+NULL
+
 #' A function to draw the 'Vote-counting meta-analysis' MetaVolcano
 #'
 #' This function draws the vote-counting meta-analysis MetaVolcano
@@ -118,58 +126,64 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 				       '0.Down-regulated',
 				ifelse(idx > quantile(meta_diffexp[['idx']], 
 						      1-(metathr/2)), 
-				       '2.Up-regulated', '1.Unperturbed')))
+				       '2.Up-regulated', '1.Unperturbed'))) %>%
+        dplyr::arrange(-abs(idx))
 
     # --- Drawing DEGs by dataset
-    if(!is.null(draw)) {
+    gg <- draw_degbar(bardat)
+    ff <- draw_cum_freq(meta_diffexp, nstud)
+    gf <- plot_grid(gg, ff, align="h")
+    mv <- plot_mv(meta_diffexp, nstud, genecol, FALSE, NULL)
 
-	gg <- draw_degbar(bardat)
-	ff <- draw_cum_freq(meta_diffexp, nstud)
-        mv <- plot_mv(meta_diffexp, nstud, genecol, FALSE, NULL)
-
-	if(draw == "HTML") {
+    if(draw == "HTML") {
         
-	    # --- Writing html device for offline visualization
-	    htmlwidgets::saveWidget(as_widget(ggplotly(gg)), 
-		paste0(normalizePath(outputfolder), "/deg_by_study_", 
-		       jobname, ".html"))
-	    htmlwidgets::saveWidget(as_widget(ggplotly(ff)), 
+    # --- Writing html device for offline visualization
+    htmlwidgets::saveWidget(as_widget(ggplotly(gg)), 
+	paste0(normalizePath(outputfolder), "/deg_by_study_", 
+	       jobname, ".html"))
+    htmlwidgets::saveWidget(as_widget(ggplotly(ff)), 
 		paste0(normalizePath(outputfolder), "/deg_InvCumDist_", 
 		       jobname, ".html"))
-	    htmlwidgets::saveWidget(as_widget(ggplotly(mv)), 
-		paste0(normalizePath(outputfolder), 
-		       '/votecounting_metavolcano_', jobname, ".html"))
+    htmlwidgets::saveWidget(as_widget(ggplotly(mv)), 
+	paste0(normalizePath(outputfolder), 
+	       '/votecounting_metavolcano_', jobname, ".html"))
 
-	} else if(draw == "PDF") {
+    } else if(draw == "PDF") {
 
-	    # --- Writing PDF visualization
-	    pdf(paste0(normalizePath(outputfolder),
-		       "/deg_by_study_", jobname,
-		       ".pdf"), width = 7, height = 4)
-	        plot(gg)
-	    dev.off()
+    # --- Writing PDF visualization
+    pdf(paste0(normalizePath(outputfolder),
+	       "/deg_by_study_", jobname,
+	       ".pdf"), width = 7, height = 4)
+        plot(gf)
+    dev.off()
 
-	    pdf(paste0(normalizePath(outputfolder),
-		       "/deg_InvCumDist_", jobname,
-		       ".pdf"), width = 4, height = 5)
-	        plot(ff)
-	    dev.off()
-
-	    pdf(paste0(normalizePath(outputfolder),
-		       "/votecounting_metavolcano_", jobname,
-		       ".pdf"), width = 4, height = 5)
-	        plot(mv)
-	    dev.off()
-
+    pdf(paste0(normalizePath(outputfolder),
+	       "/votecounting_metavolcano_", jobname,
+	       ".pdf"), width = 4, height = 5)
+        plot(mv)
+    dev.off()
 		
-	} else {
+    } else {
 		
-	    stop("Seems like you did not provide a right 'draw' parameter. 
-		 Try NULL, 'PDF' or 'HTML'")
+        stop("Seems like you did not provide a right 'draw' parameter. 
+              Try NULL, 'PDF' or 'HTML'")
 
-    	}
     }
+    
        
     # Return genes that were DE in at least one study
-    return(dplyr::filter(meta_diffexp, ndeg != 0))
+    # Set vote-counting result
+    
+    icols <- paste(c(genecol, pcriteria, foldchangecol), collapse="|")
+    rcols <- paste(c(genecol, "deg_", "ddeg", "ndeg", "idx"), collapse="|")
+    result <- new('MetaVolcano', 
+		  input=dplyr::select(meta_diffexp, 
+				      dplyr::matches(icols)),
+		  inputnames=names(diffexp),
+		  metaresult=dplyr::select(meta_diffexp,
+				       dplyr::matches(rcols)),
+		  MetaVolcano=mv,
+		  degfreq=plot_grid(gf)
+		  )
+    return(result)
 }

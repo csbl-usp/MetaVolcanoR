@@ -9,9 +9,6 @@
 #' @examples
 #' remodel()
 remodel <- function(gene, foldchangecol, vcol) {
-    if(is.null(vcol)) {
-       vcol <- 'vi' 
-    }
 
     fc <- gene[grep(foldchangecol, names(gene))]
     fc <- as.numeric(fc[which(!is.na(fc))])

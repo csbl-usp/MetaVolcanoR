@@ -13,7 +13,6 @@
 #' @examples
 #' plot_rem()
 plot_rem <- function(meta_diffexp, jobname, outputfolder, genecol, metathr) {
-    print(head(meta_diffexp))
     irank <- quantile(meta_diffexp[['rank']], metathr)
     meta_diffexp %>%
         dplyr::mutate(signcon2 = ifelse(`rank` <= irank, signcon, NA)) %>%
@@ -24,14 +23,14 @@ plot_rem <- function(meta_diffexp, jobname, outputfolder, genecol, metathr) {
     ggplot(dplyr::arrange(meta_res, abs(randomSummary)),
         aes(x = randomSummary, y = -log10(randomP), color = signcon2, 
 	    text = !!rlang::sym(genecol))) +
-        geom_point(alpha = 0.7, size = 0.6) +
+        geom_point(size = 0.6) +
 	scale_color_gradient2(midpoint=0, low="blue", mid="white", 
 			      high="red", na.value = "grey80") +
 	labs(x = "Summary Fold-change",
 	     y = "-log10(Summary p-value)",
 	     color = "Sign consistency") +
         geom_errorbarh(aes(xmax = Ci.ub, xmin = Ci.lb, 
-			   color = signcon2), alpha = 0.6) +
+			   color = signcon2)) +
         theme_classic() +
 	theme(panel.border= element_blank()) +
 	theme(axis.text.x = element_text(angle = 0, vjust = 0.5)) +

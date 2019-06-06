@@ -10,10 +10,11 @@
 #' draw_cum_freq()
 draw_cum_freq <- function(meta_diffexp, nstud) {
     ggplot(cum_freq_data(meta_diffexp, nstud), aes(x = ndatasets, y = DEGs)) +
-        geom_line(color = "lightblue", size = 2, alpha = 0.7) +
+        geom_line(color = "#525252", size = 1) +
+	geom_point(color = "#252525") +
         theme_classic() +
         theme(panel.border= element_blank()) +
-        theme(axis.text.x = element_text(angle=0, hjust = 1)) +
+        theme(axis.text.x = element_text(angle=0, vjust = 0.5)) +
         theme(axis.line.x = element_line(color="black", size = 0.6, 
 					 lineend = "square"),
               axis.line.y = element_line(color="black", size = 0.6, 
