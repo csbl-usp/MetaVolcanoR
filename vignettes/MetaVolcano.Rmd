@@ -62,9 +62,7 @@ reasoning to visualize the gene expression meta-analysis results.
 ## Installation
 
 ```{r}
-devtools::install(path="~/MetaVolcanoR", subdir = NULL,
-		  quite = FALSE, force = TRUE)
-
+devtools::install_github('csbl-usp/MetaVolcanoR')
 ```
 
 ## Load library
