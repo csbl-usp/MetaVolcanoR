@@ -11,11 +11,11 @@
 #' remodel()
 remodel <- function(gene, foldchangecol, vcol) {
 
-    fc <- gene[grep(foldchangecol, names(gene))]
-    fc <- as.numeric(fc[which(!is.na(fc))])
-    v <- gene[grep(vcol, names(gene))]
-    v <- as.numeric(v[which(!is.na(v))])
-  
+    fc <- as.numeric(dplyr::select(gene, matches(foldchangecol)))
+    fc <- fc[which(!is.na(fc))]
+    v <- as.numeric(dplyr::select(gene, matches(vcol)))
+    v <- v[which(!is.na(v))]
+    
     # compute random effect model for the fold-changes and its variace
     random <- tryCatch({ metafor::rma(fc, v, method="REML") }, 
                      error = function(e){ return(e) })
