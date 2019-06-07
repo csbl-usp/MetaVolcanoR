@@ -21,7 +21,7 @@ remodel <- function(gene, foldchangecol, vcol) {
                      error = function(e){ return(e) })
 
     # Increase iterations in case Fisher scoring algorithm doesn't converge
-    if(any(is(random) == 'error')) {
+    if(any(class(random) == 'error')) {
         random <- tryCatch({metafor::rma(fc, v, method="REML", 
                                       control = list(maxiter = 2000, 
 						     stepadj = 0.5))},
@@ -29,7 +29,7 @@ remodel <- function(gene, foldchangecol, vcol) {
     }
 
     # If metafor is still returning error, give up and register line for gene
-    if(any(is(random) == 'error')) {
+    if(any(class(random) == 'error')) {
         df_res <- data.frame(signcon = length(which(fc>0))-length(which(fc<0)),
 			 ntimes = length(fc != 0),
                          randomSummary = NA, 
