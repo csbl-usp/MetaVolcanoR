@@ -16,6 +16,9 @@ name <string>}
 \item{rlcol}{column name of the fold change coinfidence interval left limit
 name <string>}
 }
+\value{
+\code{data.table/data.frame} with a new \code{vi} variable
+}
 \description{
 This function takes the limits of a confidence interval (95%) 
 a calculate a variance

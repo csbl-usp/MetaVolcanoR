@@ -10,6 +10,9 @@ draw_degbar(degbar_data)
 \item{degbar_data}{output of the \code{set_degbar_data()} function 
 <data.fram/data.table>}
 }
+\value{
+\code{ggplot2} object
+}
 \description{
 This function visualize as barplots the number of DEGs across the input 
 studies

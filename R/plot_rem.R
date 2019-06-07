@@ -9,6 +9,7 @@
 #'        <string>
 #' @param metathr top percentage of perturbed genes to be highlighted <double>
 #' @keywords write REM metavolcano
+#' @return \code{ggplot2} object
 #' @export
 #' @examples
 #' plot_rem()

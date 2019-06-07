@@ -19,6 +19,7 @@
 #' @param draw wheather or not to draw the .pdf or .html visualization 
 #'        <c(NULL, "PDF", "HTML")>
 #' @param ncores the number of processors the user wants to use <integer>
+#' @return \code{MetaVolcano} object
 #' @keywords write 'combining meta-analysis' metavolcano
 #' @export
 #' @examples

@@ -47,6 +47,7 @@ setClass('MetaVolcano', slots = list(input='data.frame',
 #' @param draw wheather or not to draw the .html visualization <logical>
 #' @param ncores the number of processors the user wants to use <integer>
 #' @keywords write 'combining meta-analysis' metavolcano
+#' @return MetaVolcano object
 #' @export
 #' @examples
 #' rem_mv()

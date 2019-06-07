@@ -8,6 +8,7 @@
 #' @param pv pvalue threshold <double>
 #' @param fc foldchange threshold <double>
 #' @keywords DEG definition
+#' @return \code{data.table/data.frame} with a new deg variable
 #' @export
 #' @examples
 #' deg_def()

@@ -13,6 +13,9 @@ collapse_deg(diffexp, genenamecol, pcriteria)
 
 \item{pcriteria}{the column name of the pvalue criteria to consider <string>}
 }
+\value{
+\code{data.table} differential expression results with unique gene names
+}
 \description{
 This function to remove redundant geneIDs standing for the same gene name
 }

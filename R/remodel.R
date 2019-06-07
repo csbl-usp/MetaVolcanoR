@@ -1,11 +1,12 @@
 #' A function to model foldchange variance along several studies  
-#'
+
 #' This function calculate the REM-summary fold-change
 #' @param gene named vector with foldchanges and variances <vector<
 #' @param foldchangecol the column name of the foldchange variable <string>
 #' @param vcol name of the fold change variance variable <string>
 #' @keywords REM summary
-#' @export
+#' @return \code{data.frame} with REM results for a gene
+#' @export 
 #' @examples
 #' remodel()
 remodel <- function(gene, foldchangecol, vcol) {
@@ -20,7 +21,7 @@ remodel <- function(gene, foldchangecol, vcol) {
                      error = function(e){ return(e) })
 
     # Increase iterations in case Fisher scoring algorithm doesn't converge
-    if(any(class(random) == 'error')) {
+    if(any(is(random) == 'error')) {
         random <- tryCatch({metafor::rma(fc, v, method="REML", 
                                       control = list(maxiter = 2000, 
 						     stepadj = 0.5))},
@@ -28,7 +29,7 @@ remodel <- function(gene, foldchangecol, vcol) {
     }
 
     # If metafor is still returning error, give up and register line for gene
-    if(any(class(random) == 'error')) {
+    if(any(is(random) == 'error')) {
         df_res <- data.frame(signcon = length(which(fc>0))-length(which(fc<0)),
 			 ntimes = length(fc != 0),
                          randomSummary = NA, 

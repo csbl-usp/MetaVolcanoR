@@ -6,6 +6,7 @@
 #' @param genecol the column name of the geneID or gene name variable <string>
 #' @param ncores the number of processors the user wants to use  <integer>
 #' @keywords rename column
+#' @return \code{data.tabledata.frame} with new colnames
 #' @export
 #' @examples
 #' rename_col()

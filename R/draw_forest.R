@@ -16,6 +16,7 @@
 #' @param draw either 'PDF' or 'HTML' to save metaolcano as .pdf or .html
 #'        respectively <string>
 #' @keywords draw forest plot for a given gene
+#' @return \code{ggplot2} object
 #' @export
 #' @examples
 #' draw_forest()

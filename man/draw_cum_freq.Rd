@@ -11,6 +11,9 @@ draw_cum_freq(meta_diffexp, nstud)
 
 \item{nstud}{the number of inputed GEO2R outputs  <integer>}
 }
+\value{
+\code{ggplot2} object
+}
 \description{
 This function create a ggplot object with the inverse-cummulative
 DEG distribution

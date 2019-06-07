@@ -5,6 +5,7 @@
 #' @param genenamecol the column name of the gene name variable <string>
 #' @param pcriteria the column name of the pvalue criteria to consider <string>
 #' @keywords Probe collapse
+#' @return \code{data.table} differential expression results with unique gene names
 #' @export
 #' @examples
 #' collapse_deg()

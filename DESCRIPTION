@@ -24,6 +24,8 @@ Imports:
     metap,
     rlang,
     topconfects
+Suggests:
+    prettydoc
 License: GPL3
 Encoding: UTF-8
 biocViews: GeneExpression, DifferentialExpression, Transcriptomics, mRNAMicroarray, RNASeq

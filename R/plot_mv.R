@@ -11,6 +11,7 @@
 #' @param metafc method for summarizing gene fold-changes across studies 
 #'        c("Mean", "Median") <string>
 #' @keywords draw metavolcano
+#' @return \code{ggplot2} object
 #' @export
 #' @examples
 #' plot_mv()
