@@ -5,6 +5,7 @@
 #' @param meta_diffexp data.frame/data.table containing all the input studies
 #' @param nstud the number of inputed GEO2R outputs  <integer>
 #' @keywords format data inverse-cummulative DEG distribution
+#' @return \code{data.frame} inverse cummulative distribution
 #' @export
 #' @examples
 #' cum_freq_data()

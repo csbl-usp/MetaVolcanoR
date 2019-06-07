@@ -19,6 +19,9 @@ rem_mv() <data.table/data.frame>}
 
 \item{metathr}{top percentage of perturbed genes to be highlighted <double>}
 }
+\value{
+\code{ggplot2} object
+}
 \description{
 This function plots the REM MetaVolcano using ggplot2
 }

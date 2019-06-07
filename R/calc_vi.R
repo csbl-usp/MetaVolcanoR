@@ -9,6 +9,7 @@
 #' @param rlcol column name of the fold change coinfidence interval left limit
 #'        name <string>
 #' @keywords variance from confidence interval
+#' @return \code{data.table/data.frame} with a new \code{vi} variable
 #' @export
 #' @examples
 #' calc_vi()

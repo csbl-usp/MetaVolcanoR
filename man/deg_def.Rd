@@ -17,6 +17,9 @@ deg_def(diffexp, pcriteria, foldchangecol, pv, fc)
 
 \item{fc}{foldchange threshold <double>}
 }
+\value{
+\code{data.table/data.frame} with a new deg variable
+}
 \description{
 This function creates a new variable indicating DEGs as -1, 0, 1 based on the
 user-defined foldchange and p-value criteria

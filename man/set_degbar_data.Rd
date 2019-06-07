@@ -9,6 +9,9 @@ set_degbar_data(diffexp)
 \arguments{
 \item{diffexp}{list of data.frame/data.table (s) output of the deg_def() function <list>}
 }
+\value{
+\code{data.frame} DEG by input
+}
 \description{
 This function summarize the variable deg from the deg_def() function to visualize as barplots the number of DEGs per inputed study
 }

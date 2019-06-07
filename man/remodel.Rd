@@ -2,7 +2,8 @@
 % Please edit documentation in R/remodel.R
 \name{remodel}
 \alias{remodel}
-\title{A function to model foldchange variance along several studies}
+\title{A function to model foldchange variance along several studies  
+This function calculate the REM-summary fold-change}
 \usage{
 remodel(gene, foldchangecol, vcol)
 }
@@ -13,7 +14,11 @@ remodel(gene, foldchangecol, vcol)
 
 \item{vcol}{name of the fold change variance variable <string>}
 }
+\value{
+\code{data.frame} with REM results for a gene
+}
 \description{
+A function to model foldchange variance along several studies  
 This function calculate the REM-summary fold-change
 }
 \examples{

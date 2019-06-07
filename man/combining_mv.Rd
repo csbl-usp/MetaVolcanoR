@@ -41,6 +41,9 @@ c("Mean", "Median") <string>}
 
 \item{ncores}{the number of processors the user wants to use <integer>}
 }
+\value{
+\code{MetaVolcano} object
+}
 \description{
 This function draws the 'Combining meta-analysis' MetaVolcano
 }

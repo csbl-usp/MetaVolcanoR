@@ -42,6 +42,9 @@ direction <logical>}
 
 \item{ncores}{the number of processors the user wants to use <integer>}
 }
+\value{
+MetaVolcano object
+}
 \description{
 This function draws the vote-counting meta-analysis MetaVolcano
 }

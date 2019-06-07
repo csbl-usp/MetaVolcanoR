@@ -11,6 +11,9 @@ cum_freq_data(meta_diffexp, nstud)
 
 \item{nstud}{the number of inputed GEO2R outputs  <integer>}
 }
+\value{
+\code{data.frame} inverse cummulative distribution
+}
 \description{
 This function counts how many genes consistly appears as DE along the 
 input studies

@@ -14,6 +14,9 @@ are genes}
 
 \item{ncores}{the number of processors the user wants to use  <integer>}
 }
+\value{
+\code{data.tabledata.frame} with new colnames
+}
 \description{
 This function rename the columns of the merged inputs
 }

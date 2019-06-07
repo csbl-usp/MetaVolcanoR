@@ -21,6 +21,9 @@ file <string>}
 \item{metafc}{method for summarizing gene fold-changes across studies 
 c("Mean", "Median") <string>}
 }
+\value{
+\code{ggplot2} object
+}
 \description{
 This function plots either the combining- or the vote-counting- MetaVolcanos
 }

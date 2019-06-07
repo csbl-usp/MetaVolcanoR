@@ -47,6 +47,9 @@ interval limits <logical>}
 
 \item{ncores}{the number of processors the user wants to use <integer>}
 }
+\value{
+MetaVolcano object
+}
 \description{
 This function runs the 'Random Effect Model' MetaVolcano section
 }

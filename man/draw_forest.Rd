@@ -31,6 +31,9 @@ name <string>}
 \item{draw}{either 'PDF' or 'HTML' to save metaolcano as .pdf or .html
 respectively <string>}
 }
+\value{
+\code{ggplot2} object
+}
 \description{
 This function draws a forest plot for a given gene based on the REM 
 MetaVolcano result

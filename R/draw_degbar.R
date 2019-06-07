@@ -5,6 +5,7 @@
 #' @param degbar_data output of the \code{set_degbar_data()} function 
 #'        <data.fram/data.table>
 #' @keywords draw DEG barplot
+#' @return \code{ggplot2} object
 #' @export
 #' @examples
 #' draw_degbar()

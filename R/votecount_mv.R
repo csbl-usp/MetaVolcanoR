@@ -28,6 +28,7 @@ NULL
 #'        <c(NULL, 'PDF', 'HTML')>
 #' @param ncores the number of processors the user wants to use <integer>
 #' @keywords write 'vote-counting meta-analysis' metavolcano
+#' @return MetaVolcano object
 #' @export
 #' @examples
 #' votecount_mv()
