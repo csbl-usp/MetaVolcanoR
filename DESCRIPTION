@@ -5,18 +5,20 @@ Version: 0.99.0
 Authors@R: c(person("Cesar", "Prada", email = "cesar.prada@usp.br", 
     role = c("aut", "cre")), person("Helder", "Nakaya", email = "hnkaya@usp.br",
     role = c("aut", "ths")))
-Maintainer: Cesar Prada <cesar.prada@usp.br>    
 Description: This package combines differential gene expression results. 
     It implements three strategies to summarize gene expression activities from 
     different studies. i) a naive vote-counting approach, ii) a combining-approach
     and iii) Random Effects Model (REM) approach. In all cases, MetaVolcano
     exploits the Volcano plot reasoning to visualize the gene expression
     meta-analysis results.
-Depends: R (>= 3.5.1)
+Depends: R (>= 3.6.0)
 Imports:
+    methods,
     data.table,
     dplyr,
     plotly,
+    ggplot2,
+    cowplot,
     parallel,
     metafor,
     metap,
@@ -24,7 +26,7 @@ Imports:
     topconfects
 License: GPL3
 Encoding: UTF-8
-biocViews: GeneExpression, Transcriptomics, mRNAMicroarray, RNASeq
+biocViews: GeneExpression, DifferentialExpression, Transcriptomics, mRNAMicroarray, RNASeq
 LazyData: true
 roxygennote: 6.1.1.9000
 VignetteBuilder: knitr
