@@ -26,7 +26,7 @@ Imports:
     topconfects
 Suggests:
     knitr
-License: GPL3
+License: GPL-3
 Encoding: UTF-8
 biocViews: GeneExpression, DifferentialExpression, Transcriptomics, mRNAMicroarray, RNASeq
 LazyData: true
