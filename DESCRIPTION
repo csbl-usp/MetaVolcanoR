@@ -23,7 +23,10 @@ Imports:
     metafor,
     metap,
     rlang,
-    topconfects
+    topconfects,
+    grDevices,
+    graphics,
+    stats
 Suggests:
     knitr
 License: GPL-3
