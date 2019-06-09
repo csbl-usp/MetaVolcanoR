@@ -187,7 +187,8 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
     # Set REM result
     icols <- paste(c(genecol, pcriteria, foldchangecol, llcol, rlcol, vcol), 
 		   collapse="|^")
-    rcols <- paste(c(genecol, "^random", "^het_", "^error$", "^rank$"), collapse="|")
+    rcols <- paste(c(genecol, "^random", "^het_", "^error$", "^rank$"), 
+		   collapse="|")
     result <- new('MetaVolcano', 
 		  input=dplyr::select(meta_diffexp, 
 				      dplyr::matches(icols)),

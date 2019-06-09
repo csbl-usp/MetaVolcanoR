@@ -1,3 +1,6 @@
+#' @importFrom methods is
+NULL
+
 #' A function to draw a forest plot from the REM MetaVolcano result
 #'
 #' This function draws a forest plot for a given gene based on the REM 

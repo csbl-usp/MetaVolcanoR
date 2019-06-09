@@ -10,9 +10,9 @@
 #' @examples
 #' cum_freq_data()
 cum_freq_data <- function(meta_diffexp, nstud) {
-    data.frame(DEGs = sapply(0:nstud, function(idx) {
+    data.frame(DEGs = vapply(0:nstud, function(idx) {
                         length(which(meta_diffexp[['ndeg']] >= idx))
-                      }),
+                      }, numeric(1)),
                ndatasets = 0:nstud
     )
 }

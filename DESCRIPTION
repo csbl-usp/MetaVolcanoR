@@ -25,7 +25,7 @@ Imports:
     rlang,
     topconfects
 Suggests:
-    prettydoc
+    knitr
 License: GPL3
 Encoding: UTF-8
 biocViews: GeneExpression, DifferentialExpression, Transcriptomics, mRNAMicroarray, RNASeq
