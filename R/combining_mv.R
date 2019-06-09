@@ -1,3 +1,8 @@
+#' @importFrom stats median quantile
+#' @importFrom grDevices pdf dev.off
+#' @importFrom graphics plot
+NULL
+
 #' A function to draw the 'Combining meta-analysis' MetaVolcano
 #'
 #' This function draws the 'Combining meta-analysis' MetaVolcano
