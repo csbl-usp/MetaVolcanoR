@@ -11,3 +11,4 @@
 #' }
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/}
 "diffexplist"
+NULL
