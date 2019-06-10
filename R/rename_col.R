@@ -9,7 +9,10 @@
 #' @return \code{data.tabledata.frame} with new colnames
 #' @export
 #' @examples
-#' rename_col()
+#' data(diffexplist)
+#' lapply(diffexplist, colnames)
+#' diffexp <- rename_col(diffexplist, "Symbol", 1)
+#' lapply(diffexp, colnames)
 rename_col <- function(diffexp, genecol, ncores) {
     ns <- names(diffexp)
     des <- mclapply(seq(diffexp), function(nstudy) {

@@ -25,7 +25,9 @@ This function creates a new variable indicating DEGs as -1, 0, 1 based on the
 user-defined foldchange and p-value criteria
 }
 \examples{
-deg_def()
+data(diffexplist)
+diffexp <- deg_def(diffexplist[[1]], "pvalue", "Log2FC", 0.05, 0)
+table(diffexp[['deg']])
 }
 \keyword{DEG}
 \keyword{definition}

@@ -12,7 +12,9 @@
 #' @return \code{data.table/data.frame} with a new \code{vi} variable
 #' @export
 #' @examples
-#' calc_vi()
+#' data(diffexplist)
+#' diffexp <- calc_vi(diffexplist[[1]], "CI.L", "CI.R")
+#' head(diffexp, 3)
 calc_vi <- function(diffexp, llcol, rlcol) {
     diffexp[['vi']] <- apply(diffexp, 1, function(gene) {
         ((as.numeric(gene[rlcol]) - as.numeric(gene[llcol]))/3.92)^2

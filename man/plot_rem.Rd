@@ -26,7 +26,13 @@ rem_mv() <data.table/data.frame>}
 This function plots the REM MetaVolcano using ggplot2
 }
 \examples{
-plot_rem()
+data(diffexplist)
+diffexplist <- lapply(diffexplist, function(del) {
+    dplyr::filter(del, grepl("MP", Symbol))
+})
+mv <- rem_mv(diffexplist, metathr = 0.1)
+gg <- plot_rem(mv@metaresult, "MV", ".", "Symbol", 0.01)
+plot(gg)
 }
 \keyword{REM}
 \keyword{metavolcano}

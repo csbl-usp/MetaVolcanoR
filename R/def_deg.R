@@ -11,7 +11,9 @@
 #' @return \code{data.table/data.frame} with a new deg variable
 #' @export
 #' @examples
-#' deg_def()
+#' data(diffexplist)
+#' diffexp <- deg_def(diffexplist[[1]], "pvalue", "Log2FC", 0.05, 0)
+#' table(diffexp[['deg']])
 deg_def <- function(diffexp, pcriteria, foldchangecol, pv, fc) {
     if(pcriteria != "pv" && foldchangecol != "fc") {
         dplyr::mutate(diffexp, 

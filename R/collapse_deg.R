@@ -9,9 +9,11 @@
 #'         names
 #' @export
 #' @examples
-#' collapse_deg()
+#' data(diffexplist)
+#' diffexp <- collapse_deg(diffexplist[[1]], "Symbol", "pvalue")
+#' head(diffexp, 3)
 collapse_deg <- function(diffexp, genenamecol, pcriteria) {
   diffexp %>%
     arrange(!!as.name(pcriteria)) %>%
-    filter(!duplicated(!!as.name(genenamecol)))
+    dplyr::filter(!duplicated(!!as.name(genenamecol)))
 }

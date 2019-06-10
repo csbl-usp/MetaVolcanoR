@@ -21,7 +21,10 @@ are genes}
 This function rename the columns of the merged inputs
 }
 \examples{
-rename_col()
+data(diffexplist)
+lapply(diffexplist, colnames)
+diffexp <- rename_col(diffexplist, "Symbol", 1)
+lapply(diffexp, colnames)
 }
 \keyword{column}
 \keyword{rename}

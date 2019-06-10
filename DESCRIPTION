@@ -1,7 +1,7 @@
 Package: MetaVolcanoR
 Type: Package
 Title: Gene expression meta-analysis visualization tool
-Version: 0.99.5
+Version: 0.99.4
 Authors@R: c(person("Cesar", "Prada", email = "cesar.prada@usp.br", 
     role = c("aut", "cre")), person("Helder", "Nakaya", email = "hnkaya@usp.br",
     role = c("aut", "ths")))
@@ -26,9 +26,11 @@ Imports:
     topconfects,
     grDevices,
     graphics,
-    stats
+    stats,
+    htmlwidgets
 Suggests:
-    knitr
+    knitr,
+    testthat
 License: GPL-3
 Encoding: UTF-8
 biocViews: GeneExpression, DifferentialExpression, Transcriptomics, mRNAMicroarray, RNASeq

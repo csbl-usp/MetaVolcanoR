@@ -8,7 +8,9 @@
 #' @return \code{data.frame} with REM results for a gene
 #' @export 
 #' @examples
-#' remodel()
+#' g <- data.frame('Symbol'="XGENE", 'Log2FC_1'=1.2, 'Log2FC'=0.8, 
+#'                 'vi_1'=0.01, 'vi_2'=0.1)
+#' remodel(g, 'Log2FC', 'vi')
 remodel <- function(gene, foldchangecol, vcol) {
 
     fc <- as.numeric(dplyr::select(gene, matches(foldchangecol)))

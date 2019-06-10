@@ -12,7 +12,13 @@
 #' @return \code{ggplot2} object
 #' @export
 #' @examples
-#' plot_rem()
+#' data(diffexplist)
+#' diffexplist <- lapply(diffexplist, function(del) {
+#'     dplyr::filter(del, grepl("MP", Symbol))
+#' })
+#' mv <- rem_mv(diffexplist, metathr = 0.1)
+#' gg <- plot_rem(mv@metaresult, "MV", ".", "Symbol", 0.01)
+#' plot(gg)
 plot_rem <- function(meta_diffexp, jobname, outputfolder, genecol, metathr) {
     irank <- quantile(meta_diffexp[['rank']], metathr)
     meta_diffexp %>%

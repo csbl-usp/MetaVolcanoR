@@ -21,7 +21,9 @@ collapse_deg(diffexp, genenamecol, pcriteria)
 This function to remove redundant geneIDs standing for the same gene name
 }
 \examples{
-collapse_deg()
+data(diffexplist)
+diffexp <- collapse_deg(diffexplist[[1]], "Symbol", "pvalue")
+head(diffexp, 3)
 }
 \keyword{Probe}
 \keyword{collapse}

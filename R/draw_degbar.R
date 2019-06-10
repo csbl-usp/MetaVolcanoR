@@ -8,7 +8,12 @@
 #' @return \code{ggplot2} object
 #' @export
 #' @examples
-#' draw_degbar()
+#' data(diffexplist)
+#' diffexp <- lapply(diffexplist, function(...) deg_def(..., "pvalue", 
+#'            "Log2FC", 0.05, 0))
+#' bardat <- set_degbar_data(diffexp)
+#' gg <- draw_degbar(bardat)
+#' plot(gg)
 draw_degbar <- function(degbar_data) {
     ggplot(degbar_data, aes(dataset)) +
         geom_bar(aes(fill = Regulation)) +

@@ -28,7 +28,10 @@ c("Mean", "Median") <string>}
 This function plots either the combining- or the vote-counting- MetaVolcanos
 }
 \examples{
-plot_mv()
+data(diffexplist)
+mv <- votecount_mv(diffexplist)
+gg <- plot_mv(mv@metaresult, length(diffexplist), "Symbol", FALSE, "Mean")
+plot(gg)
 }
 \keyword{draw}
 \keyword{metavolcano}

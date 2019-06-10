@@ -1,6 +1,8 @@
 #' @importFrom stats median quantile
 #' @importFrom grDevices pdf dev.off
 #' @importFrom graphics plot
+#' @importFrom plotly as_widget
+#' @importFrom htmlwidgets saveWidget
 NULL
 
 #' A function to draw the 'Combining meta-analysis' MetaVolcano
@@ -28,7 +30,9 @@ NULL
 #' @keywords write 'combining meta-analysis' metavolcano
 #' @export
 #' @examples
-#' combining_mv()
+#' data(diffexplist)
+#' mv <- combining_mv(diffexplist)
+#' str(mv)
 combining_mv <- function(diffexp=list(), pcriteria="pvalue", 
 			 foldchangecol="Log2FC", genenamecol="Symbol", 
 			 geneidcol=NULL, metafc="Mean", metathr=0.01, 
@@ -144,7 +148,7 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
     if(draw == "HTML") {
 
         # --- Writing html device for offline visualization
-        htmlwidgets::saveWidget(as_widget(ggplotly(gg)), 
+        saveWidget(as_widget(ggplotly(gg)), 
             paste0(normalizePath(outputfolder), 
 	        '/combining_method_MetaVolcano_', jobname, ".html"))
 

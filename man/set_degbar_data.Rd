@@ -7,16 +7,22 @@
 set_degbar_data(diffexp)
 }
 \arguments{
-\item{diffexp}{list of data.frame/data.table (s) output of the deg_def() function <list>}
+\item{diffexp}{list of data.frame/data.table (s) output of the deg_def()
+function <list>}
 }
 \value{
 \code{data.frame} DEG by input
 }
 \description{
-This function summarize the variable deg from the deg_def() function to visualize as barplots the number of DEGs per inputed study
+This function summarize the variable deg from the deg_def() function to
+visualize as barplots the number of DEGs per input study
 }
 \examples{
-set_degbar_data()
+data(diffexplist)
+diffexp <- lapply(diffexplist, function(...) deg_def(..., "pvalue", 
+           "Log2FC", 0.05, 0))
+bardat <- set_degbar_data(diffexp)
+head(bardat, 3)
 }
 \keyword{DEG}
 \keyword{barplot}
