@@ -1,7 +1,7 @@
 #' @importFrom parallel mclapply
 #' @importFrom cowplot plot_grid
-#' @importFrom plotly ggplotly
 #' @importFrom plotly as_widget
+#' @importFrom htmlwidgets saveWidget
 #' @import dplyr
 #' @import ggplot2
 NULL
@@ -31,7 +31,9 @@ NULL
 #' @return MetaVolcano object
 #' @export
 #' @examples
-#' votecount_mv()
+#' data(diffexplist)
+#' mv <- votecount_mv(diffexplist)
+#' str(mv)
 votecount_mv <- function(diffexp=list(), pcriteria="pvalue", 
 			      foldchangecol="Log2FC", genenamecol="Symbol", 
 			      geneidcol=NULL, pvalue=0.05, foldchange=0, 
@@ -139,13 +141,13 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
     if(draw == "HTML") {
         
     # --- Writing html device for offline visualization
-    htmlwidgets::saveWidget(as_widget(ggplotly(gg)), 
+    saveWidget(as_widget(ggplotly(gg)), 
 	paste0(normalizePath(outputfolder), "/deg_by_study_", 
 	       jobname, ".html"))
-    htmlwidgets::saveWidget(as_widget(ggplotly(ff)), 
+    saveWidget(as_widget(ggplotly(ff)), 
 		paste0(normalizePath(outputfolder), "/deg_InvCumDist_", 
 		       jobname, ".html"))
-    htmlwidgets::saveWidget(as_widget(ggplotly(mv)), 
+    saveWidget(as_widget(ggplotly(mv)), 
 	paste0(normalizePath(outputfolder), 
 	       '/votecounting_metavolcano_', jobname, ".html"))
 
@@ -176,7 +178,8 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
     # Set vote-counting result
     
     icols <- paste(c(genecol, pcriteria, foldchangecol), collapse="|")
-    rcols <- paste(c(genecol, "deg_", "ddeg", "ndeg", "idx"), collapse="|")
+    rcols <- paste(c(genecol, "deg_", "ddeg", "ndeg", "idx", "degvcount"), 
+                   collapse="|")
     result <- new('MetaVolcano', 
 		  input=dplyr::select(meta_diffexp, 
 				      dplyr::matches(icols)),

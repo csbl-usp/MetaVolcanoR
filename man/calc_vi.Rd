@@ -24,7 +24,9 @@ This function takes the limits of a confidence interval (95%)
 a calculate a variance
 }
 \examples{
-calc_vi()
+data(diffexplist)
+diffexp <- calc_vi(diffexplist[[1]], "CI.L", "CI.R")
+head(diffexp, 3)
 }
 \keyword{confidence}
 \keyword{from}

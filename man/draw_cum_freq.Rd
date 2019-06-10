@@ -19,7 +19,14 @@ This function create a ggplot object with the inverse-cummulative
 DEG distribution
 }
 \examples{
-draw_cum_freq()
+data(diffexplist)
+diffexp <- lapply(diffexplist, function(...) deg_def(..., "pvalue", 
+           "Log2FC", 0.05, 0))
+diffexp <- rename_col(diffexp, "Symbol", 1)
+meta_diffexp <- Reduce(function(...) merge(..., by = "Symbol", all = TRUE),
+           diffexp)
+gg <- draw_cum_freq(meta_diffexp, length(diffexplist))
+plot(gg)
 }
 \keyword{DEG}
 \keyword{distribution}

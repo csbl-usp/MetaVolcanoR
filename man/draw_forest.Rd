@@ -4,7 +4,7 @@
 \alias{draw_forest}
 \title{A function to draw a forest plot from the REM MetaVolcano result}
 \usage{
-draw_forest(remres, gene = "A2M", genecol = "Symbol",
+draw_forest(remres, gene = "MMP9", genecol = "Symbol",
   foldchangecol = "Log2FC", llcol = "CI.L", rlcol = "CI.R",
   jobname = "MetaVolcano", outputfolder = ".", draw = "PDF")
 }
@@ -39,12 +39,14 @@ This function draws a forest plot for a given gene based on the REM
 MetaVolcano result
 }
 \examples{
-draw_forest()
+data(diffexplist)
+diffexplist <- lapply(diffexplist, function(del) {
+    dplyr::filter(del, grepl("MP", Symbol))
+})
+mv <- rem_mv(diffexplist, metathr = 0.1)
+gg <- draw_forest(mv, gene="MMP9")
+plot(gg)
 }
-\keyword{a}
 \keyword{draw}
-\keyword{for}
-\keyword{forest}
+\keyword{forest-plot}
 \keyword{gene}
-\keyword{given}
-\keyword{plot}

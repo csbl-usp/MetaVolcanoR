@@ -19,7 +19,14 @@ This function counts how many genes consistly appears as DE along the
 input studies
 }
 \examples{
-cum_freq_data()
+data(diffexplist)
+diffexp <- lapply(diffexplist, function(...) deg_def(..., "pvalue", 
+           "Log2FC", 0.05, 0))
+diffexp <- rename_col(diffexp, "Symbol", 1)
+meta_diffexp <- Reduce(function(...) merge(..., by = "Symbol", all = TRUE),
+           diffexp)
+cfd <- cum_freq_data(meta_diffexp, length(diffexplist))
+head(cfd, 3)
 }
 \keyword{DEG}
 \keyword{data}

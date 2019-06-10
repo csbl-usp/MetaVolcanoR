@@ -49,7 +49,9 @@ MetaVolcano object
 This function draws the vote-counting meta-analysis MetaVolcano
 }
 \examples{
-votecount_mv()
+data(diffexplist)
+mv <- votecount_mv(diffexplist)
+str(mv)
 }
 \keyword{'vote-counting}
 \keyword{meta-analysis'}

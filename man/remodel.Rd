@@ -22,7 +22,9 @@ A function to model foldchange variance along several studies
 This function calculate the REM-summary fold-change
 }
 \examples{
-remodel()
+g <- data.frame('Symbol'="XGENE", 'Log2FC_1'=1.2, 'Log2FC'=0.8, 
+                'vi_1'=0.01, 'vi_2'=0.1)
+remodel(g, 'Log2FC', 'vi')
 }
 \keyword{REM}
 \keyword{summary}

@@ -48,7 +48,9 @@ c("Mean", "Median") <string>}
 This function draws the 'Combining meta-analysis' MetaVolcano
 }
 \examples{
-combining_mv()
+data(diffexplist)
+mv <- combining_mv(diffexplist)
+str(mv)
 }
 \keyword{'combining}
 \keyword{meta-analysis'}

@@ -26,9 +26,11 @@ Imports:
     topconfects,
     grDevices,
     graphics,
-    stats
+    stats,
+    htmlwidgets
 Suggests:
-    knitr
+    knitr,
+    testthat
 License: GPL-3
 Encoding: UTF-8
 biocViews: GeneExpression, DifferentialExpression, Transcriptomics, mRNAMicroarray, RNASeq

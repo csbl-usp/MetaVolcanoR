@@ -18,7 +18,12 @@ This function visualize as barplots the number of DEGs across the input
 studies
 }
 \examples{
-draw_degbar()
+data(diffexplist)
+diffexp <- lapply(diffexplist, function(...) deg_def(..., "pvalue", 
+           "Log2FC", 0.05, 0))
+bardat <- set_degbar_data(diffexp)
+gg <- draw_degbar(bardat)
+plot(gg)
 }
 \keyword{DEG}
 \keyword{barplot}

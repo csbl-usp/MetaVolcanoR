@@ -14,7 +14,10 @@
 #' @return \code{ggplot2} object
 #' @export
 #' @examples
-#' plot_mv()
+#' data(diffexplist)
+#' mv <- votecount_mv(diffexplist)
+#' gg <- plot_mv(mv@metaresult, length(diffexplist), "Symbol", FALSE, "Mean")
+#' plot(gg)
 plot_mv <- function(meta_diffexp, nstud, genecol, comb, metafc) {
 	if(comb) {
 		

@@ -1,8 +1,9 @@
 #' @importFrom parallel mclapply
 #' @importFrom topconfects normal_confects
 #' @importFrom methods new 'slot<-' show
+#' @importFrom plotly as_widget
+#' @importFrom htmlwidgets saveWidget 
 #' @import dplyr
-#' @import plotly  
 
 setOldClass('gg')
 setOldClass('ggplot')
@@ -50,12 +51,17 @@ setClass('MetaVolcano', slots = list(input='data.frame',
 #' @return MetaVolcano object
 #' @export
 #' @examples
-#' rem_mv()
+#' data(diffexplist)
+#' diffexplist <- lapply(diffexplist, function(del) {
+#'     dplyr::filter(del, grepl("MP", Symbol))
+#' })
+#' mv <- rem_mv(diffexplist, metathr = 0.1)
+#' str(mv)
 rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 		   genenamecol="Symbol", geneidcol=NULL, collaps=FALSE, 
 		   llcol="CI.L", rlcol="CI.R", vcol=NULL, cvar=TRUE, 
 		   metathr=0.01, jobname="MetaVolcano", outputfolder=".", 
-		   draw=NULL, ncores=1) {
+		   draw='HTML', ncores=1) {
 
     # ---- Calculating variance from coifidence interval
     if(cvar == TRUE) {
@@ -163,7 +169,7 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
     if(draw == "HTML") {
         
         # --- Writing html device for offline visualization
-        htmlwidgets::saveWidget(as_widget(ggplotly(gg)), 
+        saveWidget(as_widget(ggplotly(gg)), 
             paste0(normalizePath(outputfolder), 
 	           "/RandomEffectModel_MetaVolcano_", 
 	           jobname, ".html"))
@@ -187,8 +193,8 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
     # Set REM result
     icols <- paste(c(genecol, pcriteria, foldchangecol, llcol, rlcol, vcol), 
 		   collapse="|^")
-    rcols <- paste(c(genecol, "^random", "^het_", "^error$", "^rank$"), 
-		   collapse="|")
+    rcols <- paste(c(genecol, "^random", "^het_", "^error$", "^rank$", 
+                   "signcon"), collapse="|")
     result <- new('MetaVolcano', 
 		  input=dplyr::select(meta_diffexp, 
 				      dplyr::matches(icols)),

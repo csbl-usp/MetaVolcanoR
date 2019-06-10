@@ -18,12 +18,18 @@ NULL
 #' @param outputfolder /path where to write the results/ <string>
 #' @param draw either 'PDF' or 'HTML' to save metaolcano as .pdf or .html
 #'        respectively <string>
-#' @keywords draw forest plot for a given gene
+#' @keywords draw forest-plot gene
 #' @return \code{ggplot2} object
 #' @export
 #' @examples
-#' draw_forest()
-draw_forest <- function(remres, gene="A2M", genecol="Symbol", 
+#' data(diffexplist)
+#' diffexplist <- lapply(diffexplist, function(del) {
+#'     dplyr::filter(del, grepl("MP", Symbol))
+#' })
+#' mv <- rem_mv(diffexplist, metathr = 0.1)
+#' gg <- draw_forest(mv, gene="MMP9")
+#' plot(gg)
+draw_forest <- function(remres, gene="MMP9", genecol="Symbol", 
 			foldchangecol="Log2FC", llcol="CI.L", rlcol="CI.R", 
 			jobname="MetaVolcano", outputfolder=".", draw="PDF") {
 
@@ -32,7 +38,7 @@ draw_forest <- function(remres, gene="A2M", genecol="Symbol",
     }
 	
     rem <- merge(remres@metaresult, remres@input, by = genecol) %>%
-    filter(!!rlang::sym(genecol) == gene) -> sremres
+        dplyr::filter(!!rlang::sym(genecol) == gene) -> sremres
 
     if(nrow(sremres) == 0) {
         stop(paste("Oops! Seems that", gene, "is not in the",
