@@ -6,31 +6,21 @@ Gene expression meta-analysis visualization tool.
 
 The MetaVolcanoR R package combines differential gene expression results. 
 It implements three strategies to summarize gene expression activities from 
-different studies. i) Random Effects Model (REM) approach. ii) a naive 
-vote-counting approach, and iii) a combining-approach. In all cases, 
-MetaVolcano exploits the Volcano plot reasoning to visualize the gene 
-expression meta-analysis results.
+different studies. i) Random Effects Model (REM) approach. ii) a 
+vote-counting approach, and iii) a combining-approach. MetaVolcano exploits 
+the Volcano plot reasoning to visualize the gene expression meta-analysis 
+results.
 
 ## Installation
 ```
-devtools::install_github('csbl-usp/MetaVolcanoR')
+BiocManager::install('MetaVolcanoR')
 ```
 
 ## Usage
 Load required libraries.
 
 ```
-library(MetaVolcanoR,
-	data.table,
-	dplyr,
-	rlang,
-	parallel,
-	ggplot2,
-	cowplot,
-	plotly,
-	metap,
-	metafor,
-	topconfects) 
+library(MetaVolcanoR) 
 ```
 
 ### Input Data
@@ -38,26 +28,24 @@ library(MetaVolcanoR,
 Users should provide a named list of data.table/data.frame objects containing 
 differential gene expression results. Each object of the list must contain 
 *gene name*, *fold change*, and *p-value* variables. It is highly recomended 
-to also include *variance* or the confidence intervals of the *fold change* 
+to also include *variance* or the *confidence interval* of the *fold change* 
 variables. 
 
 Take a look at the demo data. It includes differential gene expression results
-from five studies. 
+of five studies. 
 
 ```
 data(diffexplist)
-str(diffexplist)
-head(diffexplist[[1]])
 ```
 
 ### Random Effect Model MetaVolcano
 
-The *REM* MetaVolcano summarizes the gene fold change variance of several
-studies by a random effect model. Consequently, the *summary p-value* comes
-from the meta-analysis model and estimates the probability of the *summary 
-fold-change* is equal zero. The *REM* MetaVolcano can highligths the top
-*metathr* percentage of consistently perturbed genes. This perturbed ranking
-is done by the *topconfects* (https://doi.org/10.1186/s13059-019-1674-7) method.
+The *REM* MetaVolcano summarizes the gene fold change of several
+studies taking into account the variance. The REM estimates a *summary p-value* 
+which stand for the probability of the *summary fold-change* is not different
+than zero. Users can set the *metathr* parameter to  highligth the top 
+percentage of the most consistently perturbed genes. This perturbation 
+ranking is defined following the  *topconfects* approach.
 
 
 ```
@@ -77,15 +65,16 @@ meta_degs_rem <- rem_mv(diffexp=diffexplist,
 			draw='HTML',
 			ncores=5)
 
+# REM results
 head(meta_degs_rem@metaresult, 3)
 
+# Ploting MetaVolcano
 meta_degs_rem@MetaVolcano
 ```
-![REM MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/REM_MV.png)
 
 &nbsp;
-The *REM* MetaVolcano can also display the forest plot of a given gene based 
-on the REM results.
+The *REM* MetaVolcano also allow users to explore the forest plot of a given 
+gene based on the REM results.
 
 ```
 draw_forest(remres=meta_degs_rem,
@@ -100,7 +89,6 @@ draw_forest(remres=meta_degs_rem,
 	    draw="HTML")
 
 ```
-![Forest plot](https://github.com/csbl-usp/MetaVolcanoR/blob/master/MMP9_forestplot.png)
 
 
 ```
@@ -116,7 +104,6 @@ draw_forest(remres=meta_degs_rem,
 	    draw="HTML")
 
 ```
-![Forest plot](https://github.com/csbl-usp/MetaVolcanoR/blob/master/COL6A6_forestplot.png)
 
 
 ### Vote-counting approach
@@ -124,7 +111,7 @@ draw_forest(remres=meta_degs_rem,
 MetaVolcano identifies differential expressed genes (DEG) for each study based 
 on the user-defined *p-value* and *fold change* thresholds. It displays the 
 number of differentially expressed and unperturbed genes per study. In addition,
-it plots the inverse cumulative distribution of the consistently DEG so the
+it plots the inverse cumulative distribution of the consistently DEG, so the
 user can identify the number of genes whose expression is perturbed in at 
 least 1 or n studies.
 
@@ -143,33 +130,33 @@ meta_degs_vote <- votecount_mv(diffexp=diffexplist,
 			       draw='HTML',
 			       ncores=4)
 
+# Vote-counting results
 head(meta_degs_vote@metaresult, 3)
 
+# Plot DEG by study and DEG inverse cummulative distribution
 meta_degs_vote@degfreq
 
 ```
-![DEG by study and cummulative inverse distribution](https://github.com/csbl-usp/MetaVolcanoR/blob/master/deg_by_study.png)
 
-MetaVolcano visualizes genes based on the number of studies where genes were
-identified as differentially expressed and the their fold change *sign 
-consistency*. It means that a gene that was differentially expressed in five 
-studies, from which three of them it was downregulated, will get a *sign 
-consistency* score of *2 + (-3) = -1*. Based on the user selection, MetaVolcano
+The *vote-counting* MetaVolcano visualizes genes based on the number of studies 
+where genes were identified as differentially expressed and the gene fold change
+*sign consistency*. It means that a gene that was differentially expressed in 
+five studies, from which three of them it was downregulated, will get a *sign 
+consistency* score of *2 + (-3) = -1*. Based on the user preference, MetaVolcano
 can highligths the top *metathr* percentage of consistently perturbed genes.
 
 ```
+# Plot MetaVolcano
 meta_degs_vote@MetaVolcano
 ```
 
-![Vote-counting MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/votecounting_MV.png)
-
 ### Combining-approach 
 
-The *combinig* MetaVolcano can also summarizes the *fold change* of a gene in
-different studies by the *mean* or *median* based on the user preference. In
-addition, the *combinig* MetaVolcano summarizes the gene differential
-expression *p-values* by mean of the Fisher method. The *combining* MetaVolcano
-can highligths the top *metathr* percentage of consistently perturbed genes.
+The *combinig* MetaVolcano summarizes the *fold change* of a gene in different
+studies by the *mean* or *median* depending on the user preference. In addition, 
+the *combinig* MetaVolcano summarizes the gene differential expression 
+*p-values* using the Fisher method. The *combining* MetaVolcano can 
+highligths the top *metathr* percentage of consistently perturbed genes.
 
 
 ```
@@ -186,10 +173,11 @@ meta_degs_comb <- combining_mv(diffexp=diffexplist,
 			       draw='HTML',
 			       ncores=4)
 
+# Combining results
 head(meta_degs_comb@metaresult, 3)
 
+# Plot MetaVolcano
 meta_degs_comb@MetaVolcano
 
 ```
-![Combining MetaVolcano](https://github.com/csbl-usp/MetaVolcanoR/blob/master/combining_MV.png)
 
