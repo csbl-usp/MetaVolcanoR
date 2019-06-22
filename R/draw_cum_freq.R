@@ -8,6 +8,7 @@
 #' @return \code{ggplot2} object
 #' @export
 #' @examples
+#' library(dplyr)
 #' data(diffexplist)
 #' diffexp <- lapply(diffexplist, function(...) deg_def(..., "pvalue", 
 #'            "Log2FC", 0.05, 0))

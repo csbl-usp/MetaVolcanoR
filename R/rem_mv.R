@@ -1,7 +1,7 @@
 #' @importFrom parallel mclapply
 #' @importFrom topconfects normal_confects
 #' @importFrom methods new 'slot<-' show
-#' @importFrom plotly as_widget
+#' @importFrom plotly as_widget ggplotly
 #' @importFrom htmlwidgets saveWidget 
 #' @import dplyr
 
