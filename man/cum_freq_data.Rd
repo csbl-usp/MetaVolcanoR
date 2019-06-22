@@ -22,9 +22,13 @@ input studies
 data(diffexplist)
 diffexp <- lapply(diffexplist, function(...) deg_def(..., "pvalue", 
            "Log2FC", 0.05, 0))
-diffexp <- rename_col(diffexp, "Symbol", 1)
+diffexp <- rename_col(diffexp, "Symbol")
 meta_diffexp <- Reduce(function(...) merge(..., by = "Symbol", all = TRUE),
            diffexp)
+meta_diffexp \%>\%
+dplyr::select(dplyr::matches("deg_")) \%>\%
+    data.matrix -> n_deg
+meta_diffexp[['ndeg']] <- rowSums(n_deg^2, na.rm = TRUE)
 cfd <- cum_freq_data(meta_diffexp, length(diffexplist))
 head(cfd, 3)
 }
