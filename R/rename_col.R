@@ -4,23 +4,22 @@
 #' @param diffexp list of data.frame/data.table (s) with DE results where lines
 #'        are genes
 #' @param genecol the column name of the geneID or gene name variable <string>
-#' @param ncores the number of processors the user wants to use  <integer>
 #' @keywords rename column
 #' @return \code{data.tabledata.frame} with new colnames
 #' @export
 #' @examples
 #' data(diffexplist)
 #' lapply(diffexplist, colnames)
-#' diffexp <- rename_col(diffexplist, "Symbol", 1)
+#' diffexp <- rename_col(diffexplist, "Symbol")
 #' lapply(diffexp, colnames)
-rename_col <- function(diffexp, genecol, ncores) {
+rename_col <- function(diffexp, genecol) {
     ns <- names(diffexp)
-    des <- mclapply(seq(diffexp), function(nstudy) {
+    des <- lapply(seq(diffexp), function(nstudy) {
         dex <- diffexp[[nstudy]]
         colnames(dex) <- paste(colnames(dex), nstudy, sep = "_")
         colnames(dex)[grep(genecol, colnames(dex))] <- genecol
         return(dex)
-    }, mc.cores = ncores)
+    })
     names(des) <- ns
     return(des)
 }

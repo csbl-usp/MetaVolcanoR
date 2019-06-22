@@ -7,8 +7,7 @@
 combining_mv(diffexp = list(), pcriteria = "pvalue",
   foldchangecol = "Log2FC", genenamecol = "Symbol", geneidcol = NULL,
   metafc = "Mean", metathr = 0.01, collaps = "FALSE",
-  jobname = "MetaVolcano", outputfolder = ".", draw = "HTML",
-  ncores = 1)
+  jobname = "MetaVolcano", outputfolder = ".", draw = "HTML")
 }
 \arguments{
 \item{diffexp}{list of data.frame/data.table (s) with DE results where lines
@@ -38,8 +37,6 @@ c("Mean", "Median") <string>}
 
 \item{draw}{wheather or not to draw the .pdf or .html visualization 
 <c(NULL, "PDF", "HTML")>}
-
-\item{ncores}{the number of processors the user wants to use <integer>}
 }
 \value{
 \code{MetaVolcano} object

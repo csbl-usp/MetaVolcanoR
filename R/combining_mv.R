@@ -25,7 +25,6 @@ NULL
 #' @param outputfolder /path where to write the results/
 #' @param draw wheather or not to draw the .pdf or .html visualization 
 #'        <c(NULL, "PDF", "HTML")>
-#' @param ncores the number of processors the user wants to use <integer>
 #' @return \code{MetaVolcano} object
 #' @keywords write 'combining meta-analysis' metavolcano
 #' @export
@@ -37,21 +36,33 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
 			 foldchangecol="Log2FC", genenamecol="Symbol", 
 			 geneidcol=NULL, metafc="Mean", metathr=0.01, 
 			 collaps="FALSE", jobname="MetaVolcano", 
-			 outputfolder=".", draw="HTML", ncores=1) {
+			 outputfolder=".", draw="HTML") {
     	
+    if(!draw %in% c('PDF', 'HTML')) {
+		
+        stop("Oops! Seems like you did not provide a right 'draw' parameter. 
+              Try 'PDF' or 'HTML'")
+
+    } else if(!metafc %in% c('Mean', 'Median')) {
+
+	    stop("Oops! Please check the provided metafc parameter. Try either
+		 Mean or Median")
+    }
+
     if (collaps) {
         # --- Removing non-named genes
-        diffexp <- mclapply(diffexp, function(g) {
+        diffexp <- lapply(diffexp, function(g) {
             g %>%
             dplyr::filter(!!as.name(genenamecol) != "") %>%
-            dplyr::filter(!is.na(!!as.name(genenamecol)))
-        }, mc.cores = ncores)
+            dplyr::filter(!is.na(!!as.name(genenamecol))) %>%
+            dplyr::filter(!!as.name(genenamecol) != "NA")
+        })
 
         # --- Collapsing redundant geneIDs. Rataining the geneID with the 
         # --- smallest pcriteria
-        diffexp <- mclapply(diffexp, function(g) {
+        diffexp <- lapply(diffexp, function(g) {
             collapse_deg(g, genenamecol, pcriteria)
-        }, mc.cores = ncores)
+        })
 
 	# --- Subsetting the diffexp inputs
 	diffexp <- lapply(diffexp, function(...) dplyr::select(...,
@@ -59,7 +70,7 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
 				genenamecol), collapse = '|'))))
 
         # --- merging DEG results
-        diffexp <- rename_col(diffexp, genenamecol, ncores)
+        diffexp <- rename_col(diffexp, genenamecol)
         meta_diffexp <- Reduce(function(...) merge(..., by = genenamecol, 
 						   all = TRUE), diffexp)
 	genecol <- genenamecol
@@ -84,7 +95,7 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
 				geneidcol), collapse = '|'))))
 
             # --- merging DEG results	
-            diffexp <- rename_col(diffexp, geneidcol, ncores)
+            diffexp <- rename_col(diffexp, geneidcol)
             meta_diffexp <- Reduce(function(...) merge(..., 
 						       by = geneidcol, 
 						       all = TRUE), diffexp)
@@ -100,36 +111,40 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
     }    	
     
     # --- Combining Pvalues with Fisher method
-    meta_diffexp <- dplyr::mutate(meta_diffexp,
-        metap = apply(dplyr::select(meta_diffexp, dplyr::matches(pcriteria)), 1,
-            function(p) {
-	        pp <- as.numeric(p[which(!is.na(p))])
-	        if(length(pp) == 1) {
-		    pp
-		} else {
-		    metap::sumlog(pp)$p
-		}
-	}))
-    
-    # --- Combining fold-change by either mean or median summary methods
-    if(metafc == "Mean") {
-        meta_diffexp <- dplyr::mutate(meta_diffexp,
-	    metafc = apply(dplyr::select(meta_diffexp,
-					 dplyr::matches(foldchangecol)), 1,
-                                          function(...) mean(as.numeric(...), 
-							     na.rm = TRUE)))
-    } else if (metafc == "Median") {
-        meta_diffexp <- dplyr::mutate(meta_diffexp,
-            metafc = apply(dplyr::select(meta_diffexp,
-					 dplyr::matches(foldchangecol)), 1,
-                                          function(...) median(as.numeric(...),
-							       na.rm = TRUE)))
-    } else {
-	    stop("Oops! Please check the provided metafc parameter. Try either
-		 Mean or Median")
-    }
-    
+    dplyr::select(meta_diffexp, 
+        dplyr::matches(paste(c(genecol, pcriteria), collapse = "|"))) %>%
+	    tidyr::gather(study, value, -!!as.name(genecol)) %>%
+	    dplyr::filter(!is.na(value)) %>%
+	    dplyr::group_by(!!as.name(genecol)) %>%
+	    dplyr::summarize('metap' = tryCatch({ 
+	        metap::sumlog(value)$p},
+		    error = function(e){ return(NA) })) %>%
+	    dplyr::filter(!is.na(metap)) -> meta_p
 
+    
+    meta_diffexp <- merge(meta_diffexp, meta_p, by = genecol)    
+
+    # --- Combining fold-change by either mean or median summary methods
+    dplyr::select(meta_diffexp, 
+        dplyr::matches(paste(c(genecol, foldchangecol), collapse = "|"))) %>%
+	    tidyr::gather(study, value, -!!as.name(genecol)) %>%
+	    dplyr::filter(!is.na(value)) %>%
+	    dplyr::group_by(!!as.name(genecol)) -> meta_fc
+
+    if(metafc == "Mean") {
+	meta_fc %>%
+	    dplyr::summarize('metafc' = mean(as.numeric(value), 
+				      na.rm = TRUE)) -> meta_fc
+
+    } else if (metafc == "Median") {
+
+	meta_fc %>%
+	    dplyr::summarize('metafc' = median(as.numeric(value), 
+				      na.rm = TRUE)) -> meta_fc
+    }
+
+    meta_diffexp <- merge(meta_diffexp, meta_fc, by = genecol)
+	
     # Highlighting the top perturbed genes
     meta_diffexp <- meta_diffexp %>%
         dplyr::mutate(idx = metafc*-log10(metap))
@@ -161,13 +176,8 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
 	        plot(gg)
         dev.off()
 
-    } else {
-		
-        stop("Seems like you did not provide a right 'draw' parameter. 
-              Try NULL, 'PDF' or 'HTML'")
+    } 
 
-    }
-    
     # Set combining result
     icols <- paste(c(genecol, pcriteria, foldchangecol), collapse="|")
     rcols <- paste(c(genecol, "metafc", "metap", "idx"), collapse="|")

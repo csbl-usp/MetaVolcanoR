@@ -26,7 +26,6 @@ NULL
 #' @param outputfolder /path where to write the results/
 #' @param draw wheather or not to draw a .pdf or .html visualization 
 #'        <c(NULL, 'PDF', 'HTML')>
-#' @param ncores the number of processors the user wants to use <integer>
 #' @keywords write 'vote-counting meta-analysis' metavolcano
 #' @return MetaVolcano object
 #' @export
@@ -39,7 +38,14 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 			      geneidcol=NULL, pvalue=0.05, foldchange=0, 
 			      metathr=0.01, collaps=FALSE, 
 			      jobname="MetaVolcano", outputfolder=".", 
-			      draw="HTML", ncores=1) {
+			      draw="HTML") {
+
+    if(!draw %in% c('PDF', 'HTML')) {
+		
+        stop("Oops! Seems like you did not provide a right 'draw' parameter. 
+              Try 'PDF' or 'HTML'")
+
+    }
 
     nstud <- length(diffexp)
   
@@ -50,17 +56,18 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 
     if (collaps) {
         # --- Removing non-named genes
-        diffexp <- mclapply(diffexp, function(g) {
+        diffexp <- lapply(diffexp, function(g) {
             g %>%
             dplyr::filter(!!as.name(genenamecol) != "") %>%
-            dplyr::filter(!is.na(!!as.name(genenamecol)))
-        }, mc.cores = ncores)
+            dplyr::filter(!is.na(!!as.name(genenamecol))) %>%
+	    dplyr::filter(!!as.name(genenamecol) != "NA")
+        })
 
         # --- Collapsing redundant geneIDs. Rataining the geneID with the 
         # --- smallest pcriteria
-        diffexp <- mclapply(diffexp, function(g) {
+        diffexp <- lapply(diffexp, function(g) {
             collapse_deg(g, genenamecol, pcriteria)
-        }, mc.cores = ncores)
+        })
 
 	# --- Subsetting the diffexp inputs
 	diffexp <- lapply(diffexp, function(...) dplyr::select(...,
@@ -71,7 +78,7 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 	bardat <- set_degbar_data(diffexp)
 
         # --- merging DEG results
-        diffexp <- rename_col(diffexp, genenamecol, ncores)
+        diffexp <- rename_col(diffexp, genenamecol)
         meta_diffexp <- Reduce(function(...) merge(..., by = genenamecol, 
 						   all = TRUE), diffexp)
 	genecol <- genenamecol
@@ -98,7 +105,7 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 	    bardat <- set_degbar_data(diffexp)
 
             # --- merging DEG results	
-            diffexp <- rename_col(diffexp, geneidcol, ncores)
+            diffexp <- rename_col(diffexp, geneidcol)
             meta_diffexp <- Reduce(function(...) merge(..., 
 						       by = geneidcol, 
 						       all = TRUE), diffexp)
@@ -113,12 +120,12 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 	}
     }    
     # --- Defining new vars for visualization
-    meta_diffexp[['ndeg']] <- apply(dplyr::select(meta_diffexp, 
-					   dplyr::matches("deg_")), 
-			       1, function(r) sum((r^2), na.rm = TRUE))
-    meta_diffexp[['ddeg']] <- apply(dplyr::select(meta_diffexp, 
-					   dplyr::matches("deg_")), 
-			       1, function(r) sum(r, na.rm = TRUE))
+    meta_diffexp %>%
+	    dplyr::select(dplyr::matches("deg_")) %>%
+	    data.matrix -> n_deg
+
+    meta_diffexp[['ndeg']] <- rowSums(n_deg^2, na.rm = TRUE)
+    meta_diffexp[['ddeg']] <- rowSums(n_deg, na.rm = TRUE)
 
     # Highlighting the top perturbed genes
     meta_diffexp <- meta_diffexp %>%
@@ -166,14 +173,8 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
         plot(mv)
     dev.off()
 		
-    } else {
-		
-        stop("Seems like you did not provide a right 'draw' parameter. 
-              Try NULL, 'PDF' or 'HTML'")
-
     }
-    
-       
+
     # Return genes that were DE in at least one study
     # Set vote-counting result
     
@@ -189,5 +190,6 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 		  MetaVolcano=mv,
 		  degfreq=plot_grid(gf)
 		  )
+
     return(result)
 }

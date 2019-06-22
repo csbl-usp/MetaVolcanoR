@@ -15,14 +15,23 @@
 #' diffexp <- deg_def(diffexplist[[1]], "pvalue", "Log2FC", 0.05, 0)
 #' table(diffexp[['deg']])
 deg_def <- function(diffexp, pcriteria, foldchangecol, pv, fc) {
-    if(pcriteria != "pv" && foldchangecol != "fc") {
+
+    if(pcriteria == "pv") {
+	
+        stop("Oops! Sorry, could you please rename your pcriteria
+	     variable?")
+
+    } else if(foldchangecol == "fc") {
+	
+	 stop("Oops! Sorry, could you please rename your foldchangecol
+	      variables")
+
+    } else {
+
         dplyr::mutate(diffexp, 
 	    deg = ifelse(as.numeric(!!as.name(pcriteria)) < pv 
 			 & as.numeric(!!as.name(foldchangecol)) < (-1*fc), -1,
 	          ifelse(as.numeric(!!as.name(pcriteria)) < pv 
 			 & as.numeric(!!as.name(foldchangecol)) > fc, 1, 0)))
-	} else {
-		stop("Oops! Sorry, could you please rename your pcriteria 
-		     and/or foldchangecol variables?")
-	}
+    }
 }

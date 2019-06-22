@@ -7,8 +7,7 @@
 votecount_mv(diffexp = list(), pcriteria = "pvalue",
   foldchangecol = "Log2FC", genenamecol = "Symbol", geneidcol = NULL,
   pvalue = 0.05, foldchange = 0, metathr = 0.01, collaps = FALSE,
-  jobname = "MetaVolcano", outputfolder = ".", draw = "HTML",
-  ncores = 1)
+  jobname = "MetaVolcano", outputfolder = ".", draw = "HTML")
 }
 \arguments{
 \item{diffexp}{list of data.frame/data.table (s) with DE results where lines
@@ -39,8 +38,6 @@ direction <logical>}
 
 \item{draw}{wheather or not to draw a .pdf or .html visualization 
 <c(NULL, 'PDF', 'HTML')>}
-
-\item{ncores}{the number of processors the user wants to use <integer>}
 }
 \value{
 MetaVolcano object
