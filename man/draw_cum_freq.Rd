@@ -19,6 +19,7 @@ This function create a ggplot object with the inverse-cummulative
 DEG distribution
 }
 \examples{
+library(dplyr)
 data(diffexplist)
 diffexp <- lapply(diffexplist, function(...) deg_def(..., "pvalue", 
            "Log2FC", 0.05, 0))

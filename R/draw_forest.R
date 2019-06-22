@@ -1,4 +1,5 @@
 #' @importFrom methods is
+#' @importFrom stats setNames
 NULL
 
 #' A function to draw a forest plot from the REM MetaVolcano result
