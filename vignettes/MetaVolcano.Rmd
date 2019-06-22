@@ -63,10 +63,8 @@ reasoning to visualize the gene expression meta-analysis results.
 
 ```{r}
 
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("MetaVolcanoR', eval = FALSE)
+#BiocManager::install("MetaVolcanoR', eval = FALSE)
+devtools::install_github("csbl-usp/MetaVolcanoR", ref="feature/biocfix")
 ```
 
 ## Load library

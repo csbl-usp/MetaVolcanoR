@@ -115,8 +115,8 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
         dplyr::matches(paste(c(genecol, pcriteria), collapse = "|"))) %>%
 	    tidyr::gather(study, value, -!!as.name(genecol)) %>%
 	    dplyr::filter(!is.na(value)) %>%
-	    group_by(!!as.name(genecol)) %>%
-	    summarize('metap' = tryCatch({ 
+	    dplyr::group_by(!!as.name(genecol)) %>%
+	    dplyr::summarize('metap' = tryCatch({ 
 	        metap::sumlog(value)$p},
 		    error = function(e){ return(NA) })) %>%
 	    dplyr::filter(!is.na(metap)) -> meta_p
@@ -129,17 +129,17 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
         dplyr::matches(paste(c(genecol, foldchangecol), collapse = "|"))) %>%
 	    tidyr::gather(study, value, -!!as.name(genecol)) %>%
 	    dplyr::filter(!is.na(value)) %>%
-	    group_by(!!as.name(genecol)) -> meta_fc
+	    dplyr::group_by(!!as.name(genecol)) -> meta_fc
 
     if(metafc == "Mean") {
 	meta_fc %>%
-	    summarize('metafc' = mean(as.numeric(value), 
+	    dplyr::summarize('metafc' = mean(as.numeric(value), 
 				      na.rm = TRUE)) -> meta_fc
 
     } else if (metafc == "Median") {
 
 	meta_fc %>%
-	    summarize('metafc' = median(as.numeric(value), 
+	    dplyr::summarize('metafc' = median(as.numeric(value), 
 				      na.rm = TRUE)) -> meta_fc
     }
 
