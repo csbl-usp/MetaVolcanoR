@@ -32,6 +32,13 @@ NULL
 draw_forest <- function(remres, gene="MMP9", genecol="Symbol", 
 			foldchangecol="Log2FC", llcol="CI.L", rlcol="CI.R", 
 			jobname="MetaVolcano", outputfolder=".", draw="PDF") {
+    
+    if(!draw %in% c('PDF', 'HTML')) {
+		
+        stop("Oops! Seems like you did not provide a right 'draw' parameter. 
+              Try 'PDF' or 'HTML'")
+
+    }
 
     if(is(remres) != "MetaVolcano") {
         stop("Oops! Please, provide a MetaVolcano object as input")
@@ -42,7 +49,7 @@ draw_forest <- function(remres, gene="MMP9", genecol="Symbol",
 
     if(nrow(sremres) == 0) {
         stop(paste("Oops! Seems that", gene, "is not in the",
-                    "provided remres"))
+                    "provided REM result"))
     }
 	
     stds <- unique(unlist(regmatches(colnames(sremres),
@@ -60,7 +67,8 @@ draw_forest <- function(remres, gene="MMP9", genecol="Symbol",
         stds <- setNames(stds, remres@inputnames)
 
     }
-	
+    
+    # setting data for visualization
     edat <- Reduce(rbind, lapply(names(stds), function(sn) {
 		std <- dplyr::select(sremres, 
 				dplyr::matches(paste0(genecol,
@@ -141,12 +149,8 @@ draw_forest <- function(remres, gene="MMP9", genecol="Symbol",
 				paste0(normalizePath(outputfolder),
 				"/Forestplot_", unique(edat[[genecol]]),
 				jobname, ".html"))
-    } else {
-
-	stop("Seems like the draw parameter is invalid, 
-	     try draw='PDF' or draw='HTML'")
-    }
-
+    }     
+    
     return(gg)
 
 }

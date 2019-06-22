@@ -63,6 +63,14 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 		   metathr=0.01, jobname="MetaVolcano", outputfolder=".", 
 		   draw='HTML', ncores=1) {
 
+    
+    if(!draw %in% c('PDF', 'HTML')) {
+		
+        stop("Oops! Seems like you did not provide a right 'draw' parameter. 
+              Try 'PDF' or 'HTML'")
+
+    }
+    
     # ---- Calculating variance from coifidence interval
     if(cvar == TRUE) {
         diffexp <- lapply(diffexp, function(...) calc_vi(..., llcol, rlcol))
@@ -74,19 +82,21 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 	}
     }
     
+    
     if (collaps) {
         # --- Removing non-named genes
-        diffexp <- mclapply(diffexp, function(g) {
+        diffexp <- lapply(diffexp, function(g) {
             g %>%
             dplyr::filter(!!as.name(genenamecol) != "") %>%
-            dplyr::filter(!is.na(!!as.name(genenamecol)))
-        }, mc.cores = ncores)
+            dplyr::filter(!is.na(!!as.name(genenamecol))) %>%
+	    dplyr::filter(!!as.name(genenamecol) != "NA")
+        })
 
         # --- Collapsing redundant geneIDs. Rataining the geneID with the 
         # --- smallest pcriteria
-        diffexp <- mclapply(diffexp, function(g) {
+        diffexp <- lapply(diffexp, function(g) {
             collapse_deg(g, genenamecol, pcriteria)
-        }, mc.cores = ncores)
+        })
 
 	# --- Subsetting the diffexp inputs
 	diffexp <- lapply(diffexp, function(...) dplyr::select(...,
@@ -95,7 +105,7 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 					       collapse = '|'))))
 
         # --- merging DEG results
-        diffexp <- rename_col(diffexp, genenamecol, ncores)
+        diffexp <- rename_col(diffexp, genenamecol)
         meta_diffexp <- Reduce(function(...) merge(..., by = genenamecol, 
 						   all = TRUE), diffexp)
 	genecol <- genenamecol
@@ -121,7 +131,7 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 					       collapse = '|'))))
 
             # --- merging the diffexp inputs	
-            diffexp <- rename_col(diffexp, geneidcol, ncores)
+            diffexp <- rename_col(diffexp, geneidcol)
             meta_diffexp <- Reduce(function(...) merge(..., 
 						       by = geneidcol, 
 						       all = TRUE), diffexp)
@@ -137,6 +147,7 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
     }    		
 	
     # Calculating the REM summary (metafor)
+    # computational intensive parallel run recommended
     meta_diffexp <- cbind(meta_diffexp,
                         do.call(rbind,
                                 mclapply(split(meta_diffexp, 
@@ -183,13 +194,8 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 	     plot(gg)
 	dev.off()
 
-    } else {
-		
-	stop("Seems like you did not provide a right 'draw' parameter. 
-	      Try NULL, 'PDF' or 'HTML'")
+    } 
 
-    }
-    
     # Set REM result
     icols <- paste(c(genecol, pcriteria, foldchangecol, llcol, rlcol, vcol), 
 		   collapse="|^")

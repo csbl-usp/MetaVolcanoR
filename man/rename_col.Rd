@@ -4,15 +4,13 @@
 \alias{rename_col}
 \title{A column renaming function merged inputs}
 \usage{
-rename_col(diffexp, genecol, ncores)
+rename_col(diffexp, genecol)
 }
 \arguments{
 \item{diffexp}{list of data.frame/data.table (s) with DE results where lines
 are genes}
 
 \item{genecol}{the column name of the geneID or gene name variable <string>}
-
-\item{ncores}{the number of processors the user wants to use  <integer>}
 }
 \value{
 \code{data.tabledata.frame} with new colnames
@@ -23,7 +21,7 @@ This function rename the columns of the merged inputs
 \examples{
 data(diffexplist)
 lapply(diffexplist, colnames)
-diffexp <- rename_col(diffexplist, "Symbol", 1)
+diffexp <- rename_col(diffexplist, "Symbol")
 lapply(diffexp, colnames)
 }
 \keyword{column}
