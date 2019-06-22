@@ -17,6 +17,6 @@
 #' head(diffexp, 3)
 calc_vi <- function(diffexp, llcol, rlcol) {
     diffexp[['vi']] <- 
-        ((as.numeric(gene[rlcol]) - as.numeric(gene[llcol]))/3.92)^2
+        ((as.numeric(diffexp[[rlcol]]) - as.numeric(diffexp[[llcol]]))/3.92)^2
     diffexp
 }
