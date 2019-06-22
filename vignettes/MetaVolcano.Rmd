@@ -173,8 +173,7 @@ meta_degs_vote <- votecount_mv(diffexp=diffexplist,
 			       collaps=FALSE,
 			       jobname="MetaVolcano", 
 			       outputfolder=".",
-			       draw='HTML',
-			       ncores=1)
+			       draw='HTML')
 
 head(meta_degs_vote@metaresult, 3)
 meta_degs_vote@degfreq
@@ -212,8 +211,8 @@ meta_degs_comb <- combining_mv(diffexp=diffexplist,
 			       collaps=TRUE,
 			       jobname="MetaVolcano",
 			       outputfolder=".",
-			       draw='HTML',
-			       ncores=1)
+			       draw='HTML')
+
 head(meta_degs_comb@metaresult, 3)
 meta_degs_comb@MetaVolcano
 ```
