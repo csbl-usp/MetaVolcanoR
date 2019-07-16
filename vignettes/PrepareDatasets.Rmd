@@ -61,27 +61,31 @@ samp_annot <- pData(exp_set)
 ```
 
 Differential expression results from datasets to be integrated must have the same
-gene identifiers. Therefore, biomaRt bioconductor package will be used to convert probe 
-identifiers from GPL570 platform to their corresponding Gene Symbol identifiers before 
-analysis. Moreover, microarray platforms may contain more than one probe for the
-same gene. This ambiguity will be removed by selecting probes with the highest mean of 
-expression.
+gene identifiers. Therefore, Bioconductor annotation package hgu133plus2.db will be 
+used to convert probe identifiers from GPL570 platform to their corresponding 
+Ensembl identifiers before analysis. Moreover, microarray platforms may contain
+more than one probe for the same gene. This ambiguity will be removed by selecting 
+probes with the highest mean of expression.
 
 ```{r}
-library(biomaRt)
-ensembl <- useMart("ensembl", dataset="hsapiens_gene_ensembl")
-probes <- rownames(exp_matrix)
-annottab <- getBM(attributes = c('affy_hg_u133_plus_2', 'hgnc_symbol'),
-                 filters = 'affy_hg_u133_plus_2',
-                 values = probes,
-                 mart = ensembl)
-# Remove unannotated probes
-colnames(annottab) <- c('Probe', 'Symbol')
-annottab <- subset(annottab, Symbol != '')
-genes2probes <- split(annottab$Probe, annottab$Symbol)
+library(hgu133plus2.db)
+eslist <- as.list(hgu133plus2ENSEMBL)  
+# Some probes are assigned to more than one Ensembl Gene ID.
+# To simplify matters, these probes will not be included.
+eslist <- lapply(eslist, function(es_id){ 
+                   if(length(es_id) > 1){ 
+                     return(NA) 
+                   }else{
+                     return(es_id)
+                   }})
+annottab <- data.frame(Probe = names(eslist), Ensembl = unname(unlist(eslist)))
+annottab <- annottab[complete.cases(annottab),]
+annotatb <- annottab[annottab$Probe %in% rownames(exp_matrix),]
+genes2probes <- split(annottab$Probe, annottab$Ensembl)
+
+# Select probe with highest expression
 # Compute mean of expression for each probe
 mean_probes <- apply(exp_matrix, 1, mean)
-# Select probe with highest expression
 selected_probes <- lapply(genes2probes, function(probes){
   expression_levels <- mean_probes[probes]                      
   sel_probe <- probes[which.max(expression_levels)]
@@ -106,7 +110,7 @@ colnames(design) <- c('normal', 'lesional_vs_normal')
 fit <- lmFit(exp_mat, design)
 fit <- eBayes(fit)
 diffexp <- topTable(fit, coef = 'lesional_vs_normal', confint = T)
-diffexp <- data.frame(Symbol = rownames(diffexp),
+diffexp <- data.frame(Ensembl = rownames(diffexp),
                  log2FC = diffexp$logFC,
                  pvalue = diffexp$P.Value,
                  CI.L = diffexp$CI.L,
@@ -162,14 +166,7 @@ Now, limma will be used for differential expression analysis
 fit2 <- lmFit(logCPM, des)
 fit2 <- eBayes(fit2, trend = TRUE)
 diffexp2 <- topTable(fit2, coef = 'psoriasis_vs_normal', confint = T)
-# Convert Ensembl IDs to Gene Symbols 
-ensembl <- useMart("ensembl", dataset="hsapiens_gene_ensembl")
-ensembl2gs <- getBM(attributes = c('ensembl_gene_id', 'hgnc_symbol'),
-                    filters = 'ensembl_gene_id',
-                    values = rownames(diffexp2),
-                    mart = ensembl) 
-geneSymbols <- ensembl2gs$hgnc_symbol[match(rownames(diffexp2), ensembl2gs$ensembl_gene_id)]
-diffexp2 <- data.frame(Symbol = geneSymbols,
+diffexp2 <- data.frame(Ensembl = rownames(diffexp2),
                        log2FC = diffexp2$logFC,
                        pvalue = diffexp2$P.Value,
                        CI.L = diffexp2$CI.L,
