@@ -61,27 +61,25 @@ samp_annot <- pData(exp_set)
 ```
 
 Differential expression results from datasets to be integrated must have the same
-gene identifiers. Therefore, Bioconductor annotation package hgu133plus2.db will be 
-used to convert probe identifiers from GPL570 platform to their corresponding 
-Ensembl identifiers before analysis. Moreover, microarray platforms may contain
-more than one probe for the same gene. This ambiguity will be removed by selecting 
-probes with the highest mean of expression.
+gene identifiers. Therefore, probe identifiers from GPL570 platform will be converted 
+to their corresponding Gene Symbol identifiers before analysis. 
+Moreover, microarray platforms may contain more than one probe for the same gene. 
+This ambiguity will be removed by selecting probes with the highest mean of expression.
 
 ```{r}
-library(hgu133plus2.db)
-eslist <- as.list(hgu133plus2ENSEMBL)  
-# Some probes are assigned to more than one Ensembl Gene ID.
+# Some probes are assigned to more than one Gene Symbol identifier.
 # To simplify matters, these probes will not be included.
-eslist <- lapply(eslist, function(es_id){ 
-                   if(length(es_id) > 1){ 
-                     return(NA) 
-                   }else{
-                     return(es_id)
-                   }})
-annottab <- data.frame(Probe = names(eslist), Ensembl = unname(unlist(eslist)))
+annottab <- fData(gse30999[[1]])[,c('ID', 'Gene Symbol')]
+colnames(annottab) <- c('Probe', 'Symbol')
+# Filter out probes with more than one Gene Symbol 
+annottab <- subset(annottab, !grepl('///', Symbol))
+# Filter out unannotated probes
+annottab <- subset(annottab, Symbol != '')
+# Filter out NAs
 annottab <- annottab[complete.cases(annottab),]
+# Filter out probes absent in expression matrix
 annotatb <- annottab[annottab$Probe %in% rownames(exp_matrix),]
-genes2probes <- split(annottab$Probe, annottab$Ensembl)
+genes2probes <- split(annottab$Probe, annottab$Symbol)
 
 # Select probe with highest expression
 # Compute mean of expression for each probe
@@ -110,20 +108,12 @@ colnames(design) <- c('normal', 'lesional_vs_normal')
 fit <- lmFit(exp_mat, design)
 fit <- eBayes(fit)
 diffexp <- topTable(fit, coef = 'lesional_vs_normal', confint = T)
-diffexp <- data.frame(Ensembl = rownames(diffexp),
+diffexp <- data.frame(Symbol = rownames(diffexp),
                  log2FC = diffexp$logFC,
                  pvalue = diffexp$P.Value,
                  CI.L = diffexp$CI.L,
                  CI.R = diffexp$CI.R)
 ```
-Dataframe in "diffexp" variable can now be stored in a list. Results from other differential 
-expression analyses from similarly designed experiments must be stored 
-in the same list for meta-analysis.
-
-```{r}
-diffexplist <- list(GSE30999 = diffexp)
-```
-
 ## Analysis of RNA-seq dataset
 
 Dataset E-GEOD-54456 is composed of lesional skin samples taken from individuals with psoriasis 
@@ -173,9 +163,11 @@ diffexp2 <- data.frame(Ensembl = rownames(diffexp2),
                        CI.L = diffexp2$CI.R)
 ```
 
-Finnaly, a second table with results can be added to a list for meta-analysis
+## Final considerations
 
-```{r}
-diffexplist[['E-GEOD-54456']] <- diffexp2
-```
+Differential expression results tables must be stored in a list object before integration. 
+Gene identifiers from different studies must be comparable. Conversion of identifiers can be 
+executed with functions from biomaRt Bioconductor package. Users are referred to biomaRt user
+guide for further details: https://bioconductor.org/packages/release/bioc/html/biomaRt.html
+
 
