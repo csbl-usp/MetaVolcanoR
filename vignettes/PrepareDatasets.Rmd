@@ -69,6 +69,7 @@ This ambiguity will be removed by selecting probes with the highest mean of expr
 ```{r}
 # Some probes are assigned to more than one Gene Symbol identifier.
 # To simplify matters, these probes will not be included.
+# First: get probe annotation from eset object
 annottab <- fData(gse30999[[1]])[,c('ID', 'Gene Symbol')]
 colnames(annottab) <- c('Probe', 'Symbol')
 # Filter out probes with more than one Gene Symbol 
@@ -113,7 +114,18 @@ diffexp <- data.frame(Symbol = rownames(diffexp),
                  pvalue = diffexp$P.Value,
                  CI.L = diffexp$CI.L,
                  CI.R = diffexp$CI.R)
+# Show first few rows of results table
+print(head(diffexp))
 ```
+
+Dataframe in "diffexp" variable can now be stored in a list. Results from other differential 
+expression analyses from similarly designed experiments must be stored 
+in the same list for meta-analysis.
+
+```{r}
+list_of_results <- list(GSE30999 = diffexp)
+```
+
 ## Analysis of RNA-seq dataset
 
 Dataset E-GEOD-54456 is composed of lesional skin samples taken from individuals with psoriasis 
@@ -150,17 +162,37 @@ dge <- calcNormFactors(dge)
 logCPM <- cpm(dge, log = TRUE, prior.count = 3)
 ```
 
-Now, limma will be used for differential expression analysis
+Now, limma will be used for differential expression analysis. 
 
 ```{r}
 fit2 <- lmFit(logCPM, des)
 fit2 <- eBayes(fit2, trend = TRUE)
 diffexp2 <- topTable(fit2, coef = 'psoriasis_vs_normal', confint = T)
-diffexp2 <- data.frame(Ensembl = rownames(diffexp2),
+```
+
+Gene identificators will be changed from Ensembl IDs to Gene Symbol IDs to allow for comparisons between different datasets. Bioconductor biomaRt package provides functions to easily convert between identifiers. 
+
+```{r}
+library(biomaRt)
+ensembl <- useMart("ensembl", dataset="hsapiens_gene_ensembl")
+ensembl2gs <- getBM(attributes = c('ensembl_gene_id', 'hgnc_symbol'),
+                    filters = 'ensembl_gene_id',
+                    values = rownames(diffexp2),
+                    mart = ensembl)
+geneSymbols <- ensembl2gs$hgnc_symbol[match(rownames(diffexp2), ensembl2gs$ensembl_gene_id)]
+diffexp2 <- data.frame(Symbol = geneSymbols,
                        log2FC = diffexp2$logFC,
                        pvalue = diffexp2$P.Value,
                        CI.L = diffexp2$CI.L,
                        CI.L = diffexp2$CI.R)
+# Show first few rows of results table
+print(head(diffexp2))
+```
+
+Finally, a second table with results can be added to a list for meta-analysis
+
+```{r}
+list_of_results[['E-GEOD-54456']] <- diffexp2
 ```
 
 ## Final considerations
@@ -169,5 +201,4 @@ Differential expression results tables must be stored in a list object before in
 Gene identifiers from different studies must be comparable. Conversion of identifiers can be 
 executed with functions from biomaRt Bioconductor package. Users are referred to biomaRt user
 guide for further details: https://bioconductor.org/packages/release/bioc/html/biomaRt.html
-
 
