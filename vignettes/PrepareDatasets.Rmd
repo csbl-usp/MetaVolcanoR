@@ -1,0 +1,25 @@
+---
+output:
+  html_document:
+    toc: yes
+  pdf_document:
+    toc: yes
+  prettydoc::html_pretty:
+    highlight: github
+    theme: lumen
+    toc: yes
+vignette: > 
+  %\VignetteIndexEntry{MetaVolcanoR: Differential expression meta-analysis tool}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r style, echo=FALSE, results="asis", message=FALSE}
+knitr::opts_chunk$set(tidy = FALSE,
+                      warning = FALSE,
+                      message = FALSE,
+                      cache=TRUE)
+```
+  
+  
+Please go to https://csbl-usp.github.io/analysis_example/ for examples on how to perform differential expression analyses of microarray and RNA-seq datasets.
