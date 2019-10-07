@@ -148,19 +148,34 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 	
     # Calculating the REM summary (metafor)
     # computational intensive parallel run recommended
-    meta_diffexp <- cbind(meta_diffexp,
-                        do.call(rbind,
-                                mclapply(split(meta_diffexp, 
-					      meta_diffexp[[genecol]]),
-                                        function(g) {
-                                            remodel(g, foldchangecol, vcol)
-                                        }, mc.cores = ncores)
-                        )
+#    meta_diffexp <- cbind(meta_diffexp,
+#                        do.call(rbind,
+#                                mclapply(split(meta_diffexp, 
+#					      meta_diffexp[[genecol]]),
+#                                        function(g) {
+#                                            remodel(g, foldchangecol, vcol)
+#                                        }, mc.cores = ncores)
+#                        )
+#    )
+   
+
+
+    remres <- do.call(rbind,
+        mclapply(split(meta_diffexp, meta_diffexp[[genecol]]),
+	    function(g) {
+		remodel(g, foldchangecol, vcol)
+                        }, mc.cores = ncores)
     )
+
+    remres[[genecol]] <- rownames(remres)
+    meta_diffexp <- merge(meta_diffexp, remres, by = genecol, all = TRUE)
 
     # --- Topconfects ranking
     meta_diffexp <- meta_diffexp %>%
-        dplyr::mutate(se = (randomCi.ub - randomCi.lb)/3.92) %>% # 95% conf.int
+        dplyr::filter(error != TRUE)
+
+    meta_diffexp <- meta_diffexp %>%
+	dplyr::mutate(se = (randomCi.ub - randomCi.lb)/3.92) %>% # 95% conf.int
         dplyr::mutate(index = seq(nrow(meta_diffexp)))
 
     confects <- normal_confects(meta_diffexp$randomSummary, 
@@ -185,7 +200,7 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 	           "/RandomEffectModel_MetaVolcano_", 
 	           jobname, ".html"))
 
-    } else if(draw == "PDF") {
+   } else if(draw == "PDF") {
 
         # --- Writing PDF visualization
 	pdf(paste0(normalizePath(outputfolder),
