@@ -148,17 +148,6 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 	
     # Calculating the REM summary (metafor)
     # computational intensive parallel run recommended
-#    meta_diffexp <- cbind(meta_diffexp,
-#                        do.call(rbind,
-#                                mclapply(split(meta_diffexp, 
-#					      meta_diffexp[[genecol]]),
-#                                        function(g) {
-#                                            remodel(g, foldchangecol, vcol)
-#                                        }, mc.cores = ncores)
-#                        )
-#    )
-   
-
 
     remres <- do.call(rbind,
         mclapply(split(meta_diffexp, meta_diffexp[[genecol]]),
@@ -170,9 +159,13 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
     remres[[genecol]] <- rownames(remres)
     meta_diffexp <- merge(meta_diffexp, remres, by = genecol, all = TRUE)
 
+    # --- Subsettig genes where REML doesnt converge
+    meta_diffexp_err  <- dplyr::filter(meta_diffexp, error == TRUE)
+
     # --- Topconfects ranking
     meta_diffexp <- meta_diffexp %>%
-        dplyr::filter(error != TRUE)
+        dplyr::filter(error != TRUE) # removing genes which REML 
+                                     # failed to converge
 
     meta_diffexp <- meta_diffexp %>%
 	dplyr::mutate(se = (randomCi.ub - randomCi.lb)/3.92) %>% # 95% conf.int
@@ -187,8 +180,22 @@ rem_mv <- function(diffexp=list(), pcriteria="pvalue", foldchangecol="Log2FC",
 			  dplyr::select(confects$table, c(index, `rank`)), 
 			  by = 'index', all = TRUE)
     
+    # --- Keep all genes for the results report
+    if(nrow(meta_diffexp_err) != 0) {
+        meta_diffexp_err  <- meta_diffexp_err %>%
+            dplyr::mutate(se=NA,
+	                  index=NA,
+		          `rank`=seq(nrow(meta_diffexp_err))+nrow(meta_diffexp))
+    
+        meta_diffexp  <- rbind(meta_diffexp, meta_diffexp_err)
+    }
+
     meta_diffexp <- dplyr::arrange(meta_diffexp, `rank`)
-   
+
+    #####
+    print(head(meta_diffexp))
+    #####
+
     # --- Draw REM MetaVolcano
     gg <- plot_rem(meta_diffexp, jobname, outputfolder, genecol, metathr)
 
