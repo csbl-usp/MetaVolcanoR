@@ -55,7 +55,7 @@ draw_forest <- function(remres, gene="MMP9", genecol="Symbol",
 	
     stds <- unique(unlist(regmatches(colnames(sremres),
 		regexec('_\\d+$', colnames(sremres)))))
-
+    
     if(is.null(remres@inputnames)) {
 		
         message("We recomend providing a character vector with the names
@@ -68,13 +68,14 @@ draw_forest <- function(remres, gene="MMP9", genecol="Symbol",
         stds <- setNames(stds, remres@inputnames)
 
     }
-    
+   
     # setting data for visualization
     edat <- Reduce(rbind, lapply(names(stds), function(sn) {
 		std <- dplyr::select(sremres, 
 				dplyr::matches(paste0(genecol,
-						   '|', stds[sn])))
-		colnames(std) <- gsub('_\\d+', '', colnames(std))
+						   '|', stds[sn],
+						   '$')))
+		colnames(std) <- gsub('_\\d+$', '', colnames(std))
 		std[['group']] <- sn
 		std
     }))
