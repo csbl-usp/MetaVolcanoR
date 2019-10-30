@@ -1,7 +1,7 @@
 Package: MetaVolcanoR
 Type: Package
 Title: Gene expression meta-analysis visualization tool
-Version: 0.99.16
+Version: 1.1.0
 Authors@R: c(person("Cesar", "Prada", email = "cesar.prada@usp.br", 
     role = c("aut", "cre")), person("Diogenes", "Lima", email = "diogenes.lima@usp.br", 
     role = c("aut")), person("Helder", "Nakaya", email = "hnkaya@usp.br",
