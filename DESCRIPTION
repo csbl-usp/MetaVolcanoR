@@ -1,17 +1,18 @@
 Package: MetaVolcanoR
 Type: Package
 Title: Gene expression meta-analysis visualization tool
-Version: 0.99.15
+Version: 0.99.16
 Authors@R: c(person("Cesar", "Prada", email = "cesar.prada@usp.br", 
-    role = c("aut", "cre")), person("Helder", "Nakaya", email = "hnkaya@usp.br",
+    role = c("aut", "cre")), person("Diogenes", "Lima", email = "diogenes.lima@usp.br", 
+    role = c("aut")), person("Helder", "Nakaya", email = "hnkaya@usp.br",
     role = c("aut", "ths")))
 Description: This package combines differential gene expression results. 
-    It implements three strategies to summarize gene expression activities from 
-    different studies. i) a naive vote-counting approach, ii) a combining-approach
-    and iii) Random Effects Model (REM) approach. In all cases, MetaVolcano
-    exploits the Volcano plot reasoning to visualize the gene expression
+    It implements three strategies to summarize differential gene expression from 
+    different studies. i) Random Effects Model (REM) approach, ii) a p-value 
+    combining-approach, and iii) a naive vote-counting approach. In all cases, 
+    MetaVolcano exploits the Volcano plot reasoning to visualize the gene expression
     meta-analysis results.
-Depends: R (>= 3.6.0)
+Depends: R (>= 3.6.1)
 Imports:
     methods,
     data.table,

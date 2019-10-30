@@ -9,7 +9,7 @@ output:
     theme: lumen
     toc: yes
 vignette: > 
-  %\VignetteIndexEntry{MetaVolcanoR: Differential expression meta-analysis tool}
+  %\VignetteIndexEntry{MetaVolcanoR inputs: differential expression examples}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
