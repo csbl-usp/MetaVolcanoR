@@ -4,9 +4,17 @@
 \alias{draw_forest}
 \title{A function to draw a forest plot from the REM MetaVolcano result}
 \usage{
-draw_forest(remres, gene = "MMP9", genecol = "Symbol",
-  foldchangecol = "Log2FC", llcol = "CI.L", rlcol = "CI.R",
-  jobname = "MetaVolcano", outputfolder = ".", draw = "PDF")
+draw_forest(
+  remres,
+  gene = "MMP9",
+  genecol = "Symbol",
+  foldchangecol = "Log2FC",
+  llcol = "CI.L",
+  rlcol = "CI.R",
+  jobname = "MetaVolcano",
+  outputfolder = ".",
+  draw = "PDF"
+)
 }
 \arguments{
 \item{remres}{MetaVolcano object. Output of the rem_mv() function
