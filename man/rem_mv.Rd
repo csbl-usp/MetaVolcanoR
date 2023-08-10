@@ -4,11 +4,24 @@
 \alias{rem_mv}
 \title{A function to perform the Random Effect Model (REM) MetaVolcano}
 \usage{
-rem_mv(diffexp = list(), pcriteria = "pvalue",
-  foldchangecol = "Log2FC", genenamecol = "Symbol", geneidcol = NULL,
-  collaps = FALSE, llcol = "CI.L", rlcol = "CI.R", vcol = NULL,
-  cvar = TRUE, metathr = 0.01, jobname = "MetaVolcano",
-  outputfolder = ".", draw = "HTML", ncores = 1)
+rem_mv(
+  diffexp = list(),
+  pcriteria = "pvalue",
+  foldchangecol = "Log2FC",
+  genenamecol = "Symbol",
+  geneidcol = NULL,
+  collaps = FALSE,
+  llcol = "CI.L",
+  rlcol = "CI.R",
+  vcol = NULL,
+  cvar = TRUE,
+  metathr = 0.01,
+  jobname = "MetaVolcano",
+  outputfolder = ".",
+  draw = "HTML",
+  ncores = 1,
+  render = F
+)
 }
 \arguments{
 \item{diffexp}{list of data.frame/data.table (s) with DE results where lines
@@ -45,7 +58,12 @@ interval limits <logical>}
 
 \item{draw}{wheather or not to draw the .html visualization <logical>}
 
-\item{ncores}{the number of processors the user wants to use <integer>}
+\item{ncores}{the number of processors the user wants to use <integer>
+#' @param render A boolean parameter that determines whether the plot should be rendered. 
+If `TRUE`, the function will produce and save the plot based on the specified `draw` 
+parameter (either as an HTML or PDF file). If `FALSE` (default), no plot will be 
+rendered or saved. It's useful for cases where you might want to run the function 
+for its side effects or calculations without necessarily visualizing the result.}
 }
 \value{
 MetaVolcano object

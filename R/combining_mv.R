@@ -25,6 +25,11 @@ NULL
 #' @param outputfolder /path where to write the results/
 #' @param draw wheather or not to draw the .pdf or .html visualization 
 #'        <c(NULL, "PDF", "HTML")>
+#' @param render A boolean parameter that determines whether the plot should be rendered. 
+#' If `TRUE`, the function will produce and save the plot based on the specified `draw` 
+#' parameter (either as an HTML or PDF file). If `FALSE` (default), no plot will be 
+#' rendered or saved. It's useful for cases where you might want to run the function 
+#' for its side effects or calculations without necessarily visualizing the result.
 #' @return \code{MetaVolcano} object
 #' @keywords write 'combining meta-analysis' metavolcano
 #' @export
@@ -36,7 +41,7 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
 			 foldchangecol="Log2FC", genenamecol="Symbol", 
 			 geneidcol=NULL, metafc="Mean", metathr=0.01, 
 			 collaps="FALSE", jobname="MetaVolcano", 
-			 outputfolder=".", draw="HTML") {
+			 outputfolder=".", draw="HTML", render = F) {
     	
     if(!draw %in% c('PDF', 'HTML')) {
 		
@@ -159,24 +164,25 @@ combining_mv <- function(diffexp=list(), pcriteria="pvalue",
 
     # --- Drawing combining MetaVolcano
     gg <- plot_mv(meta_diffexp, NULL, genecol, TRUE, metafc)
-    
-    if(draw == "HTML") {
-
-        # --- Writing html device for offline visualization
-        saveWidget(as_widget(ggplotly(gg)), 
-            paste0(normalizePath(outputfolder), 
-	        '/combining_method_MetaVolcano_', jobname, ".html"))
-
-    } else if(draw == "PDF") {
-
-        # --- Writing PDF visualization
-        pdf(paste0(normalizePath(outputfolder), 
-            '/combining_method_MetaVolcano_', jobname, ".pdf"), 
-	     width = 4, height = 5)
-	        plot(gg)
-        dev.off()
-
-    } 
+    if(render) {
+      if(draw == "HTML") {
+  
+          # --- Writing html device for offline visualization
+          saveWidget(as_widget(ggplotly(gg)), 
+              paste0(normalizePath(outputfolder), 
+  	        '/combining_method_MetaVolcano_', jobname, ".html"))
+  
+      } else if(draw == "PDF") {
+  
+          # --- Writing PDF visualization
+          pdf(paste0(normalizePath(outputfolder), 
+              '/combining_method_MetaVolcano_', jobname, ".pdf"), 
+  	     width = 4, height = 5)
+  	        plot(gg)
+          dev.off()
+  
+      } 
+    }
 
     # Set combining result
     icols <- paste(c(genecol, pcriteria, foldchangecol), collapse="|")

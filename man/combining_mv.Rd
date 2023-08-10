@@ -4,10 +4,20 @@
 \alias{combining_mv}
 \title{A function to draw the 'Combining meta-analysis' MetaVolcano}
 \usage{
-combining_mv(diffexp = list(), pcriteria = "pvalue",
-  foldchangecol = "Log2FC", genenamecol = "Symbol", geneidcol = NULL,
-  metafc = "Mean", metathr = 0.01, collaps = "FALSE",
-  jobname = "MetaVolcano", outputfolder = ".", draw = "HTML")
+combining_mv(
+  diffexp = list(),
+  pcriteria = "pvalue",
+  foldchangecol = "Log2FC",
+  genenamecol = "Symbol",
+  geneidcol = NULL,
+  metafc = "Mean",
+  metathr = 0.01,
+  collaps = "FALSE",
+  jobname = "MetaVolcano",
+  outputfolder = ".",
+  draw = "HTML",
+  render = F
+)
 }
 \arguments{
 \item{diffexp}{list of data.frame/data.table (s) with DE results where lines
@@ -37,6 +47,12 @@ c("Mean", "Median") <string>}
 
 \item{draw}{wheather or not to draw the .pdf or .html visualization 
 <c(NULL, "PDF", "HTML")>}
+
+\item{render}{A boolean parameter that determines whether the plot should be rendered. 
+If `TRUE`, the function will produce and save the plot based on the specified `draw` 
+parameter (either as an HTML or PDF file). If `FALSE` (default), no plot will be 
+rendered or saved. It's useful for cases where you might want to run the function 
+for its side effects or calculations without necessarily visualizing the result.}
 }
 \value{
 \code{MetaVolcano} object

@@ -1,7 +1,7 @@
 Package: MetaVolcanoR
 Type: Package
 Title: Gene Expression Meta-analysis Visualization Tool
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: c(person("Cesar", "Prada", email = "cesar.prada@usp.br", 
     role = c("aut", "cre")), person("Diogenes", "Lima", email = "diogenes.lima@usp.br", 
     role = c("aut")), person("Helder", "Nakaya", email = "hnkaya@usp.br",
@@ -39,4 +39,4 @@ biocViews: GeneExpression, DifferentialExpression, Transcriptomics, mRNAMicroarr
 LazyData: true
 roxygennote: 6.1.1.9000
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.3
