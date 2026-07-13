@@ -1,0 +1,32 @@
+#' Plasma proteomic response to influenza vaccination (five cohorts)
+#'
+#' A named list of five differential-abundance tables describing the
+#' day-7 versus day-0 plasma proteomic response to seasonal influenza
+#' vaccination, one table per independent cohort. It is used to
+#' demonstrate MetaVolcanoR on \strong{protein} features, complementing
+#' the gene-expression example object \code{\link{diffexplist}}.
+#'
+#' Each element is a \code{data.frame} with one row per protein and the
+#' columns MetaVolcanoR expects:
+#' \describe{
+#'   \item{Symbol}{Protein identifier (gene-level symbol, as returned by
+#'     Olink and most proteomics pipelines).}
+#'   \item{Log2FC}{Log2 fold change, day 7 vs day 0.}
+#'   \item{pvalue}{Differential-abundance p-value.}
+#'   \item{CI.L}{Lower bound of the 95\% confidence interval.}
+#'   \item{CI.R}{Upper bound of the 95\% confidence interval.}
+#' }
+#'
+#' The consistently up-regulated proteins across cohorts recapitulate the
+#' canonical day-7 antibody-secreting-cell signature (immunoglobulin chains
+#' IGHG1/IGKC, plasmablast markers TNFRSF17/CD38, and plasma-cell factors
+#' MZB1/PRDM1/XBP1).
+#'
+#' @format A named list of length 5; each element a data.frame of 445 rows
+#'   and 5 columns.
+#' @source Derived from public systems-vaccinology proteomics resources
+#'   (ImmuneSpace / PRIDE / ProteomeXchange). See
+#'   \code{data-raw/make_vaccine_proteomics.R} and the \code{PrepareDatasets}
+#'   vignette for the retrieval and formatting workflow.
+#' @seealso \code{\link{diffexplist}}, \code{\link{rem_mv}}
+"vaccine_proteomics"

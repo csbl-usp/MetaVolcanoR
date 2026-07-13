@@ -21,7 +21,7 @@ DEG distribution
 \examples{
 library(dplyr)
 data(diffexplist)
-diffexp <- lapply(diffexplist, function(...) deg_def(..., "pvalue", 
+diffexp <- lapply(diffexplist, function(...) deg_def(..., "pvalue",
            "Log2FC", 0.05, 0))
 diffexp <- rename_col(diffexp, "Symbol")
 meta_diffexp <- Reduce(function(...) merge(..., by = "Symbol", all = TRUE),

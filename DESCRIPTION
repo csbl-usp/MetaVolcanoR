@@ -1,21 +1,30 @@
 Package: MetaVolcanoR
 Type: Package
-Title: Gene Expression Meta-analysis Visualization Tool
+Title: Differential Feature Expression Meta-analysis Visualization Tool
 Version: 1.0.2
-Authors@R: c(person("Cesar", "Prada", email = "cesar.prada@usp.br", 
-    role = c("aut", "cre")), person("Diogenes", "Lima", email = "diogenes.lima@usp.br", 
-    role = c("aut")), person("Helder", "Nakaya", email = "hnkaya@usp.br",
-    role = c("aut", "ths")))
-Description: MetaVolcanoR combines differential gene expression results. 
-    It implements three strategies to summarize differential gene expression from 
-    different studies. i) Random Effects Model (REM) approach, ii) a p-value 
-    combining-approach, and iii) a vote-counting approach. In all cases, 
-    MetaVolcano exploits the Volcano plot reasoning to visualize the gene expression
-    meta-analysis results.
-Depends: R (>= 3.6.0)
+Authors@R: c(
+    person("Bárbara", "Marinho", email = "barbarammarinhos@gmail.com", role = c("aut", "ctb")),
+    person("César A.", "Prada-Medina", role = c("aut", "ctb")),
+    person("Thiago", "Hirata", role = c("aut", "ctb")),
+    person("Débora", "Peixe", role = c("aut", "ctb")),
+    person("Natália", "von Staa Mansur", role = c("aut", "ctb")),
+    person("Marcela", "Ishihara", role = c("aut", "ctb")),
+    person("Clarisse", "Reis", role = c("aut", "ctb")),
+    person("Carlos", "Mata-Machado", role = c("aut", "ctb")),
+    person("Glória R.", "Franco", role = "ths"),
+    person("Izabela", "Mamede", email = "iza.mamede@gmail.com", role = c("aut", "cre")),
+    person("Helder I.", "Nakaya", email = "hnkaya@usp.br", role = c("aut", "ths")))
+Description:  MetaVolcanoR combines differential expression results across studies, 
+    for multiple differential features (proteins, genes, probes, transcripts). It implements three strategies to 
+    summarize differential abundance from different studies. i) Random Effects Model 
+    (REM) approach, ii) a p-value combining-approach, and iii) a vote-counting 
+    approach. In all cases, MetaVolcano exploits the Volcano plot reasoning to 
+    visualize the meta-analysis results.
+Depends: R (>= 4.4.0)
 Imports:
     methods,
-    data.table,
+    ggrepel,
+    tibble,
     dplyr,
     tidyr,
     plotly,
@@ -29,14 +38,23 @@ Imports:
     grDevices,
     graphics,
     stats,
-    htmlwidgets
+    htmlwidgets,
+    utils
 Suggests:
     knitr,
-    testthat
+    testthat, 
+    rmarkdown,
+    fgsea,
+    msigdbr,
+    stringr,
+    forcats
 License: GPL-3
 Encoding: UTF-8
-biocViews: GeneExpression, DifferentialExpression, Transcriptomics, mRNAMicroarray, RNASeq
-LazyData: true
-roxygennote: 6.1.1.9000
+biocViews: Proteomics, GeneExpression, DifferentialExpression, Transcriptomics, mRNAMicroarray, RNASeq
+LazyData: false
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+URL: https://github.com/csbl-usp/MetaVolcanoR
+BugReports: https://github.com/csbl-usp/MetaVolcanoR/issues
+Config/roxygen2/version: 8.0.0
+RoxygenNote: 7.3.3
+

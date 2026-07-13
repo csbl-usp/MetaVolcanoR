@@ -26,6 +26,13 @@ NULL
 #' @param outputfolder /path where to write the results/
 #' @param draw wheather or not to draw a .pdf or .html visualization 
 #'        <c(NULL, 'PDF', 'HTML')>
+#' @param colors vector of colors for the plot c(down, neutral, up)
+#' @param point_size size of points in the plot
+#' @param label_genes character vector of specific genes to label
+#' @param label_top_n number of top genes to label automatically
+#' @param label_size size of gene name labels
+#' @param plot_title custom plot title
+#' @param show_legend whether to show the legend
 #' @keywords write 'vote-counting meta-analysis' metavolcano
 #' @return MetaVolcano object
 #' @export
@@ -37,8 +44,15 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 			      foldchangecol="Log2FC", genenamecol="Symbol", 
 			      geneidcol=NULL, pvalue=0.05, foldchange=0, 
 			      metathr=0.01, collaps=FALSE, 
-			      jobname="MetaVolcano", outputfolder=".", 
-			      draw="HTML") {
+			      jobname="MetaVolcano", outputfolder = tempdir(), 
+			      draw="HTML",
+			      colors = c("#083e46", "grey", "#811820"),
+			      point_size = 0.5,
+			      label_genes = NULL,
+			      label_top_n = NULL,
+			      label_size = 3,
+			      plot_title = NULL,
+			      show_legend = FALSE) {
 
     if(!draw %in% c('PDF', 'HTML')) {
 		
@@ -101,10 +115,10 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
             diffexp <- lapply(diffexp, function(...) dplyr::select(...,
 			  dplyr::matches(paste(c(pcriteria, foldchangecol,
 				geneidcol, '^deg$'), collapse = '|'))))
-            # DEG by study data setting
+            # feature by study data setting
 	    bardat <- set_degbar_data(diffexp)
 
-            # --- merging DEG results	
+            # --- merging feature results	
             diffexp <- rename_col(diffexp, geneidcol)
             meta_diffexp <- Reduce(function(...) merge(..., 
 						       by = geneidcol, 
@@ -139,20 +153,24 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 				       '2.Up-regulated', '1.Unperturbed'))) %>%
         dplyr::arrange(-abs(idx))
 
-    # --- Drawing DEGs by dataset
-    gg <- draw_degbar(bardat)
+    # --- Drawing features by dataset
+    gg <- draw_featurebar(bardat, colors = rev(colors))
     ff <- draw_cum_freq(meta_diffexp, nstud)
     gf <- plot_grid(gg, ff, align="h")
-    mv <- plot_mv(meta_diffexp, nstud, genecol, FALSE, NULL)
+    mv <- plot_mv(meta_diffexp, nstud, genecol, FALSE, NULL,
+                     colors = colors, point_size = point_size,
+                     label_genes = label_genes, label_top_n = label_top_n,
+                     label_size = label_size, plot_title = plot_title,
+                     show_legend = show_legend)
 
     if(draw == "HTML") {
         
     # --- Writing html device for offline visualization
     saveWidget(as_widget(ggplotly(gg)), 
-	paste0(normalizePath(outputfolder), "/deg_by_study_", 
+	paste0(normalizePath(outputfolder), "/feature_by_study_", 
 	       jobname, ".html"))
     saveWidget(as_widget(ggplotly(ff)), 
-		paste0(normalizePath(outputfolder), "/deg_InvCumDist_", 
+		paste0(normalizePath(outputfolder), "/feature_InvCumDist_", 
 		       jobname, ".html"))
     saveWidget(as_widget(ggplotly(mv)), 
 	paste0(normalizePath(outputfolder), 
@@ -162,7 +180,7 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 
     # --- Writing PDF visualization
     pdf(paste0(normalizePath(outputfolder),
-	       "/deg_by_study_", jobname,
+	       "/feature_by_study_", jobname,
 	       ".pdf"), width = 7, height = 4)
         plot(gf)
     dev.off()
@@ -175,7 +193,7 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 		
     }
 
-    # Return genes that were DE in at least one study
+    # Return features that were DE in at least one study
     # Set vote-counting result
     
     icols <- paste(c(genecol, pcriteria, foldchangecol), collapse="|")
@@ -188,7 +206,7 @@ votecount_mv <- function(diffexp=list(), pcriteria="pvalue",
 		  metaresult=dplyr::select(meta_diffexp,
 				       dplyr::matches(rcols)),
 		  MetaVolcano=mv,
-		  degfreq=plot_grid(gf)
+		  featurefreq=plot_grid(gf)
 		  )
 
     return(result)

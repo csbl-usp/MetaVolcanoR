@@ -4,7 +4,20 @@
 \alias{plot_mv}
 \title{A MetaVolcano ploting function}
 \usage{
-plot_mv(meta_diffexp, nstud, genecol, comb, metafc)
+plot_mv(
+  meta_diffexp,
+  nstud,
+  genecol,
+  comb,
+  metafc,
+  colors = c("#083e46", "grey", "#811820"),
+  point_size = 0.5,
+  label_genes = NULL,
+  label_top_n = NULL,
+  label_size = 3,
+  plot_title = NULL,
+  show_legend = FALSE
+)
 }
 \arguments{
 \item{meta_diffexp}{data.frame/data.table containing the differential 
@@ -20,6 +33,20 @@ file <string>}
 
 \item{metafc}{method for summarizing gene fold-changes across studies 
 c("Mean", "Median") <string>}
+
+\item{colors}{vector of colors for the plot}
+
+\item{point_size}{size of the points}
+
+\item{label_genes}{character vector of specific genes to label}
+
+\item{label_top_n}{number of top genes to label}
+
+\item{label_size}{size of gene labels}
+
+\item{plot_title}{custom plot title}
+
+\item{show_legend}{whether to show the legend}
 }
 \value{
 \code{ggplot2} object

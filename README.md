@@ -1,181 +1,157 @@
 # MetaVolcanoR
 
-Gene expression meta-analysis visualization tool.
+**Meta-analysis visualization tool with publication-ready customization**
+
+[![R](https://img.shields.io/badge/R-%3E%3D4.4.0-blue)](https://www.r-project.org/)
+[![License](https://img.shields.io/badge/license-GPL--3-orange)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 ## Overview
 
-The MetaVolcanoR R package combines differential gene expression results. 
-It implements three strategies to summarize gene expression activities from 
-different studies. i) Random Effects Model (REM) approach. ii) a 
-vote-counting approach, and iii) a combining-approach. MetaVolcano exploits 
-the Volcano plot reasoning to visualize the gene expression meta-analysis 
-results.
+MetaVolcanoR combines differential gene, transcript, methylation and protein expression results from multiple studies to identify consistently perturbed genes. It implements three complementary meta-analysis strategies:
+
+1. **Random Effects Model (REM)** - Rigorous statistical meta-analysis accounting for study variance
+2. **Vote-counting** - Quick exploration of cross-study DEG consistency  
+3. **Combining approach** - P-value aggregation using Fisher's method
+
+All methods exploit volcano plot reasoning for intuitive visualization of meta-analysis results.
 
 ## Installation
+
+### From GitHub (Latest Development Version)
+```r
+# Install devtools if needed
+install.packages("devtools")
+
+# Install MetaVolcanoR
+devtools::install_github("iza-mcac/MetaVolcanoR")
 ```
-BiocManager::install('MetaVolcanoR')
+
+### From Bioconductor (Coming Soon)
+```r
+# Will be available after Bioconductor submission
+BiocManager::install("MetaVolcanoR")
 ```
 
-## Usage
-Load required libraries.
+## Quick Start
+```r
+library(MetaVolcanoR)
 
-```
-library(MetaVolcanoR) 
-```
-
-### Input Data
-
-Users should provide a named list of data.table/data.frame objects containing 
-differential gene expression results. Each object of the list must contain 
-*gene name*, *fold change*, and *p-value* variables. It is highly recomended 
-to also include *variance* or the *confidence interval* of the *fold change* 
-variables. 
-
-Take a look at the demo data. It includes differential gene expression results
-of five studies. 
-
-```
+# Load example data (5 studies, ~20k genes each)
 data(diffexplist)
+
+# Run Random Effects Model meta-analysis
+meta_results <- rem_mv(
+  diffexp = diffexplist,
+  metathr = 0.01,
+  outputfolder = tempdir(),
+  draw = "HTML"
+)
+
+# View interactive volcano plot
+meta_results@MetaVolcano
+
+# Explore forest plot for specific gene
+draw_forest(meta_results, gene = "MMP9", draw = "PDF")
 ```
 
-### Random Effect Model MetaVolcano
+## New Features 🎨
 
-The *REM* MetaVolcano summarizes the gene fold change of several
-studies taking into account the variance. The REM estimates a *summary p-value* 
-which stand for the probability of the *summary fold-change* is not different
-than zero. Users can set the *metathr* parameter to  highligth the top 
-percentage of the most consistently perturbed genes. This perturbation 
-ranking is defined following the  *topconfects* approach.
+**Plot Customization:**
+- Custom color schemes (including colorblind-friendly palettes)
+- Automatic or manual gene labeling
+- Adjustable point sizes and plot dimensions
+- Custom titles and legends
 
+**Data Preparation Helpers:**
+- `prepare_deseq2()` - One-line conversion from DESeq2 results
+- `prepare_limma()` - Format limma/voom output
+- `prepare_edger()` - Convert edgeR results
+- `prepare_swish()` - Convert swish/Fishpond transcript-level results
+- `prepare_limma()` - One-line conversion from limma/voom results
+- `prepare_edger()` - One-line conversion from edgeR results
 
-```
-meta_degs_rem <- rem_mv(diffexp=diffexplist,
-			pcriteria="pvalue",
-			foldchangecol='Log2FC', 
-			genenamecol='Symbol',
-			geneidcol=NULL,
-			collaps=FALSE,
-			llcol='CI.L',
-			rlcol='CI.R',
-			vcol=NULL, 
-			cvar=TRUE,
-			metathr=0.01,
-			jobname="MetaVolcano",
-			outputfolder=".", 
-			draw='HTML',
-			ncores=4)
-
-# REM results
-head(meta_degs_rem@metaresult, 3)
-
-# Plot MetaVolcano
-meta_degs_rem@MetaVolcano
+**Example with customization:**
+```r
+meta_custom <- rem_mv(
+  diffexp = diffexplist,
+  metathr = 0.01,
+  # Customization options:
+  colors = c(low = "navy", mid = "white", high = "darkred", na = "gray80"),
+  label_genes = c("MMP9", "COL6A6", "MXRA5"),  # Specific genes
+  label_size = 4,
+  plot_title = "Disease vs Control Meta-Analysis",
+  show_legend = TRUE
+)
 ```
 
-&nbsp;
-The *REM* MetaVolcano also allow users to explore the forest plot of a given 
-gene based on the REM results.
+## Documentation
 
-```
-draw_forest(remres=meta_degs_rem,
-	    gene="MMP9",
-	    genecol="Symbol", 
-	    foldchangecol="Log2FC",
-	    llcol="CI.L", 
-	    rlcol="CI.R",
-	    studynames=names(diffexplist),
-	    jobname=jobname,
-	    outputfolder=outputfolder,
-	    draw="HTML")
+📖 **[Full Tutorial and Examples](https://iza-mcac.github.io/MetaVolcanoR/)** - Comprehensive vignette with:
+- Data preparation from DESeq2/limma/edgeR
+- All three meta-analysis methods explained
+- Customization gallery
+- Publication tips
 
-```
+## Input Data Requirements
 
+Provide a **named list** of data frames, each containing:
+- Gene identifiers (names or IDs)
+- Log2 fold changes
+- P-values
+- *Optional*: Confidence intervals or variance (required for REM)
 
-```
-draw_forest(remres=meta_degs_rem,
-	    gene="COL6A6",
-	    genecol="Symbol", 
-	    foldchangecol="Log2FC",
-	    llcol="CI.L", 
-	    rlcol="CI.R",
-	    studynames=names(diffexplist),
-	    jobname=jobname,
-	    outputfolder=outputfolder,
-	    draw="HTML")
+**Quick data prep from DESeq2:**
+```r
+library(DESeq2)
+dds <- DESeq(dds)
+res <- results(dds)
 
+# One-line conversion!
+deg_table <- prepare_deseq2(res)
 ```
 
+## Three Meta-Analysis Methods
 
-### Vote-counting approach
+### 1. Random Effects Model (REM)
 
-MetaVolcano identifies differential expressed genes (DEG) for each study based 
-on the user-defined *p-value* and *fold change* thresholds. It displays the 
-number of differentially expressed and unperturbed genes per study. In addition,
-it plots the inverse cumulative distribution of the consistently DEG, so the
-user can identify the number of genes whose expression is perturbed in at 
-least 1 or n studies.
-
-```
-meta_degs_vote <- votecount_mv(diffexp=diffexplist,
-			       pcriteria='pvalue',
-			       foldchangecol='Log2FC',
-			       genenamecol='Symbol',
-			       geneidcol=NULL,
-			       pvalue=0.05,
-			       foldchange=0, 
-			       metathr=0.01,
-			       collaps=FALSE,
-			       jobname="MetaVolcano", 
-			       outputfolder=".",
-			       draw='HTML')
-
-# Vote-counting results
-head(meta_degs_vote@metaresult, 3)
-
-# Plot DEG by study and DEG inverse cummulative distribution
-meta_degs_vote@degfreq
-
+Most rigorous approach - accounts for between-study heterogeneity.
+```r
+rem_results <- rem_mv(diffexp = study_list, metathr = 0.01)
 ```
 
-The *vote-counting* MetaVolcano visualizes genes based on the number of studies 
-where genes were identified as differentially expressed and the gene fold change
-*sign consistency*. It means that a gene that was differentially expressed in 
-five studies, from which three of them it was downregulated, will get a *sign 
-consistency* score of *2 + (-3) = -1*. Based on the user preference, MetaVolcano
-can highligths the top *metathr* percentage of consistently perturbed genes.
+**When to use:** You have confidence intervals or standard errors
 
-```
-# Plot MetaVolcano
-meta_degs_vote@MetaVolcano
-```
+### 2. Vote-Counting
 
-### Combining-approach 
-
-The *combinig* MetaVolcano summarizes the *fold change* of a gene in different
-studies by the *mean* or *median* depending on the user preference. In addition, 
-the *combinig* MetaVolcano summarizes the gene differential expression 
-*p-values* using the Fisher method. The *combining* MetaVolcano can 
-highligths the top *metathr* percentage of consistently perturbed genes.
-
-
-```
-meta_degs_comb <- combining_mv(diffexp=diffexplist,
-			       pcriteria='pvalue', 
-			       foldchangecol='Log2FC',
-			       genenamecol='Symbol',
-			       geneidcol=NULL,
-			       metafc='Mean',
-			       metathr=0.01, 
-			       collaps=TRUE,
-			       jobname="MetaVolcano",
-			       outputfolder=".",
-			       draw='HTML')
-
-# Combining results
-head(meta_degs_comb@metaresult, 3)
-
-# Plot MetaVolcano
-meta_degs_comb@MetaVolcano
-
+Fast exploration of cross-study DEG consistency.
+```r
+vote_results <- votecount_mv(
+  diffexp = study_list,
+  pvalue = 0.05,
+  foldchange = 0.5
+)
 ```
 
+**When to use:** Quick overview, studies use different platforms
+
+### 3. Combining Approach
+
+Aggregates p-values (Fisher's method) and averages fold changes.
+```r
+comb_results <- combining_mv(
+  diffexp = study_list,
+  metafc = "Mean"  # or "Median"
+)
+```
+
+**When to use:** Focus on statistical evidence aggregation
+
+
+## License
+
+GPL-3
+
+---
+
+**Contributors:** Izabela Mamede, Bárbara Marinho, Cesar Prada, Diogenes Lima, Helder Nakaya  
+**Maintainer (at the moment):** Izabela Mamede (iza.mamede@gmail.com)

@@ -1,0 +1,23 @@
+study,Symbol,direction,Log2FC,pvalue,source_table,note
+Kumar2012,APOA4,up,,,"Kumar 2012 Table 1","fill Log2FC/pvalue from OMICS 2012 Table 1"
+Kumar2012,C3,up,,,"Kumar 2012 Table 1",
+Kumar2012,CLU,up,,,"Kumar 2012 Table 1",
+Kumar2012,SERPINA3,up,,,"Kumar 2012 Table 1","alpha-1-antichymotrypsin"
+Kumar2012,SERPINA1,up,,,"Kumar 2012 Table 1","alpha-1-antitrypsin"
+Kumar2012,HPX,up,,,"Kumar 2012 Table 1","hemopexin"
+Kumar2012,HP,up,,,"Kumar 2012 Table 1","haptoglobin"
+Kumar2012,APCS,up,,,"Kumar 2012 Table 1","serum amyloid P"
+Kumar2012,C4A,up,,,"Kumar 2012 Table 1","complement C4"
+Kumar2012,CFH,up,,,"Kumar 2012 Table 1","complement factor H"
+Kumar2012,KNG1,down,,,"Kumar 2012 Table 1","kininogen precursor"
+PLOSNTD2012,SAA2,up,,,"pntd.0001887 Table 2","serum amyloid A2 - shared DF+DHF"
+PLOSNTD2012,LRG1,up,,,"pntd.0001887 Table 2","leucine-rich alpha-2 glycoprotein - shared"
+PLOSNTD2012,HBA1,down,,,"pntd.0001887 Table 2","hemoglobin alpha - shared"
+PLOSNTD2012,ACTB,up,,,"pntd.0001887 Table 2","actin - shared"
+PLOSNTD2012,HP,up,,,"pntd.0001887 Table 2","haptoglobin - shared"
+PLOSNTD2012,SERPINA1,up,,,"pntd.0001887 Table 2","alpha-1-antitrypsin - shared"
+ICPL2013,LRG1,up,,,"PMC3547721","leucine-rich glycoprotein 1 - ELISA-confirmed"
+ICPL2013,GC,up,,,"PMC3547721","vitamin D binding protein - ELISA-confirmed"
+ICPL2013,FTL,up,,,"PMC3547721","ferritin - ELISA-confirmed"
+Oaxaca2024,IL6,up,,,"Oaxaca label-free study","IL-6 elevated"
+Oaxaca2024,CRP,up,,,"Oaxaca label-free study","CRP elevated"

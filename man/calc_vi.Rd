@@ -4,7 +4,14 @@
 \alias{calc_vi}
 \title{A function to calculate variance from confidence interval limits}
 \usage{
-calc_vi(diffexp, llcol, rlcol)
+calc_vi(
+  diffexp,
+  llcol = NULL,
+  rlcol = NULL,
+  vcol = NULL,
+  foldchangecol = "log2FC",
+  statcol = "stat"
+)
 }
 \arguments{
 \item{diffexp}{data.frame/data.table containing differential expression
@@ -15,12 +22,18 @@ name <string>}
 
 \item{rlcol}{column name of the fold change coinfidence interval left limit
 name <string>}
+
+\item{vcol}{column name of a pre-computed variance column <string> (optional)}
+
+\item{foldchangecol}{column name of the fold change <string> (used as fallback)}
+
+\item{statcol}{column name of the test statistic <string> (used as fallback)}
 }
 \value{
 \code{data.table/data.frame} with a new \code{vi} variable
 }
 \description{
-This function takes the limits of a confidence interval (95%) 
+This function takes the limits of a confidence interval (95%)
 a calculate a variance
 }
 \examples{

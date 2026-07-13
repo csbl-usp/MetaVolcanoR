@@ -16,9 +16,9 @@ A named list with 5 data frames with ~20k genes and 5 variables:
 \url{https://www.ncbi.nlm.nih.gov/geo/}
 }
 \usage{
-diffexplist
+data(diffexplist)
 }
 \description{
-A named list with five differential expresion results.
+A named list with five differential expression results.
 }
 \keyword{datasets}

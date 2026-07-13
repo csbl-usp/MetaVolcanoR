@@ -14,6 +14,15 @@ combining_mv(
   metathr = 0.01,
   collaps = "FALSE",
   jobname = "MetaVolcano",
+  outputfolder = tempdir(),
+  draw = "HTML",
+  colors = c("#083e46", "grey", "#811820"),
+  point_size = 0.5,
+  label_genes = NULL,
+  label_top_n = NULL,
+  label_size = 3,
+  plot_title = NULL,
+  show_legend = FALSE
   outputfolder = ".",
   draw = "HTML",
   render = F
@@ -48,6 +57,19 @@ c("Mean", "Median") <string>}
 \item{draw}{wheather or not to draw the .pdf or .html visualization 
 <c(NULL, "PDF", "HTML")>}
 
+\item{colors}{vector of colors for the plot c(down, neutral, up)}
+
+\item{point_size}{size of points in the plot}
+
+\item{label_genes}{character vector of specific genes to label}
+
+\item{label_top_n}{number of top genes to label automatically}
+
+\item{label_size}{size of gene name labels}
+
+\item{plot_title}{custom plot title}
+
+\item{show_legend}{whether to show the legend}
 \item{render}{A boolean parameter that determines whether the plot should be rendered. 
 If `TRUE`, the function will produce and save the plot based on the specified `draw` 
 parameter (either as an HTML or PDF file). If `FALSE` (default), no plot will be 

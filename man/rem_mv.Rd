@@ -2,7 +2,7 @@
 % Please edit documentation in R/rem_mv.R
 \name{rem_mv}
 \alias{rem_mv}
-\title{A function to perform the Random Effect Model (REM) MetaVolcano}
+\title{Random Effect Model (REM) MetaVolcano}
 \usage{
 rem_mv(
   diffexp = list(),
@@ -17,6 +17,16 @@ rem_mv(
   cvar = TRUE,
   metathr = 0.01,
   jobname = "MetaVolcano",
+  outputfolder = tempdir(),
+  draw = "HTML",
+  ncores = 1,
+  colors = c(low = "#083e46", mid = "white", high = "#811820", na = "grey80"),
+  point_size = 0.6,
+  label_genes = NULL,
+  label_top_n = NULL,
+  label_size = 3,
+  plot_title = NULL,
+  show_legend = TRUE
   outputfolder = ".",
   draw = "HTML",
   ncores = 1,
@@ -47,7 +57,7 @@ name <string>}
 
 \item{vcol}{name of the fold change variance variable <string>}
 
-\item{cvar}{weather or not to calculate gene variance from confidence 
+\item{cvar}{weather or not to calculate gene variance from confidence
 interval limits <logical>}
 
 \item{metathr}{top percentage of perturbed genes to be highlighted <double>}
@@ -58,6 +68,21 @@ interval limits <logical>}
 
 \item{draw}{wheather or not to draw the .html visualization <logical>}
 
+\item{ncores}{the number of processors the user wants to use <integer>}
+
+\item{colors}{named vector of colors for gradient: c(low, mid, high, na)}
+
+\item{point_size}{size of points in the plot}
+
+\item{label_genes}{character vector of specific genes to label}
+
+\item{label_top_n}{number of top genes (by p-value) to label automatically}
+
+\item{label_size}{size of gene name labels}
+
+\item{plot_title}{custom plot title (NULL for no title)}
+
+\item{show_legend}{whether to show the legend (TRUE/FALSE)}
 \item{ncores}{the number of processors the user wants to use <integer>
 #' @param render A boolean parameter that determines whether the plot should be rendered. 
 If `TRUE`, the function will produce and save the plot based on the specified `draw` 
@@ -69,6 +94,7 @@ for its side effects or calculations without necessarily visualizing the result.
 MetaVolcano object
 }
 \description{
+This function performs Random Effect Model meta-analysis on differential expression results.
 This function runs the 'Random Effect Model' MetaVolcano section
 }
 \examples{
@@ -76,8 +102,6 @@ data(diffexplist)
 diffexplist <- lapply(diffexplist, function(del) {
     dplyr::filter(del, grepl("MP", Symbol))
 })
-mv <- rem_mv(diffexplist, metathr = 0.1)
-str(mv)
 }
 \keyword{'combining}
 \keyword{meta-analysis'}

@@ -4,7 +4,20 @@
 \alias{plot_rem}
 \title{A function to plot the Random Effect Model (REM) MetaVolcano}
 \usage{
-plot_rem(meta_diffexp, jobname, outputfolder, genecol, metathr)
+plot_rem(
+  meta_diffexp,
+  jobname,
+  outputfolder,
+  genecol,
+  metathr,
+  colors = c(low = "#083e46", mid = "white", high = "#811820", na = "grey80"),
+  point_size = 0.6,
+  label_genes = NULL,
+  label_top_n = NULL,
+  label_size = 3,
+  plot_title = NULL,
+  show_legend = TRUE
+)
 }
 \arguments{
 \item{meta_diffexp}{data.frame/data.table containing the REM results from 
@@ -18,6 +31,20 @@ rem_mv() <data.table/data.frame>}
 <string>}
 
 \item{metathr}{top percentage of perturbed genes to be highlighted <double>}
+
+\item{colors}{named vector of colors for the gradient: c(low, mid, high, na)}
+
+\item{point_size}{size of the points}
+
+\item{label_genes}{character vector of specific genes to label}
+
+\item{label_top_n}{number of top genes (by p-value) to label}
+
+\item{label_size}{size of gene labels}
+
+\item{plot_title}{custom plot title (NULL for no title)}
+
+\item{show_legend}{whether to show the legend}
 }
 \value{
 \code{ggplot2} object
@@ -31,7 +58,7 @@ diffexplist <- lapply(diffexplist, function(del) {
     dplyr::filter(del, grepl("MP", Symbol))
 })
 mv <- rem_mv(diffexplist, metathr = 0.1)
-gg <- plot_rem(mv@metaresult, "MV", ".", "Symbol", 0.01)
+gg <- plot_rem(mv@metaresult, "MV", tempdir(), "Symbol", 0.01)
 plot(gg)
 }
 \keyword{REM}

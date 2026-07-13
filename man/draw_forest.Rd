@@ -12,6 +12,14 @@ draw_forest(
   llcol = "CI.L",
   rlcol = "CI.R",
   jobname = "MetaVolcano",
+  outputfolder = tempdir(),
+  draw = "PDF",
+  colors = c(positive = "#811820", negative = "#083e46", neutral = "#bdbdbd", reference =
+    "#969696"),
+  point_size = 2,
+  plot_width = 4,
+  plot_height = 5,
+  plot_title = NULL
   outputfolder = ".",
   draw = "PDF"
 )
@@ -38,6 +46,16 @@ name <string>}
 
 \item{draw}{either 'PDF' or 'HTML' to save metaolcano as .pdf or .html
 respectively <string>}
+
+\item{colors}{named vector of colors: c(positive, negative, neutral)}
+
+\item{point_size}{size of the points}
+
+\item{plot_width}{width of saved plot (inches for PDF, pixels for HTML)}
+
+\item{plot_height}{height of saved plot (inches for PDF, pixels for HTML)}
+
+\item{plot_title}{custom plot title (defaults to gene name)}
 }
 \value{
 \code{ggplot2} object

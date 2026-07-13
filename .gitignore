@@ -1,4 +1,21 @@
-.Rproj.user
+﻿.Rproj.user
 .Rhistory
 .RData
 MetaVolcanoR.Rproj
+/doc/
+/Meta/
+# Knit / R artifacts que não vão pro repo
+*_cache/
+vignettes/*_cache/
+/*_files/
+!docs/*_files/
+.Rhistory
+.RData
+.Rproj.user/
+# HTMLs auxiliares gerados pelo draw='HTML' do MetaVolcanoR
+vignettes/*_MetaVolcano.html
+vignettes/Forestplot_*.html
+vignettes/deg_*.html
+vignettes/combining_*.html
+vignettes/RandomEffectModel_*.html
+vignettes/votecounting_*.html
