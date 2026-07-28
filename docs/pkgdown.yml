@@ -1,11 +1,10 @@
-pandoc: 3.6.3
+pandoc: '3.10'
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  CPTACProteomics: CPTACProteomics.html
-  MetaVolcano: MetaVolcano.html
-  MetavolcanoUpdateEnrichment: MetavolcanoUpdateEnrichment.html
-last_built: 2026-07-13T20:42Z
+  GeneExpression: GeneExpression.html
+  Proteomics: Proteomics.html
+last_built: 2026-07-20T22:29Z
 urls:
   reference: https://csbl-usp.github.io/MetaVolcanoR/reference
   article: https://csbl-usp.github.io/MetaVolcanoR/articles

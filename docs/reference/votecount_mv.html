@@ -32,13 +32,10 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/CPTACProteomics.html">MetaVolcanoR for proteomics: a pan-cancer meta-analysis of the CPTAC tumor proteome</a>
+      <a href="../articles/GeneExpression.html">MetaVolcanoR: gene and transcript-level meta-analysis</a>
     </li>
     <li>
-      <a href="../articles/MetaVolcano.html">MetaVolcanoR: Differential expression meta-analysis tool</a>
-    </li>
-    <li>
-      <a href="../articles/MetavolcanoUpdateEnrichment.html">MetaVolcanoR: Updated Features and Enrichment Analysis</a>
+      <a href="../articles/Proteomics.html">MetaVolcanoR for proteomics: a pan-cancer meta-analysis of the CPTAC tumor proteome</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -66,29 +63,27 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre><code>votecount_mv(
-  diffexp = list(),
-  pcriteria = "pvalue",
-  foldchangecol = "Log2FC",
-  genenamecol = "Symbol",
-  geneidcol = NULL,
-  pvalue = 0.05,
-  foldchange = 0,
-  metathr = 0.01,
-  collaps = FALSE,
-  jobname = "MetaVolcano",
-  outputfolder = tempdir(),
-  draw = "HTML",
-  colors = c("#083e46", "grey", "#811820"),
-  point_size = 0.5,
-  label_genes = NULL,
-  label_top_n = NULL,
-  label_size = 3,
-  plot_title = NULL,
-  show_legend = FALSE
-  outputfolder = ".",
-  draw = "HTML"
-)</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">votecount_mv</span><span class="op">(</span></span>
+<span>  diffexp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  pcriteria <span class="op">=</span> <span class="st">"pvalue"</span>,</span>
+<span>  foldchangecol <span class="op">=</span> <span class="st">"Log2FC"</span>,</span>
+<span>  genenamecol <span class="op">=</span> <span class="st">"Symbol"</span>,</span>
+<span>  geneidcol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pvalue <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  foldchange <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  metathr <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  collaps <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  jobname <span class="op">=</span> <span class="st">"MetaVolcano"</span>,</span>
+<span>  outputfolder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  draw <span class="op">=</span> <span class="st">"HTML"</span>,</span>
+<span>  colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#083e46"</span>, <span class="st">"grey"</span>, <span class="st">"#811820"</span><span class="op">)</span>,</span>
+<span>  point_size <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  label_genes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  label_top_n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  label_size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  plot_title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  show_legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -185,8 +180,6 @@ direction &lt;logical&gt;</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">diffexplist</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mv</span> <span class="op">&lt;-</span> <span class="fu">votecount_mv</span><span class="op">(</span><span class="va">diffexplist</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Continuous limits supplied to discrete scale.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">i</span> Did you mean `limits = factor(...)` or `scale_*_continuous()`?</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">mv</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Formal class 'MetaVolcano' [package "MetaVolcanoR"] with 5 slots</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..@ input      :'data.frame':	7894 obs. of  11 variables:</span>
@@ -377,11 +370,11 @@ direction &lt;logical&gt;</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     super:  &lt;ggproto object: Class Guides, gg&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ mapping    : &lt;ggplot2::mapping&gt; List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. .. $ x   : language ~ddeg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. ..  ..- attr(*, ".Environment")=&lt;environment: 0x00000163142abbf8&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. ..  ..- attr(*, ".Environment")=&lt;environment: 0x00000221394b6890&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. .. $ y   : language ~ndeg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. ..  ..- attr(*, ".Environment")=&lt;environment: 0x00000163142abbf8&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. ..  ..- attr(*, ".Environment")=&lt;environment: 0x00000221394b6890&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. .. $ text: language ~Symbol</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. ..  ..- attr(*, ".Environment")=&lt;environment: 0x00000163142abbf8&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. ..  ..- attr(*, ".Environment")=&lt;environment: 0x00000221394b6890&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ theme      : &lt;theme&gt; List of 144</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. .. $ line                            : &lt;ggplot2::element_line&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. ..  ..@ colour       : chr "black"</span>
@@ -834,11 +827,11 @@ direction &lt;logical&gt;</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     super:  &lt;ggproto object: Class Layout, gg&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ labels     : &lt;ggplot2::labels&gt; List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. .. $ x    : chr "Sign consistency"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. .. $ y    : chr "Number of times as differentially expressed"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. .. $ y    : chr "Differential feature frequency"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. .. $ title: NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ meta       : list()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ plot_env   :&lt;environment: 0x00000163142abbf8&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..@ degfreq    : &lt;ggplot2::ggplot&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ plot_env   :&lt;environment: 0x00000221394b6890&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..@ featurefreq: &lt;ggplot2::ggplot&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ data       : list()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. .. - attr(*, "class")= chr "waiver"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ layers     :List of 1</span>
@@ -1228,7 +1221,7 @@ direction &lt;logical&gt;</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     super:  &lt;ggproto object: Class Layout, gg&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ labels     : &lt;ggplot2::labels&gt;  Named list()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ meta       : list()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ plot_env   :&lt;environment: 0x000001632bec0298&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ plot_env   :&lt;environment: 0x00000220f724fd60&gt; </span>
 </code></pre></div>
     </div>
   </div>

@@ -24,8 +24,6 @@ votecount_mv(
   label_size = 3,
   plot_title = NULL,
   show_legend = FALSE
-  outputfolder = ".",
-  draw = "HTML"
 )
 }
 \arguments{
