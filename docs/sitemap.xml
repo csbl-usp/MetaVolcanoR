@@ -1,10 +1,8 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/404.html</loc></url>
-<url><loc>https://csbl-usp.github.io/MetaVolcanoR/articles/CPTACProteomics.html</loc></url>
+<url><loc>https://csbl-usp.github.io/MetaVolcanoR/articles/GeneExpression.html</loc></url>
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/articles/index.html</loc></url>
-<url><loc>https://csbl-usp.github.io/MetaVolcanoR/articles/MetaVolcano.html</loc></url>
-<url><loc>https://csbl-usp.github.io/MetaVolcanoR/articles/MetavolcanoUpdateEnrichment.html</loc></url>
-<url><loc>https://csbl-usp.github.io/MetaVolcanoR/articles/PrepareDatasets.html</loc></url>
+<url><loc>https://csbl-usp.github.io/MetaVolcanoR/articles/Proteomics.html</loc></url>
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/authors.html</loc></url>
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/index.html</loc></url>
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/reference/calc_vi.html</loc></url>
@@ -23,6 +21,7 @@
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/reference/plot_rem.html</loc></url>
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/reference/prepare_deseq2.html</loc></url>
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/reference/prepare_edger.html</loc></url>
+<url><loc>https://csbl-usp.github.io/MetaVolcanoR/reference/prepare_geo2r.html</loc></url>
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/reference/prepare_limma.html</loc></url>
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/reference/prepare_swish.html</loc></url>
 <url><loc>https://csbl-usp.github.io/MetaVolcanoR/reference/remodel.html</loc></url>

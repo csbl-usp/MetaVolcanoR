@@ -12,7 +12,7 @@ combining_mv(
   geneidcol = NULL,
   metafc = "Mean",
   metathr = 0.01,
-  collaps = "FALSE",
+  collaps = FALSE,
   jobname = "MetaVolcano",
   outputfolder = tempdir(),
   draw = "HTML",
@@ -22,10 +22,9 @@ combining_mv(
   label_top_n = NULL,
   label_size = 3,
   plot_title = NULL,
-  show_legend = FALSE
-  outputfolder = ".",
-  draw = "HTML",
-  render = F
+  show_legend = FALSE,
+  render = FALSE,
+  fdr_method = "BH"
 )
 }
 \arguments{
@@ -70,6 +69,7 @@ c("Mean", "Median") <string>}
 \item{plot_title}{custom plot title}
 
 \item{show_legend}{whether to show the legend}
+
 \item{render}{A boolean parameter that determines whether the plot should be rendered. 
 If `TRUE`, the function will produce and save the plot based on the specified `draw` 
 parameter (either as an HTML or PDF file). If `FALSE` (default), no plot will be 

@@ -86,8 +86,22 @@ enrichment_mv <- function(remres,
     
     meta <- remres@metaresult
     
-    if (!all(c("randomSummary", "randomP", "Symbol") %in% colnames(meta))) {
+   if (!all(c("randomSummary", "randomP", "Symbol") %in% colnames(meta))) {
         stop("Input must be a REM MetaVolcano result containing randomSummary, randomP, and Symbol columns")
+    }
+
+    # --- Prefer the FDR-adjusted summary p-value (randomP.adjust) when
+    # --- available, consistent with using adjusted values for feature
+    # --- selection and functional enrichment. Falls back to the nominal
+    # --- randomP for REM results produced by an older package version.
+    if ("randomP.adjust" %in% colnames(meta)) {
+        p_col <- "randomP.adjust"
+    } else {
+        p_col <- "randomP"
+        message("enrichment_mv(): 'randomP.adjust' not found in the REM result; ",
+                "falling back to the unadjusted 'randomP' for ranking and ",
+                "feature selection. Re-run rem_mv() with the current package ",
+                "version to obtain FDR-adjusted p-values.")
     }
     
     # Build pathways from msigdbr if not provided
@@ -116,9 +130,9 @@ enrichment_mv <- function(remres,
     
     # Deduplicate before ranking (applies to all methods)
     meta_clean <- meta %>%
-        dplyr::filter(!is.na(randomSummary), !is.na(randomP)) %>%
+        dplyr::filter(!is.na(randomSummary), !is.na(.data[[p_col]])) %>%
         dplyr::group_by(Symbol) %>%
-        dplyr::slice_min(randomP, n = 1, with_ties = FALSE) %>%
+        dplyr::slice_min(.data[[p_col]], n = 1, with_ties = FALSE) %>%
         dplyr::ungroup()
     
     # Build gene ranking
@@ -126,12 +140,12 @@ enrichment_mv <- function(remres,
         gene_ranks <- setNames(meta_clean$randomSummary, meta_clean$Symbol)
     } else if (ranking == "signed_p") {
         gene_ranks <- setNames(
-            -log10(meta_clean$randomP) * sign(meta_clean$randomSummary),
+            -log10(meta_clean[[p_col]]) * sign(meta_clean$randomSummary),
             meta_clean$Symbol
         )
     } else if (ranking == "weighted_fc") {
         gene_ranks <- setNames(
-            meta_clean$randomSummary * -log10(meta_clean$randomP),
+            meta_clean$randomSummary * -log10(meta_clean[[p_col]]),
             meta_clean$Symbol
         )
     } else {

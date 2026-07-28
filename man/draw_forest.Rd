@@ -20,8 +20,6 @@ draw_forest(
   plot_width = 4,
   plot_height = 5,
   plot_title = NULL
-  outputfolder = ".",
-  draw = "PDF"
 )
 }
 \arguments{

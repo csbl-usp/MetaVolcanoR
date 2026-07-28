@@ -32,13 +32,10 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/CPTACProteomics.html">MetaVolcanoR for proteomics: a pan-cancer meta-analysis of the CPTAC tumor proteome</a>
+      <a href="../articles/GeneExpression.html">MetaVolcanoR: gene and transcript-level meta-analysis</a>
     </li>
     <li>
-      <a href="../articles/MetaVolcano.html">MetaVolcanoR: Differential expression meta-analysis tool</a>
-    </li>
-    <li>
-      <a href="../articles/MetavolcanoUpdateEnrichment.html">MetaVolcanoR: Updated Features and Enrichment Analysis</a>
+      <a href="../articles/Proteomics.html">MetaVolcanoR for proteomics: a pan-cancer meta-analysis of the CPTAC tumor proteome</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -147,8 +144,6 @@ c("Mean", "Median") &lt;string&gt;</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">diffexplist</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mv</span> <span class="op">&lt;-</span> <span class="fu"><a href="votecount_mv.html">votecount_mv</a></span><span class="op">(</span><span class="va">diffexplist</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Continuous limits supplied to discrete scale.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">i</span> Did you mean `limits = factor(...)` or `scale_*_continuous()`?</span>
 <span class="r-in"><span><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu">plot_mv</span><span class="op">(</span><span class="va">mv</span><span class="op">@</span><span class="va">metaresult</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">diffexplist</span><span class="op">)</span>, <span class="st">"Symbol"</span>, <span class="cn">FALSE</span>, <span class="st">"Mean"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_mv-1.png" alt="" width="700" height="433"></span>

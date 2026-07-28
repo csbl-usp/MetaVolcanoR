@@ -5,8 +5,6 @@ date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     toc: true
-    fig_width: 10
-    fig_height: 7
 vignette: >
   %\VignetteIndexEntry{MetaVolcanoR for proteomics: a pan-cancer meta-analysis of the CPTAC tumor proteome}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,28 +16,35 @@ knitr::opts_chunk$set(
   tidy    = FALSE,
   warning = FALSE,
   message = FALSE,
-  cache   = TRUE,
-  fig.width  = 10,
+  cache   = FALSE,
+  fig.width  = 9,
   fig.height = 7,
-  out.width = "100%",
-  fig.align = "center"
+  out.width  = "100%",
+  fig.align  = "center"
 )
-
 ```
 
-> 📄 [← Back to the main MetaVolcanoR vignette](index.html)
+> 📄 See also: [Gene and transcript-level meta-analysis (the main MetaVolcanoR vignette)](GeneExpression.html)
+
+- [Overview](#overview)
+    - [CPTAC vignette (optional)](#cptac-vignette-optional)
+- [1. Downloading each cohort's proteome](#downloading-each-cohorts-proteome)
+- [2. Per-cohort tumor-vs-normal differential abundance](#per-cohort-tumor-vs-normal-differential-abundance)
+- [3. Random Effects Model meta-analysis](#random-effects-model-meta-analysis)
+    - [Forest plot for a top consensus protein](#forest-plot-for-a-top-consensus-protein)
+- [4. Vote-counting and Fisher combining](#vote-counting-and-fisher-combining)
+- [5. Functional enrichment of the consensus proteins](#functional-enrichment-of-the-consensus-proteins)
+- [Data access and reproducibility](#data-access-and-reproducibility)
 
 ## Overview
 
-MetaVolcanoR was first built for gene-expression meta-analysis, but it operates
-on any table of features described by an identifier, a log fold change, a
-p-value, and a variance estimate. This makes it directly applicable to
-**differential protein abundance** from mass-spectrometry proteomics.
+MetaVolcanoR was first built for gene-expression meta-analysis, but it operates on any table of features
+described by an identifier, a log fold change, a p-value, and a variance estimate. This makes it directly
+applicable to **differential protein abundance** from mass-spectrometry proteomics.
 
-This vignette demonstrates the complete workflow on **real, harmonized cancer
-proteomics** from the Clinical Proteomic Tumor Analysis Consortium (CPTAC)
-[@cptac; @cptacpkg]. We meta-analyze the tumor-versus-normal proteome across
-**three independent cancer cohorts**:
+This vignette demonstrates the complete workflow on **real, harmonized cancer proteomics** from the
+Clinical Proteomic Tumor Analysis Consortium (CPTAC) [@cptac; @cptacpkg]. We meta-analyze the
+tumor-versus-normal proteome across **three independent cancer cohorts**:
 
 | Label | Cancer | Cohort | Tumor / Normal |
 |-------|--------|--------|----------------|
@@ -47,28 +52,30 @@ proteomics** from the Clinical Proteomic Tumor Analysis Consortium (CPTAC)
 | `LUAD`  | Lung adenocarcinoma             | CPTAC-LUAD  | 111 / 102 |
 | `UCEC`  | Uterine corpus endometrial carcinoma | CPTAC-UCEC | 103 / 49 |
 
-Each cohort is an independent set of patients, profiled by the same
-harmonized TMT pipeline (University of Michigan / `umich` source), with tumor
-and normal-adjacent tissue. This is an ideal meta-analysis substrate: the same
-biological contrast (tumor vs normal), measured across genuinely different
-tissues and patient populations. Proteins that move consistently across all
-three are **pan-cancer** tumor markers — the robust signal a meta-analysis is
-designed to surface, above and beyond any single cancer type.
+Each cohort is an independent set of patients, profiled by the same harmonized TMT pipeline (University of
+Michigan / `umich` source), with tumor and normal-adjacent tissue. This is an ideal meta-analysis substrate:
+the same biological contrast (tumor vs normal), measured across genuinely different tissues and patient
+populations. Proteins that move consistently across all three are **pan-cancer** tumor markers — the robust
+signal a meta-analysis is designed to surface, above and beyond any single cancer type. All plots below use
+MetaVolcanoR's default styling; see the
+[Customizing your plots](GeneExpression.html#customizing-your-plots) section of the main vignette for
+colors, titles, and labeling options.
 
-> **A note on method.** CPTAC abundances are log2-ratios to a study-specific
-> reference channel, so raw values are **not** comparable across cohorts. We
-> therefore compute the tumor-vs-normal contrast **within each cohort first**
-> (with `limma`), which cancels the study-specific reference, and only then
-> meta-analyze the resulting effect sizes. This is exactly the situation the
-> Random Effects Model is built for.
+> **A note on method.** CPTAC abundances are log2-ratios to a study-specific reference channel, so raw
+> values are **not** comparable across cohorts. We therefore compute the tumor-vs-normal contrast **within
+> each cohort first** (with `limma`), which cancels the study-specific reference, and only then
+> meta-analyze the resulting effect sizes. This is exactly the situation the Random Effects Model is built
+> for.
 
 ### CPTAC vignette (optional)
 
-The CPTAC proteomics vignette pulls data from the `cptac` Python package.
-To build it, create the expected environment once:
+This vignette pulls data from the `cptac` Python package. To build it, create the expected environment
+once:
 
-    reticulate::virtualenv_create("cptac311", version = "3.11")
-    reticulate::virtualenv_install("cptac311", packages = "cptac")
+```r
+reticulate::virtualenv_create("cptac311", version = "3.11")
+reticulate::virtualenv_install("cptac311", packages = "cptac")
+```
 
 Without it, the vignette's chunks are skipped and the rest of the site still builds.
 
@@ -86,8 +93,8 @@ cptac <- import("cptac")
 
 ## 1. Downloading each cohort's proteome
 
-Each CPTAC cancer is loaded with its own class, and proteomics comes from the
-harmonized `umich` source. Rows are samples, columns are proteins.
+Each CPTAC cancer is loaded with its own class, and proteomics comes from the harmonized `umich` source.
+Rows are samples, columns are proteins.
 
 ```{r load}
 loaders <- list(
@@ -107,10 +114,9 @@ sapply(proteomes, dim)   # samples x proteins per cohort
 
 ## 2. Per-cohort tumor-vs-normal differential abundance
 
-In every CPTAC cohort, normal-adjacent samples carry a `.N` suffix on the
-sample ID, while tumor samples do not. We use that to define the contrast, then
-run `limma` (which returns a moderated t-test with confidence intervals — the
-`CI.L`/`CI.R` MetaVolcanoR needs for the Random Effects Model).
+In every CPTAC cohort, normal-adjacent samples carry a `.N` suffix on the sample ID, while tumor samples do
+not. We use that to define the contrast, then run `limma` (which returns a moderated t-test with confidence
+intervals — the `CI.L`/`CI.R` MetaVolcanoR needs for the Random Effects Model).
 
 ```{r de-function}
 de_tumor_vs_normal <- function(prot) {
@@ -148,7 +154,11 @@ lapply(diffprot, head, 3)
 
 ## 3. Random Effects Model meta-analysis
 
-```{r , fig.width=11, fig.height=8, out.width="100%"}
+The REM result reports `randomP.adjust` — the summary p-value corrected for multiple testing across all
+meta-analyzed proteins (Benjamini-Hochberg by default; see `?rem_mv` for `fdr_method`). Use it, rather than
+the nominal `randomP`, for feature selection and downstream functional enrichment.
+
+```{r rem}
 mv_rem <- rem_mv(
   diffexp       = diffprot,
   pcriteria     = "pvalue",
@@ -159,7 +169,6 @@ mv_rem <- rem_mv(
   metathr       = 0.01,
   label_top_n   = 15,
   label_size    = 2,
-  plot_title    = "CPTAC pan-cancer tumor vs normal — proteome meta-analysis",
   jobname       = "CPTAC_REM",
   outputfolder  = tempdir(),
   draw          = "HTML"
@@ -168,15 +177,13 @@ mv_rem <- rem_mv(
 mv_rem@MetaVolcano
 mv_rem@metaresult |>
   dplyr::arrange(rank) |>
-  dplyr::select(Symbol, randomSummary, randomP, signcon, rank) |>
+  dplyr::select(Symbol, randomSummary, randomP, randomP.adjust, signcon, rank) |>
   head(20)
-
-#cowplot::ggsave2("REM_metavolc_CPTAC.pdf", height = 5, width = 8)
 ```
 
-The top consensus proteins — consistent across renal, lung, and endometrial
-tumors — are the strongest pan-cancer candidates. A `signcon` of `3` or `-3`
-means the protein moved in the same direction in all three cohorts.
+The top consensus proteins — consistent across renal, lung, and endometrial tumors — are the strongest
+pan-cancer candidates. A `signcon` of `3` or `-3` means the protein moved in the same direction in all three
+cohorts.
 
 ### Forest plot for a top consensus protein
 
@@ -208,19 +215,15 @@ mv_vote <- votecount_mv(
   foldchange    = 1,
   metathr       = 0.01,
   label_top_n   = 15,
-  plot_title    = "Vote-counting: pan-cancer proteome (Top 10 by |idx|)",
   jobname       = "CPTAC_vote",
   outputfolder  = tempdir(),
   draw          = "HTML"
 )
 mv_vote@featurefreq
 mv_vote@MetaVolcano
-
-#cowplot::ggsave2("featurefreq_metavolc_CPTAC.pdf", height = 5, width = 8)
-#cowplot::ggsave2("votecounts_metavolc_CPTAC.pdf", height = 5, width = 6)
 ```
 
-```{r fisher, fig.width=11, fig.height=8, out.width="100%"}
+```{r fisher}
 mv_fisher <- combining_mv(
   diffexp       = diffprot,
   pcriteria     = "pvalue",
@@ -228,22 +231,17 @@ mv_fisher <- combining_mv(
   genenamecol   = "Symbol",
   metafc        = "Mean",
   metathr       = 0.01,
-  colors        = c("#083e46", "gray90", "#811820"),
-  plot_title    = "Fisher's combined test — pan-cancer proteome",
+  label_top_n   = 15,
   jobname       = "CPTAC_fisher",
   outputfolder  = tempdir(),
-  draw          = "HTML",
-label_top_n   = 15
+  draw          = "HTML"
 )
 mv_fisher@MetaVolcano
-
-#cowplot::ggsave2("fisher_metavolc_CPTAC.pdf", height = 5, width = 6)
 ```
 
 ## 5. Functional enrichment of the consensus proteins
 
 ```{r enrich, eval=FALSE}
-# Uses enrichment_mv() from the package update (fgsea + msigdbr).
 enr <- enrichment_mv(
   mv_rem,
   category    = "H",            # MSigDB Hallmark
@@ -254,24 +252,18 @@ enr <- enrichment_mv(
 )
 enr$plot
 head(enr$result)
-
-cowplot::ggsave2("enrichment_metavolc_CPTAC.pdf", height = 5, width = 5)
 ```
 
 ## Data access and reproducibility
 
-All data are from CPTAC via the open-source `cptac` Python package
-[@cptacpkg] (`pip install cptac`), accessed from R through `reticulate`. The
-proteomics tables are downloaded from the package's public data repository at
-run time; no manual downloads are required. MetaVolcanoR is free and open
-source under GPL-3.
+All data are from CPTAC via the open-source `cptac` Python package [@cptacpkg] (`pip install cptac`),
+accessed from R through `reticulate`. The proteomics tables are downloaded from the package's public data
+repository at run time; no manual downloads are required. MetaVolcanoR is free and open source under GPL-3.
 
-If your network performs SSL inspection and the download fails with a
-certificate error, enabling the system certificate store resolves it:
+If your network performs SSL inspection and the download fails with a certificate error, enabling the
+system certificate store resolves it:
 
 ```{r truststore, eval=FALSE}
 py_install("truststore", pip = TRUE)
 py_run_string("import truststore; truststore.inject_into_ssl()")
 ```
-
-

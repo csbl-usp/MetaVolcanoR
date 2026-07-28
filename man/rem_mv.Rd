@@ -26,11 +26,9 @@ rem_mv(
   label_top_n = NULL,
   label_size = 3,
   plot_title = NULL,
-  show_legend = TRUE
-  outputfolder = ".",
-  draw = "HTML",
-  ncores = 1,
-  render = F
+  show_legend = TRUE,
+  render = FALSE,
+  fdr_method = "BH"
 )
 }
 \arguments{
@@ -82,8 +80,7 @@ interval limits <logical>}
 
 \item{plot_title}{custom plot title (NULL for no title)}
 
-\item{show_legend}{whether to show the legend (TRUE/FALSE)}
-\item{ncores}{the number of processors the user wants to use <integer>
+\item{show_legend}{whether to show the legend (TRUE/FALSE)
 #' @param render A boolean parameter that determines whether the plot should be rendered. 
 If `TRUE`, the function will produce and save the plot based on the specified `draw` 
 parameter (either as an HTML or PDF file). If `FALSE` (default), no plot will be 

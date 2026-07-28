@@ -19,3 +19,4 @@ vignettes/deg_*.html
 vignettes/combining_*.html
 vignettes/RandomEffectModel_*.html
 vignettes/votecounting_*.html
+vignettes/*_files/

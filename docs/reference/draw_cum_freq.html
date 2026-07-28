@@ -33,13 +33,10 @@ DEG distribution"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/CPTACProteomics.html">MetaVolcanoR for proteomics: a pan-cancer meta-analysis of the CPTAC tumor proteome</a>
+      <a href="../articles/GeneExpression.html">MetaVolcanoR: gene and transcript-level meta-analysis</a>
     </li>
     <li>
-      <a href="../articles/MetaVolcano.html">MetaVolcanoR: Differential expression meta-analysis tool</a>
-    </li>
-    <li>
-      <a href="../articles/MetavolcanoUpdateEnrichment.html">MetaVolcanoR: Updated Features and Enrichment Analysis</a>
+      <a href="../articles/Proteomics.html">MetaVolcanoR for proteomics: a pan-cancer meta-analysis of the CPTAC tumor proteome</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -100,10 +97,8 @@ DEG distribution</p>
 <span class="r-in"><span><span class="va">meta_diffexp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">matches</a></span><span class="op">(</span><span class="st">"deg_"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>    <span class="va">data.matrix</span> <span class="op">-&gt;</span> <span class="va">n_deg</span></span></span>
-<span class="r-in"><span><span class="va">meta_diffexp</span><span class="op">[[</span><span class="st">'ndeg'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">n_deg</span><span class="op">^</span><span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">meta_diffexp</span><span class="op">[[</span><span class="st">'ndeg'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MatrixGenerics/man/rowSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">n_deg</span><span class="op">^</span><span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu">draw_cum_freq</span><span class="op">(</span><span class="va">meta_diffexp</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">diffexplist</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Continuous limits supplied to discrete scale.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">i</span> Did you mean `limits = factor(...)` or `scale_*_continuous()`?</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="draw_cum_freq-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>

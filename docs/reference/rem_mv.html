@@ -33,13 +33,10 @@ This function runs the 'Random Effect Model' MetaVolcano section"><!-- mathjax -
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/CPTACProteomics.html">MetaVolcanoR for proteomics: a pan-cancer meta-analysis of the CPTAC tumor proteome</a>
+      <a href="../articles/GeneExpression.html">MetaVolcanoR: gene and transcript-level meta-analysis</a>
     </li>
     <li>
-      <a href="../articles/MetaVolcano.html">MetaVolcanoR: Differential expression meta-analysis tool</a>
-    </li>
-    <li>
-      <a href="../articles/MetavolcanoUpdateEnrichment.html">MetaVolcanoR: Updated Features and Enrichment Analysis</a>
+      <a href="../articles/Proteomics.html">MetaVolcanoR for proteomics: a pan-cancer meta-analysis of the CPTAC tumor proteome</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -68,34 +65,32 @@ This function runs the 'Random Effect Model' MetaVolcano section</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre><code>rem_mv(
-  diffexp = list(),
-  pcriteria = "pvalue",
-  foldchangecol = "Log2FC",
-  genenamecol = "Symbol",
-  geneidcol = NULL,
-  collaps = FALSE,
-  llcol = "CI.L",
-  rlcol = "CI.R",
-  vcol = NULL,
-  cvar = TRUE,
-  metathr = 0.01,
-  jobname = "MetaVolcano",
-  outputfolder = tempdir(),
-  draw = "HTML",
-  ncores = 1,
-  colors = c(low = "#083e46", mid = "white", high = "#811820", na = "grey80"),
-  point_size = 0.6,
-  label_genes = NULL,
-  label_top_n = NULL,
-  label_size = 3,
-  plot_title = NULL,
-  show_legend = TRUE
-  outputfolder = ".",
-  draw = "HTML",
-  ncores = 1,
-  render = F
-)</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rem_mv</span><span class="op">(</span></span>
+<span>  diffexp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  pcriteria <span class="op">=</span> <span class="st">"pvalue"</span>,</span>
+<span>  foldchangecol <span class="op">=</span> <span class="st">"Log2FC"</span>,</span>
+<span>  genenamecol <span class="op">=</span> <span class="st">"Symbol"</span>,</span>
+<span>  geneidcol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  collaps <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  llcol <span class="op">=</span> <span class="st">"CI.L"</span>,</span>
+<span>  rlcol <span class="op">=</span> <span class="st">"CI.R"</span>,</span>
+<span>  vcol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cvar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  metathr <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  jobname <span class="op">=</span> <span class="st">"MetaVolcano"</span>,</span>
+<span>  outputfolder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  draw <span class="op">=</span> <span class="st">"HTML"</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"#083e46"</span>, mid <span class="op">=</span> <span class="st">"white"</span>, high <span class="op">=</span> <span class="st">"#811820"</span>, na <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span>,</span>
+<span>  point_size <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>  label_genes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  label_top_n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  label_size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  plot_title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  show_legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  render <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  fdr_method <span class="op">=</span> <span class="st">"BH"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -193,10 +188,7 @@ interval limits &lt;logical&gt;</p></dd>
 
 
 <dt id="arg-show-legend">show_legend<a class="anchor" aria-label="anchor" href="#arg-show-legend"></a></dt>
-<dd><p>whether to show the legend (TRUE/FALSE)</p></dd>
-
-<dt id="arg-ncores">ncores<a class="anchor" aria-label="anchor" href="#arg-ncores"></a></dt>
-<dd><p>the number of processors the user wants to use &lt;integer&gt;
+<dd><p>whether to show the legend (TRUE/FALSE)
 #' @param render A boolean parameter that determines whether the plot should be rendered.
 If `TRUE`, the function will produce and save the plot based on the specified `draw`
 parameter (either as an HTML or PDF file). If `FALSE` (default), no plot will be
