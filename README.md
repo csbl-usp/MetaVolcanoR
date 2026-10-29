@@ -23,7 +23,7 @@ All methods exploit volcano plot reasoning for intuitive visualization of meta-a
 install.packages("devtools")
 
 # Install MetaVolcanoR
-devtools::install_github("iza-mcac/MetaVolcanoR")
+devtools::install_github("csbl-usp/MetaVolcanoR")
 ```
 
 ### From Bioconductor (Coming Soon)
